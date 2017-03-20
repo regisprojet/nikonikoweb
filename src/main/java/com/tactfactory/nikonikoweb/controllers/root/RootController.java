@@ -1,4 +1,4 @@
-package com.tactfactory.nikonikoweb.controllers;
+package com.tactfactory.nikonikoweb.controllers.root;
 
 import java.util.ArrayList;
 import java.util.List;
