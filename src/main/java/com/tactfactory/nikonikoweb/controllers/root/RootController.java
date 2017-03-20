@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -102,13 +104,17 @@ public class RootController {
 			Model model) {
 		//Map<String, Object> map = model.asMap();
 		
-		List<User> users = userCrud.findByLogin("admin");
-		User admin = null;
+		List<User> users = userCrud.findByLogin(securityLogin.getLogin());
 		for(User user : users) {
-			admin = user;
-			if((admin.getLogin().equals(securityLogin.getLogin())) && 
-					(admin.getPassword().equals(securityLogin.getPassword()))) {
+			if(securityLogin.getPassword().equals(user.getPassword())) {
+				String functionName = userCrud.functionById(user.getId());
+				System.out.println(user+", fonction = "+functionName);
+				if(functionName.equals("administrateur")) {
 					return "redirect:/admin";
+				}
+				if(functionName.equals("developpeur")) {
+					return "redirect:/inputNiko";
+				}
 			}
 		}
 
