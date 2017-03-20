@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.tactfactory.nikonikoweb.controllers.base.BaseController;
 import com.tactfactory.nikonikoweb.controllers.base.view.ViewBaseController;
 import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.dao.base.IBaseCrudRepository;
 import com.tactfactory.nikonikoweb.generation.InitDatabase;
 import com.tactfactory.nikonikoweb.models.Ability;
+import com.tactfactory.nikonikoweb.models.Agency;
 import com.tactfactory.nikonikoweb.models.Function;
+import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.base.DatabaseItem;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
@@ -37,6 +41,12 @@ public class RootController {
 
 	@Autowired
 	private IAbilityCrudRepository abilityCrud;
+
+	@Autowired
+	private IPoleCrudRepository poleCrud;
+
+	@Autowired
+	private IAgencyCrudRepository agencyCrud;
 
 	private String login;
 	private String password;
@@ -57,9 +67,11 @@ public class RootController {
 	@RequestMapping(value = { "init" }, method = RequestMethod.GET)
 	public String initGet(Model model) {
 		initDatabase = new InitDatabase();
-//		functionCrud.deleteAll();
-//		abilityCrud.deleteAll();
-//		userCrud.deleteAll();
+		userCrud.deleteAll();
+		poleCrud.deleteAll();
+		agencyCrud.deleteAll();
+		functionCrud.deleteAll();
+		abilityCrud.deleteAll();
 		return "root/init";
 	}
 	
@@ -69,13 +81,24 @@ public class RootController {
 		ArrayList<Ability> abilities= initDatabase.getAbilityList();
 		ArrayList<User> admins = initDatabase.getAdminList();
 		ArrayList<User> devs = initDatabase.getDevList();
-		
+		ArrayList<Pole> poles = initDatabase.getPoleList();
+		ArrayList<Agency> agencies = initDatabase.getAgencyList();
+			
 		
 		for(Function function : functions) {
 				functionCrud.save(function);
 		}
 		for(Ability ability : abilities) {
+			System.out.println("ability : " + ability);
 			abilityCrud.save(ability);
+		}
+		for(Pole pole : poles) {
+			System.out.println("pole : " + pole );
+			poleCrud.save(pole);
+		}
+		for(Agency agency : agencies) {
+			System.out.println("agency : " + agency );
+			agencyCrud.save(agency);
 		}
 		for(User admin : admins) {
 			userCrud.save(admin);

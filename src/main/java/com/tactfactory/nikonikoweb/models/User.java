@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -51,11 +52,31 @@ public class User extends SecurityUser {
 
 	private Character sex;
 
-	//@OneToMany(mappedBy="user_function")
 	@ManyToMany
 	private Set<Function> functions;
 
+	@OneToOne
+	private Pole pole;
 	
+	@OneToOne
+	private Agency agency;
+
+	public Agency getAgency() {
+		return agency;
+	}
+
+	public void setAgency(Agency agency) {
+		this.agency = agency;
+	}
+
+	public Pole getPole() {
+		return pole;
+	}
+
+	public void setPole(Pole pole) {
+		this.pole = pole;
+	}
+
 	public Set<Function> getFunctions() {
 		return functions;
 	}
@@ -169,6 +190,7 @@ public class User extends SecurityUser {
 		this.firstname = firstname;
 		this.registration_cgi = registration_cgi;
 		this.functions = (Set<Function>) new HashSet<Function>();
+		this.pole = null;
 	}
 
 	public User() {
@@ -185,5 +207,6 @@ public class User extends SecurityUser {
 		this.firstname = firstname;
 		this.sex = sex;
 		this.functions = (Set<Function>) new HashSet<Function>();
+		this.pole = null;
 	}
 }
