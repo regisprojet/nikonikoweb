@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -55,9 +56,11 @@ public class User extends SecurityUser {
 	@ManyToMany
 	private Set<Function> functions;
 
+	@JoinColumn(name="pole_id")
 	@OneToOne
 	private Pole pole;
 	
+	@JoinColumn(name="agency_id")
 	@OneToOne
 	private Agency agency;
 
