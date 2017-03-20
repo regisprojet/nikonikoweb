@@ -55,9 +55,9 @@ public class RootController {
 	@RequestMapping(value = { "init" }, method = RequestMethod.GET)
 	public String initGet(Model model) {
 		initDatabase = new InitDatabase();
-		functionCrud.deleteAll();
-		abilityCrud.deleteAll();
-		userCrud.deleteAll();
+//		functionCrud.deleteAll();
+//		abilityCrud.deleteAll();
+//		userCrud.deleteAll();
 		return "root/init";
 	}
 	
@@ -66,6 +66,7 @@ public class RootController {
 		ArrayList<Function> functions = initDatabase.getFunctionList();
 		ArrayList<Ability> abilities= initDatabase.getAbilityList();
 		ArrayList<User> admins = initDatabase.getAdminList();
+		ArrayList<User> devs = initDatabase.getDevList();
 		
 		
 		for(Function function : functions) {
@@ -76,6 +77,10 @@ public class RootController {
 		}
 		for(User admin : admins) {
 			userCrud.save(admin);
+		}
+		
+		for(User dev : devs) {
+			userCrud.save(dev);
 		}
 		
 		return "redirect:/login";

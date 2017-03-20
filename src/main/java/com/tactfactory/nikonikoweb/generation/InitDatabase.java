@@ -58,14 +58,22 @@ public class InitDatabase {
 		abilityList = new ArrayList<Ability>();
 		adminList = new ArrayList<User>();
 		devList = new ArrayList<User>();
+		Function functionAdmin = null;
+		Function functionDev = null;
 		
-		String[] functions = {"administrateur","vip", "développeur", "chef de projet"};
+		String[] functions = {"administrateur","vip", "developpeur", "chef de projet"};
 		String[] abilities = {"vue","edition"};
 		
 		for(String current: functions) {
 			Function function = new Function();
 			function.setName(current);
-			functionList.add(function);			
+			functionList.add(function);
+			if(current.equals("developpeur")) {
+				functionDev = function;
+			}
+			else if (current.equals("administrateur")) {
+				functionAdmin = function;
+			}
 		}
 
 		for(String current: abilities) {
@@ -73,11 +81,21 @@ public class InitDatabase {
 			ability.setName(current);
 			abilityList.add(ability);			
 		}
+		User user;
+		user = new User("admin","admin","admin","admin","0000");
+		user.getFunctions().add(functionAdmin);
+		adminList.add(user);
 		
-		adminList.add(new User("admin","admin","admin","admin","0000"));
-		adminList.add(new User("admin","1234","admin2","admin2","0001"));
+		user = new User("admin1","1234","admin2","admin2","0001");
+		user.getFunctions().add(functionAdmin);
+		adminList.add(user);
 
-		//devList.add(new User("regisp","password","regis","ph","0001"));
-		//devList.add(new User("denisp","password","denis","pa","0002"));
+		user = new  User("regisp","password","regis","ph","0002");
+		user.getFunctions().add(functionDev);
+		devList.add(user);
+		
+		user = new  User("denisp","password","denis","pa","0003");
+		user.getFunctions().add(functionDev);
+		devList.add(user);
 	}
 }	

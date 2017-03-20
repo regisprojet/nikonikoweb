@@ -20,7 +20,7 @@ public abstract class DatabaseItem implements Serializable {
 	public String[] fields;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	/**

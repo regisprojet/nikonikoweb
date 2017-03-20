@@ -1,6 +1,8 @@
 package com.tactfactory.nikonikoweb.models;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -48,6 +50,19 @@ public class User extends SecurityUser {
 	private Set<Team> teams;
 
 	private Character sex;
+
+	//@OneToMany(mappedBy="user_function")
+	@ManyToMany
+	private Set<Function> functions;
+
+	
+	public Set<Function> getFunctions() {
+		return functions;
+	}
+
+	public void setFunctions(Set<Function> functions) {
+		this.functions = functions;
+	}
 
 	/**
 	 * @return the lastname
@@ -147,11 +162,13 @@ public class User extends SecurityUser {
 		this.teams = teams;
 	}
 
+	@SuppressWarnings("unchecked")
 	public User(String login, String password, String lastname, String firstname, String registration_cgi) {
 		super(User.TABLE, User.FIELDS, login, password);
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.registration_cgi = registration_cgi;
+		this.functions = (Set<Function>) new HashSet<Function>();
 	}
 
 	public User() {
@@ -167,5 +184,6 @@ public class User extends SecurityUser {
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.sex = sex;
+		this.functions = (Set<Function>) new HashSet<Function>();
 	}
 }
