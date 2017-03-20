@@ -9,16 +9,26 @@ import com.tactfactory.nikonikoweb.models.User;
 public class InitDatabase {
 	ArrayList<Function> functionList;
 	ArrayList<Ability> abilityList;
-	ArrayList<User> admins;
-
+	ArrayList<User> adminList;
+	ArrayList<User> devList;
 	
-	public ArrayList<User> getAdmins() {
-		return admins;
+	public ArrayList<User> getDevList() {
+		return devList;
 	}
 
 
-	public void setAdmins(ArrayList<User> admins) {
-		this.admins = admins;
+	public void setDevList(ArrayList<User> devList) {
+		this.devList = devList;
+	}
+
+
+	public ArrayList<User> getAdminList() {
+		return adminList;
+	}
+
+
+	public void setAdminList(ArrayList<User> admins) {
+		this.adminList = admins;
 	}
 
 
@@ -46,6 +56,8 @@ public class InitDatabase {
 	public InitDatabase() {
 		functionList = new ArrayList<Function>();
 		abilityList = new ArrayList<Ability>();
+		adminList = new ArrayList<User>();
+		devList = new ArrayList<User>();
 		
 		String[] functions = {"administrateur","vip", "développeur", "chef de projet"};
 		String[] abilities = {"vue","edition"};
@@ -62,8 +74,10 @@ public class InitDatabase {
 			abilityList.add(ability);			
 		}
 		
-		admins.add(new User("admin","admin","admin","admin","0000"));
-		admins.add(new User("admin","1234","admin2","admin2","0000"));
-		
+		adminList.add(new User("admin","admin","admin","admin","0000"));
+		adminList.add(new User("admin","1234","admin2","admin2","0001"));
+
+		//devList.add(new User("regisp","password","regis","ph","0001"));
+		//devList.add(new User("denisp","password","denis","pa","0002"));
 	}
 }	

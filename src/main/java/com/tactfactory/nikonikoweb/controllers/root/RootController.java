@@ -65,7 +65,7 @@ public class RootController {
 	public String initPost(Model model) {
 		ArrayList<Function> functions = initDatabase.getFunctionList();
 		ArrayList<Ability> abilities= initDatabase.getAbilityList();
-		ArrayList<User> admins = initDatabase.getAdmins();
+		ArrayList<User> admins = initDatabase.getAdminList();
 		
 		
 		for(Function function : functions) {
