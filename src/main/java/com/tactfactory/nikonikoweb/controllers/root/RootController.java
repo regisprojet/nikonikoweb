@@ -20,6 +20,7 @@ import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.dao.base.IBaseCrudRepository;
+import com.tactfactory.nikonikoweb.environment.Environment;
 import com.tactfactory.nikonikoweb.generation.InitDatabase;
 import com.tactfactory.nikonikoweb.models.Ability;
 import com.tactfactory.nikonikoweb.models.Agency;
@@ -126,17 +127,19 @@ public class RootController {
 	public String loginPost(@ModelAttribute SecurityLogin securityLogin,
 			Model model) {
 		//Map<String, Object> map = model.asMap();
+		Environment environment = Environment.getInstance();
 		
 		List<User> users = userCrud.findByLogin(securityLogin.getLogin());
 		for(User user : users) {
 			if(securityLogin.getPassword().equals(user.getPassword())) {
+				environment.setCurrentUser(user);
 				String functionName = userCrud.functionById(user.getId());
 				System.out.println(user+", fonction = "+functionName);
 				if(functionName.equals("administrateur")) {
 					return "redirect:/admin";
 				}
 				if(functionName.equals("developpeur")) {
-					return "redirect:/inputNiko";
+					return "redirect:/user";
 				}
 			}
 		}
@@ -148,4 +151,14 @@ public class RootController {
 	public String adminGet(Model model) {
 		return "root/admin";
 	}
+	
+	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
+	public String userGet(Model model) {
+		Environment environment = Environment.getInstance();
+		User currentUser = environment.getCurrentUser();
+		model.addAttribute("userName", currentUser.getFirstname() + " " + currentUser.getLastname());
+		
+		return "root/user";
+	}
+
 }
