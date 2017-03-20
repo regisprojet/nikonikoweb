@@ -9,9 +9,19 @@ import com.tactfactory.nikonikoweb.models.User;
 public class InitDatabase {
 	ArrayList<Function> functionList;
 	ArrayList<Ability> abilityList;
-	User userAdmin;
+	ArrayList<User> admins;
+
 	
-	
+	public ArrayList<User> getAdmins() {
+		return admins;
+	}
+
+
+	public void setAdmins(ArrayList<User> admins) {
+		this.admins = admins;
+	}
+
+
 	public ArrayList<Function> getFunctionList() {
 		return functionList;
 	}
@@ -32,15 +42,6 @@ public class InitDatabase {
 	}
 
 
-	public User getUserAdmin() {
-		return userAdmin;
-	}
-
-
-	public void setUserAdmin(User userAdmin) {
-		this.userAdmin = userAdmin;
-	}
-
 
 	public InitDatabase() {
 		functionList = new ArrayList<Function>();
@@ -60,6 +61,9 @@ public class InitDatabase {
 			ability.setName(current);
 			abilityList.add(ability);			
 		}
-		userAdmin = new User("admin","admin","admin","admin","0000");
+		
+		admins.add(new User("admin","admin","admin","admin","0000"));
+		admins.add(new User("admin","1234","admin2","admin2","0000"));
+		
 	}
 }	

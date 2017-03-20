@@ -1,4 +1,4 @@
-package com.tactfactory.nikonikoweb.controllers;
+package com.tactfactory.nikonikoweb.controllers.root;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class RootController {
 	public String initPost(Model model) {
 		ArrayList<Function> functions = initDatabase.getFunctionList();
 		ArrayList<Ability> abilities= initDatabase.getAbilityList();
-		User admin = initDatabase.getUserAdmin();
+		ArrayList<User> admins = initDatabase.getAdmins();
 		
 		
 		for(Function function : functions) {
@@ -74,8 +74,9 @@ public class RootController {
 		for(Ability ability : abilities) {
 			abilityCrud.save(ability);
 		}
-		userCrud.save(admin);
-		
+		for(User admin : admins) {
+			userCrud.save(admin);
+		}
 		
 		return "redirect:/login";
 	}
@@ -100,14 +101,12 @@ public class RootController {
 		User admin = null;
 		for(User user : users) {
 			admin = user;
-			break;
+			if((admin.getLogin().equals(securityLogin.getLogin())) && 
+					(admin.getPassword().equals(securityLogin.getPassword()))) {
+					return "redirect:/admin";
+			}
 		}
 
-		if((admin.getLogin().equals(securityLogin.getLogin())) && 
-			(admin.getPassword().equals(securityLogin.getPassword()))) {
-			return "redirect:/admin";
-		}
-		
 		return "redirect:/login";
 	}
 
