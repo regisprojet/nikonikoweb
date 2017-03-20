@@ -141,6 +141,9 @@ public class RootController {
 				if(functionName.equals("developpeur")) {
 					return "redirect:/user";
 				}
+				if(functionName.equals("vip")) {
+					return "redirect:/vip";
+				}
 			}
 		}
 
@@ -159,6 +162,16 @@ public class RootController {
 		model.addAttribute("userName", currentUser.getFirstname() + " " + currentUser.getLastname());
 		
 		return "root/user";
+	}
+
+	@RequestMapping(value = { "vip" }, method = RequestMethod.GET)
+	public String vipGet(Model model) {
+		Environment environment = Environment.getInstance();
+		User currentUser = environment.getCurrentUser();
+		model.addAttribute("userName", currentUser.getFirstname()
+				+ " " + currentUser.getLastname().toUpperCase());
+		
+		return "root/vip";
 	}
 
 }

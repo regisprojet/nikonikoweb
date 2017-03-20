@@ -12,11 +12,22 @@ public class InitDatabase {
 	ArrayList<Function> functionList;
 	ArrayList<Ability> abilityList;
 	ArrayList<User> adminList;
+	ArrayList<User> vipList;
 	ArrayList<User> devList;
 	ArrayList<Pole> poleList;
 	ArrayList<Agency> agencyList;
 	
 	
+	public ArrayList<User> getVipList() {
+		return vipList;
+	}
+
+
+	public void setVipList(ArrayList<User> vipList) {
+		this.vipList = vipList;
+	}
+
+
 	public ArrayList<Agency> getAgencyList() {
 		return agencyList;
 	}
@@ -82,12 +93,14 @@ public class InitDatabase {
 		functionList = new ArrayList<Function>();
 		abilityList = new ArrayList<Ability>();
 		adminList = new ArrayList<User>();
+		vipList = new ArrayList<User>();
 		devList = new ArrayList<User>();
 		poleList = new ArrayList<Pole>();
 		agencyList = new ArrayList<Agency>();
 		
 		Function functionAdmin = null;
 		Function functionDev = null;
+		Function functionVip = null;
 		
 		String[] functions = {"administrateur","vip", "developpeur", "chef de projet"};
 		String[] abilities = {"vue","edition"};
@@ -105,6 +118,9 @@ public class InitDatabase {
 			}
 			else if (current.equals("administrateur")) {
 				functionAdmin = function;
+			}
+			else if (current.equals("vip")) {
+				functionVip = function;
 			}
 		}
 
@@ -136,16 +152,20 @@ public class InitDatabase {
 		user.getFunctions().add(functionAdmin);
 		adminList.add(user);
 
-		user = new  User("regis","toto","regis","ph","0002");
+		user = new  User("regis","toto","ph","regis","0002");
 		user.getFunctions().add(functionDev);
 		user.setPole(poleList.get(0));
 		user.setAgency(agencyList.get(1));
 		devList.add(user);
 		
-		user = new  User("denis","toto","denis","pa","0003");
+		user = new  User("denis","toto","pa","denis","0003");
 		user.getFunctions().add(functionDev);
 		user.setPole(poleList.get(1));
 		user.setAgency(agencyList.get(1));
+		devList.add(user);
+		
+		user = new  User("pierre","toto","papin","pierre","0004");
+		user.getFunctions().add(functionVip);
 		devList.add(user);
 		
 	}
