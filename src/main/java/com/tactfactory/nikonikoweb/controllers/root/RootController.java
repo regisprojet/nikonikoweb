@@ -83,8 +83,8 @@ public class RootController {
 		ArrayList<User> chefProjets = initDatabase.getChefProjetList();
 		ArrayList<Pole> poles = initDatabase.getPoleList();
 		ArrayList<Agency> agencies = initDatabase.getAgencyList();
-			
-		
+
+
 		for(Ability ability : abilities) {
 			System.out.println("ability : " + ability);
 			abilityCrud.save(ability);
@@ -105,7 +105,7 @@ public class RootController {
 		for(User admin : admins) {
 			userCrud.save(admin);
 		}
-		
+
 		for(User dev : devs) {
 			userCrud.save(dev);
 		}
@@ -115,7 +115,7 @@ public class RootController {
 		for(User chefProjet : chefProjets) {
 			userCrud.save(chefProjet);
 		}
-		
+
 		return "redirect:/login";
 	}
 
@@ -135,15 +135,17 @@ public class RootController {
 			Model model) {
 		//Map<String, Object> map = model.asMap();
 		Environment environment = Environment.getInstance();
-		
+
 		List<User> users = userCrud.findByLogin(securityLogin.getLogin());
 
 		for(User user : users) {
 			if(securityLogin.getPassword().equals(user.getPassword())) {
 				environment.setCurrentUser(user);
-				//String functionName = userCrud.functionById(user.getId());
+				String functionName = userCrud.functionById(user.getId());
+
 				Set<BigInteger>ids = userCrud.functionIdsById(user.getId());
 				Set<Function> functions = new HashSet<Function>();
+
 				String string = "";
 				for(BigInteger id : ids) {
 					Function function = functionCrud.findOne(id.longValue());
@@ -161,12 +163,12 @@ public class RootController {
 					abilities.add(ability);
 					string += ability.getName() + " ";
 				}
-				
+
 				environment.setAllAbilities(abilities);
 				environment.setAbilities(string);
-				
+
 				if(functions.size()==1) {
-					String functionName=null;
+					functionName=null;
 					for(Function function : functions ) {
 						functionName = function.getName();
 						break;
@@ -193,41 +195,42 @@ public class RootController {
 	@RequestMapping(value = { "admin" }, method = RequestMethod.GET)
 	public String adminGet(Model model) {
 		Environment environment = Environment.getInstance();
-		model.addAttribute("abilities", environment.getAbilities()); 
+		model.addAttribute("abilities", environment.getAbilities());
 		return "root/admin";
 	}
-	
+
 	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
 	public String userGet(Model model) {
 		Environment environment = Environment.getInstance();
 		User currentUser = environment.getCurrentUser();
-		model.addAttribute("userName", currentUser.getFirstname() 
+		model.addAttribute("userName", currentUser.getFirstname()
 				+ " " + currentUser.getLastname().toUpperCase());
 		model.addAttribute("abilities", environment.getAbilities());
-		model.addAttribute("functions", environment.getFunctions()); 
+
+		model.addAttribute("functions", environment.getFunctions());
 		Pole pole = poleCrud.findOne(userCrud.poleIdById(currentUser.getId()).longValue());
-		model.addAttribute("pole", pole.getName()); 
-		
+		model.addAttribute("pole", pole.getName());
+
 		return "root/user";
 	}
 
-	
+
 	@RequestMapping(value = { "multifunction" }, method = RequestMethod.GET)
 	public String multifunctionGet(Model model) {
 		Environment environment = Environment.getInstance();
 		User currentUser = environment.getCurrentUser();
-		model.addAttribute("userName", currentUser.getFirstname() 
+		model.addAttribute("userName", currentUser.getFirstname()
 				+ " " + currentUser.getLastname().toUpperCase());
 		model.addAttribute("abilities", environment.getAbilities());
-		model.addAttribute("functions", environment.getFunctions()); 
+		model.addAttribute("functions", environment.getFunctions());
 		BigInteger id= userCrud.poleIdById(currentUser.getId());
 		if(id==null) {
-			model.addAttribute("pole", ""); 
+			model.addAttribute("pole", "");
 		}
 		else {
 			Pole pole = poleCrud.findOne(id.longValue());
-			
-			model.addAttribute("pole", pole.getName()); 
+
+			model.addAttribute("pole", pole.getName());
 		}
 		return "root/multifunction";
 	}
@@ -238,8 +241,8 @@ public class RootController {
 		User currentUser = environment.getCurrentUser();
 		model.addAttribute("userName", currentUser.getFirstname()
 				+ " " + currentUser.getLastname().toUpperCase());
-		model.addAttribute("abilities", environment.getAbilities()); 
-		
+		model.addAttribute("abilities", environment.getAbilities());
+
 		return "root/vip";
 	}
 

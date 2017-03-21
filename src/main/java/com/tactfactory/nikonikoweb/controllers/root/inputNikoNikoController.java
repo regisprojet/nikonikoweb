@@ -2,6 +2,9 @@ package com.tactfactory.nikonikoweb.controllers.root;
 
 import java.math.BigInteger;
 
+import java.util.Date;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,10 +42,7 @@ public class inputNikoNikoController {
 	private IBaseCrudRepository<NikoNiko> nikoNikoCrud;
 
 	@Autowired
-	private IBaseCrudRepository<User> userCrud;
-
-	@Autowired
-	private IUserCrudRepository user2Crud;
+	private IUserCrudRepository userCrud;
 
 	@Autowired
 	private IPoleCrudRepository poleCrud;
@@ -58,7 +58,7 @@ public class inputNikoNikoController {
 			return "redirect:/login";
 		}
 		
-		BigInteger bigId = user2Crud.poleIdById(currentUser.getId());
+		BigInteger bigId = userCrud.poleIdById(currentUser.getId());
 		if(bigId!=null) {
 			Pole pole = poleCrud.findOne(bigId.longValue());
 			model.addAttribute("verticale", pole.getName());
@@ -73,9 +73,14 @@ public class inputNikoNikoController {
 		//User currentUser =  userCrud.findOne(userId);
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
-		
-		// find if NikoNiko already voted
-		
+
+		Set<BigInteger> nikosId = userCrud.getNikoNikoById(userId);
+		Date currentDate = new Date();
+
+		for (BigInteger nikoId : nikosId) {
+			//NikoNiko niko =
+			//System.err.println("-- > niko " + niko.getLog_date().toString() + "  currentDate= " + currentDate);
+		}
 
 		return inputNikoView;
 	}

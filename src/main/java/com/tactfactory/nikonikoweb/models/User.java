@@ -59,7 +59,7 @@ public class User extends SecurityUser {
 	@JoinColumn(name="pole_id")
 	@OneToOne
 	private Pole pole;
-	
+
 	@JoinColumn(name="agency_id")
 	@OneToOne
 	private Agency agency;
