@@ -1,6 +1,7 @@
 package com.tactfactory.nikonikoweb.controllers.root;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -49,14 +50,31 @@ public class inputNikoNikoController {
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 
-		Set<BigInteger> nikosId = userCrud.getUser_NikoNikobyId(userId);
-		Date currentDate = new Date();
+		SimpleDateFormat sm = new SimpleDateFormat("YYYY-MM-dd");
+		String currentDate = sm.format(new Date());
 
-		for (BigInteger nikoId : nikosId) {
-			//NikoNiko niko =
-			//System.err.println("-- > niko " + niko.getLog_date().toString() + "  currentDate= " + currentDate);
+		Set<BigInteger> nikoNikoIds = userCrud.getUser_NikoNikobyId(userId);
+
+		// find if it's a create or update vote
+		// ------------------------------------
+		Boolean nikoExist = false;
+		for (BigInteger nikoNikoId : nikoNikoIds) {
+			System.err.println("nikoNikoId=" + nikoNikoId + "  (" + nikoNikoId.longValue() + ")");
+			NikoNiko nikoniko = nikoNikoCrud.findOne(nikoNikoId.longValue());
+
+			String nikoDate = sm.format(nikoniko.getLog_date());
+			if(nikoDate.equals(currentDate)) {
+				nikoExist = true;
+			}
 		}
+		if(nikoExist == false) {
+			model.addAttribute("voteType", "create");
+			System.err.println("vote is create");
 
+		} else {
+			model.addAttribute("voteType", "update");
+			System.err.println("vote is update");
+		}
 		return inputNikoView;
 	}
 
