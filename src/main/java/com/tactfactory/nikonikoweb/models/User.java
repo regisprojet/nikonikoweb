@@ -1,12 +1,16 @@
 package com.tactfactory.nikonikoweb.models;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -48,6 +52,41 @@ public class User extends SecurityUser {
 	private Set<Team> teams;
 
 	private Character sex;
+
+	@ManyToMany
+	private Set<Function> functions;
+
+	@JoinColumn(name="pole_id")
+	@OneToOne
+	private Pole pole;
+	
+	@JoinColumn(name="agency_id")
+	@OneToOne
+	private Agency agency;
+
+	public Agency getAgency() {
+		return agency;
+	}
+
+	public void setAgency(Agency agency) {
+		this.agency = agency;
+	}
+
+	public Pole getPole() {
+		return pole;
+	}
+
+	public void setPole(Pole pole) {
+		this.pole = pole;
+	}
+
+	public Set<Function> getFunctions() {
+		return functions;
+	}
+
+	public void setFunctions(Set<Function> functions) {
+		this.functions = functions;
+	}
 
 	/**
 	 * @return the lastname
@@ -152,6 +191,8 @@ public class User extends SecurityUser {
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.registration_cgi = registration_cgi;
+		this.functions = (Set<Function>) new HashSet<Function>();
+		this.pole = null;
 	}
 
 	public User() {
@@ -167,5 +208,7 @@ public class User extends SecurityUser {
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.sex = sex;
+		this.functions = (Set<Function>) new HashSet<Function>();
+		this.pole = null;
 	}
 }
