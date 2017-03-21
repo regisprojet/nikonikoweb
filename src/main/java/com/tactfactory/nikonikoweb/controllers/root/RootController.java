@@ -141,7 +141,7 @@ public class RootController {
 		for(User user : users) {
 			if(securityLogin.getPassword().equals(user.getPassword())) {
 				environment.setCurrentUser(user);
-				String functionName = userCrud.functionById(user.getId());
+				//String functionName = userCrud.functionById(user.getId());
 				Set<BigInteger>ids = userCrud.functionIdsById(user.getId());
 				Set<Function> functions = new HashSet<Function>();
 				String string = "";
@@ -150,7 +150,7 @@ public class RootController {
 					functions.add(function);
 					string += function.getName() + " ";
 				}
-				environment.setAbilities(string);
+				environment.setFunctions(string);
 				environment.setAllFunctions(functions);
 
 				ids = userCrud.abilitiesById(user.getId());
@@ -164,15 +164,25 @@ public class RootController {
 				
 				environment.setAllAbilities(abilities);
 				environment.setAbilities(string);
-				System.out.println(user+", fonction = "+functionName);
-				if(functionName.equals("administrateur")) {
-					return "redirect:/admin";
+				
+				if(functions.size()==1) {
+					String functionName=null;
+					for(Function function : functions ) {
+						functionName = function.getName();
+						break;
+					}
+					if(functionName.equals("administrateur")) {
+						return "redirect:/admin";
+					}
+					if(functionName.equals("developpeur") || functionName.equals("chef de projet"))  {
+						return "redirect:/user";
+					}
+					if(functionName.equals("vip")) {
+						return "redirect:/vip";
+					}
 				}
-				if(functionName.equals("developpeur") || functionName.equals("chef de projet"))  {
-					return "redirect:/user";
-				}
-				if(functionName.equals("vip")) {
-					return "redirect:/vip";
+				if(functions.size()>1) {
+					return "redirect:/multifunction";
 				}
 			}
 		}
@@ -199,6 +209,27 @@ public class RootController {
 		model.addAttribute("pole", pole.getName()); 
 		
 		return "root/user";
+	}
+
+	
+	@RequestMapping(value = { "multifunction" }, method = RequestMethod.GET)
+	public String multifunctionGet(Model model) {
+		Environment environment = Environment.getInstance();
+		User currentUser = environment.getCurrentUser();
+		model.addAttribute("userName", currentUser.getFirstname() 
+				+ " " + currentUser.getLastname().toUpperCase());
+		model.addAttribute("abilities", environment.getAbilities());
+		model.addAttribute("functions", environment.getFunctions()); 
+		BigInteger id= userCrud.poleIdById(currentUser.getId());
+		if(id==null) {
+			model.addAttribute("pole", ""); 
+		}
+		else {
+			Pole pole = poleCrud.findOne(id.longValue());
+			
+			model.addAttribute("pole", pole.getName()); 
+		}
+		return "root/multifunction";
 	}
 
 	@RequestMapping(value = { "vip" }, method = RequestMethod.GET)
