@@ -1,7 +1,10 @@
 package com.tactfactory.nikonikoweb.controllers.root;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
@@ -82,16 +85,19 @@ public class RootController {
 		ArrayList<Ability> abilities= initDatabase.getAbilityList();
 		ArrayList<User> admins = initDatabase.getAdminList();
 		ArrayList<User> devs = initDatabase.getDevList();
+		ArrayList<User> vips = initDatabase.getVipList();
+		ArrayList<User> chefProjets = initDatabase.getChefProjetList();
 		ArrayList<Pole> poles = initDatabase.getPoleList();
 		ArrayList<Agency> agencies = initDatabase.getAgencyList();
 			
 		
-		for(Function function : functions) {
-				functionCrud.save(function);
-		}
 		for(Ability ability : abilities) {
 			System.out.println("ability : " + ability);
 			abilityCrud.save(ability);
+		}
+		for(Function function : functions) {
+				System.out.println("function save : "+ function.getName());
+				functionCrud.save(function);
 		}
 		for(Pole pole : poles) {
 			System.out.println("pole : " + pole );
@@ -107,6 +113,12 @@ public class RootController {
 		
 		for(User dev : devs) {
 			userCrud.save(dev);
+		}
+		for(User vip : vips) {
+			userCrud.save(vip);
+		}
+		for(User chefProjet : chefProjets) {
+			userCrud.save(chefProjet);
 		}
 		
 		return "redirect:/login";
@@ -134,11 +146,22 @@ public class RootController {
 			if(securityLogin.getPassword().equals(user.getPassword())) {
 				environment.setCurrentUser(user);
 				String functionName = userCrud.functionById(user.getId());
+				
+				Set<BigInteger>ids = userCrud.abilitiesById(user.getId());
+				Set<Ability> abilities = new HashSet<Ability>();
+				String string = "";
+				for(BigInteger id : ids) {
+					Ability ability = abilityCrud.findOne(id.longValue());
+					abilities.add(ability);
+					string += ability.getName() + " ";
+				}
+				environment.setAllAbilities(abilities);
+				environment.setAbilities(string);
 				System.out.println(user+", fonction = "+functionName);
 				if(functionName.equals("administrateur")) {
 					return "redirect:/admin";
 				}
-				if(functionName.equals("developpeur")) {
+				if(functionName.equals("developpeur") || functionName.equals("chef de projet"))  {
 					return "redirect:/user";
 				}
 				if(functionName.equals("vip")) {
@@ -152,6 +175,8 @@ public class RootController {
 
 	@RequestMapping(value = { "admin" }, method = RequestMethod.GET)
 	public String adminGet(Model model) {
+		Environment environment = Environment.getInstance();
+		model.addAttribute("abilities", environment.getAbilities()); 
 		return "root/admin";
 	}
 	
@@ -159,7 +184,9 @@ public class RootController {
 	public String userGet(Model model) {
 		Environment environment = Environment.getInstance();
 		User currentUser = environment.getCurrentUser();
-		model.addAttribute("userName", currentUser.getFirstname() + " " + currentUser.getLastname());
+		model.addAttribute("userName", currentUser.getFirstname() 
+				+ " " + currentUser.getLastname().toUpperCase());
+		model.addAttribute("abilities", environment.getAbilities()); 
 		
 		return "root/user";
 	}
@@ -170,6 +197,7 @@ public class RootController {
 		User currentUser = environment.getCurrentUser();
 		model.addAttribute("userName", currentUser.getFirstname()
 				+ " " + currentUser.getLastname().toUpperCase());
+		model.addAttribute("abilities", environment.getAbilities()); 
 		
 		return "root/vip";
 	}

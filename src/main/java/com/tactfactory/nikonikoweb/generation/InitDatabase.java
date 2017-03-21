@@ -14,10 +14,21 @@ public class InitDatabase {
 	ArrayList<User> adminList;
 	ArrayList<User> vipList;
 	ArrayList<User> devList;
+	ArrayList<User> chefProjetList;
 	ArrayList<Pole> poleList;
 	ArrayList<Agency> agencyList;
 	
 	
+	public ArrayList<User> getChefProjetList() {
+		return chefProjetList;
+	}
+
+
+	public void setChefProjetList(ArrayList<User> chefProjetList) {
+		this.chefProjetList = chefProjetList;
+	}
+
+
 	public ArrayList<User> getVipList() {
 		return vipList;
 	}
@@ -95,19 +106,34 @@ public class InitDatabase {
 		adminList = new ArrayList<User>();
 		vipList = new ArrayList<User>();
 		devList = new ArrayList<User>();
+		chefProjetList = new ArrayList<User>();
 		poleList = new ArrayList<Pole>();
 		agencyList = new ArrayList<Agency>();
 		
 		Function functionAdmin = null;
 		Function functionDev = null;
+		Function functionChefProjet = null;
 		Function functionVip = null;
 		
 		String[] functions = {"administrateur","vip", "developpeur", "chef de projet"};
-		String[] abilities = {"vue","edition"};
+		String[] abilities = {"vue totale", "vue projet", "vue verticale", "edition"};
 		String[] poles = {"Telco-Energy)","Agro Tech","CRM-BigData","Testing" };
 		String[] agencies = {"Paris","Rennes","Brest","Nantes","Bordeau", "Toulouse","Marseille", 
 				"Nice", "Monpellier", "Lyon",  "Grenoble", "Stasbourd", "Lille"};
 		
+		String[][] funtionAbilities = {
+					{"administrateur"},
+					{"vip", "vue totale", "vue projet", "vue verticale", "vue agence"},
+					{"chef de projet", "vue projet"},
+					{"developpeur","vue projet", "edition"}
+		};
+		
+		
+		for(String current: abilities) {
+			Ability ability = new Ability();
+			ability.setName(current);
+			abilityList.add(ability);			
+		}
 		
 		for(String current: functions) {
 			Function function = new Function();
@@ -122,12 +148,23 @@ public class InitDatabase {
 			else if (current.equals("vip")) {
 				functionVip = function;
 			}
+			else if (current.equals("chef de projet")) {
+				functionChefProjet = function;
+			}
 		}
 
-		for(String current: abilities) {
-			Ability ability = new Ability();
-			ability.setName(current);
-			abilityList.add(ability);			
+		for (String[] line : funtionAbilities) {
+			for(Function function : functionList) {
+				if(function.getName().equals(line[0])) {	
+					for(int i=1;i<line.length;i++) {
+						for(Ability ability : abilityList) {
+							if(ability.getName().equals(line[i])) {
+								function.getAbilities().add(ability);
+							}
+						}
+					}
+				}
+			}
 		}
 		
 		for(String current : poles) {
@@ -166,7 +203,12 @@ public class InitDatabase {
 		
 		user = new  User("pierre","toto","papin","pierre","0004");
 		user.getFunctions().add(functionVip);
-		devList.add(user);
-		
+		vipList.add(user);
+
+		user = new  User("paul","toto","martin","paul","0005");
+		user.getFunctions().add(functionChefProjet);
+		user.getFunctions().add(functionDev);
+		chefProjetList.add(user);
+
 	}
 }	

@@ -8,4 +8,5 @@
 </head>
 <body>
     <h1> Bienvenue ${userName} </h1>
+    abilitées : ${abilities}
 </body>

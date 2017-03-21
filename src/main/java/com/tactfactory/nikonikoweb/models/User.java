@@ -186,7 +186,6 @@ public class User extends SecurityUser {
 		this.teams = teams;
 	}
 
-	@SuppressWarnings("unchecked")
 	public User(String login, String password, String lastname, String firstname, String registration_cgi) {
 		super(User.TABLE, User.FIELDS, login, password);
 		this.lastname = lastname;

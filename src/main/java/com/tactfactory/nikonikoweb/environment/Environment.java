@@ -1,5 +1,9 @@
 package com.tactfactory.nikonikoweb.environment;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.tactfactory.nikonikoweb.models.Ability;
 import com.tactfactory.nikonikoweb.models.User;
 
 public class Environment {
@@ -8,6 +12,9 @@ public class Environment {
     */
 	
 	private User currentUser;
+	private Set<Ability> allAbilities;
+	private String abilities;
+	
 	
     public static Environment getInstance() {
         if (null == instance) { 
@@ -20,6 +27,7 @@ public class Environment {
     * son appel et forcer à passer par la méthode <link
     */
     private Environment() {
+    	this.allAbilities = new HashSet<Ability>();
     }
 
     public User getCurrentUser() {
@@ -28,6 +36,22 @@ public class Environment {
 
 	public void setCurrentUser(User currentUser) {
 		this.currentUser = currentUser;
+	}
+
+	public Set<Ability> getAllAbilities() {
+		return allAbilities;
+	}
+
+	public void setAllAbilities(Set<Ability> allAbilities) {
+		this.allAbilities = allAbilities;
+	}
+
+	public String getAbilities() {
+		return abilities;
+	}
+
+	public void setAbilities(String abilities) {
+		this.abilities = abilities;
 	}
 
 	/** L'instance statique */
