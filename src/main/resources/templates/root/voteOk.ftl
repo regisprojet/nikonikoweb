@@ -7,10 +7,6 @@
     <link rel="stylesheet" type="text/css" href="/css/custom.css"/>
 </head>
 <body>
-    <h1> Bienvenue ${userName} </h1>
-    <div> abilitées : ${abilities} </div>
-    <div> fonctions : ${functions} </div>
-    <div> verticale: ${pole} </div>
-
-	<a href="inputNiko">inputNiko</a><br>
+    <h1> Merci pour ton avis</h1>
+ 
 </body>

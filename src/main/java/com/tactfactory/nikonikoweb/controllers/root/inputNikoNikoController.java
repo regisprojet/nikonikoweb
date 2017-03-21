@@ -1,5 +1,7 @@
 package com.tactfactory.nikonikoweb.controllers.root;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.dao.base.IBaseCrudRepository;
+import com.tactfactory.nikonikoweb.environment.Environment;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
+import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.User;
 
 @Controller
@@ -34,13 +41,36 @@ public class inputNikoNikoController {
 	@Autowired
 	private IBaseCrudRepository<User> userCrud;
 
+	@Autowired
+	private IUserCrudRepository user2Crud;
+
+	@Autowired
+	private IPoleCrudRepository poleCrud;
+	
+	@Autowired
+	private INikoNikoCrudRepository nikoCrud;
+	
 	@RequestMapping(value =  ROUTE_INPUT_NIKO , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
+		Environment environment = Environment.getInstance();
+		User currentUser = environment.getCurrentUser();
+		if(currentUser==null) {
+			return "redirect:/login";
+		}
+		
+		BigInteger bigId = user2Crud.poleIdById(currentUser.getId());
+		if(bigId!=null) {
+			Pole pole = poleCrud.findOne(bigId.longValue());
+			model.addAttribute("verticale", pole.getName());
+		}
+		else {
+			model.addAttribute("verticale", "verticaleName");
+		}
+			
 		model.addAttribute("page", "inputNikoNiko");
-		model.addAttribute("verticale", "verticaleName");
 		model.addAttribute("equipe", "teamName");
 
-		User currentUser =  userCrud.findOne(userId);
+		//User currentUser =  userCrud.findOne(userId);
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 		
@@ -52,10 +82,28 @@ public class inputNikoNikoController {
 
 	@RequestMapping(value = ROUTE_INPUT_NIKO , method = RequestMethod.POST)
 	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, Model model) {
-
-		User currentUser =  userCrud.findOne(userId);
-		System.err.println(currentUser.getFirstname() + " " + currentUser.getLastname() + " ("
-				+ nikoNiko.getSatisfaction() + ") [" + nikoNiko.getComment() + "]");
-		return inputNikoView;
+		Environment environment = Environment.getInstance();
+		User currentUser = environment.getCurrentUser();
+		if(currentUser==null) {
+			return "redirect:/login";
+		}
+		nikoNiko.setIsAnonymous(true);
+		nikoNiko.setUser(currentUser);
+		//nikoNiko.setLog_date(new Date());
+		nikoCrud.save(nikoNiko);
+		
+		return "redirect:/voteOk";
 	}
+
+	@RequestMapping(value =  "/voteOk" , method = RequestMethod.GET)
+	public String voteOk(Model model) {
+		Environment environment = Environment.getInstance();
+		User currentUser = environment.getCurrentUser();
+		if(currentUser==null) {
+			return "redirect:/login";
+		}
+		
+	    return "root/voteOk";
+	}
+	
 }
