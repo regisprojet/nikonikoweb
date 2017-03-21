@@ -43,6 +43,9 @@ public class inputNikoNikoController {
 		User currentUser =  userCrud.findOne(userId);
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
+		
+		// find if NikoNiko already voted
+		
 
 		return inputNikoView;
 	}

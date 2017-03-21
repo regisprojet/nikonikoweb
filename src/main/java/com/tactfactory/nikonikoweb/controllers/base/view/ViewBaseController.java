@@ -96,7 +96,9 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		model.addAttribute("page", this.baseName + " " + UPDATE_ACTION);
 		model.addAttribute("fields",
 				DumpFields.createContentsEmpty(super.getClazz()).fields);
-		model.addAttribute("currentItem", DumpFields.fielder(super.getItem(id)));
+		model.addAttribute("currentItem", DumpFields.fielderAdvance(
+				super.getItem(id),
+				super.getClazz()));
 		return updateView;
 	}
 

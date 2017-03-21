@@ -9,8 +9,8 @@
 
     <link href="css/nikoniko_regis_denis.css" rel="stylesheet" >
 
-    <script type="text/javascript" src="jquery/jquery-3.1.1.min.js"></script>
-    <link rel="stylesheet" href="bootstrap/bootstrap_40.min.css">
+    <#include "../includable/bootstrap.ftl">
+    <#include "../includable/jquery.ftl">
 
   </head>
 
