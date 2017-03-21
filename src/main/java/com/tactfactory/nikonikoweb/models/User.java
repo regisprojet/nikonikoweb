@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -45,7 +46,8 @@ public class User extends SecurityUser {
     @Column(nullable = false)
 	private String registration_cgi;
 
-	@OneToMany
+	//@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<NikoNiko> nikonikos;
 
 	@ManyToMany
@@ -192,6 +194,7 @@ public class User extends SecurityUser {
 		this.firstname = firstname;
 		this.registration_cgi = registration_cgi;
 		this.functions = (Set<Function>) new HashSet<Function>();
+		this.nikonikos = (Set<NikoNiko>) new HashSet<NikoNiko>();
 		this.pole = null;
 	}
 
@@ -209,6 +212,7 @@ public class User extends SecurityUser {
 		this.firstname = firstname;
 		this.sex = sex;
 		this.functions = (Set<Function>) new HashSet<Function>();
+		this.nikonikos = (Set<NikoNiko>) new HashSet<NikoNiko>();
 		this.pole = null;
 	}
 }

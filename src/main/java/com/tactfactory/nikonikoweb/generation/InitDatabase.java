@@ -117,7 +117,7 @@ public class InitDatabase {
 		
 		String[] functions = {"administrateur","vip", "developpeur", "chef de projet"};
 		String[] abilities = {"vue totale", "vue projet", "vue verticale", "edition"};
-		String[] poles = {"Telco-Energy)","Agro Tech","CRM-BigData","Testing" };
+		String[] poles = {"Telco-Energy","Agro Tech","CRM-BigData","Testing" };
 		String[] agencies = {"Paris","Rennes","Brest","Nantes","Bordeau", "Toulouse","Marseille", 
 				"Nice", "Monpellier", "Lyon",  "Grenoble", "Stasbourd", "Lille"};
 		

@@ -141,7 +141,7 @@ public class RootController {
 		for(User user : users) {
 			if(securityLogin.getPassword().equals(user.getPassword())) {
 				environment.setCurrentUser(user);
-				String functionName = userCrud.functionById(user.getId());
+				String functionName = null;//userCrud.functionById(user.getId());
 
 				Set<BigInteger>ids = userCrud.functionIdsById(user.getId());
 				Set<Function> functions = new HashSet<Function>();

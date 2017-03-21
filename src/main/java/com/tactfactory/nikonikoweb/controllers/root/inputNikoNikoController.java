@@ -94,9 +94,12 @@ public class inputNikoNikoController {
 		}
 		nikoNiko.setIsAnonymous(true);
 		nikoNiko.setUser(currentUser);
-		//nikoNiko.setLog_date(new Date());
-		nikoCrud.save(nikoNiko);
-		
+		nikoNiko.setLog_date(new Date());
+	
+		nikoNiko = nikoCrud.save(nikoNiko);
+		currentUser.getNikoNikos().add(nikoNiko);
+		userCrud.save(currentUser);
+	
 		return "redirect:/voteOk";
 	}
 
