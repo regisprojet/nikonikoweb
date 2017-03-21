@@ -7,22 +7,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.tactfactory.nikonikoweb.controllers.base.BaseController;
-import com.tactfactory.nikonikoweb.controllers.base.view.ViewBaseController;
 import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
-import com.tactfactory.nikonikoweb.dao.base.IBaseCrudRepository;
 import com.tactfactory.nikonikoweb.environment.Environment;
 import com.tactfactory.nikonikoweb.generation.InitDatabase;
 import com.tactfactory.nikonikoweb.models.Ability;
@@ -30,7 +25,6 @@ import com.tactfactory.nikonikoweb.models.Agency;
 import com.tactfactory.nikonikoweb.models.Function;
 import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.User;
-import com.tactfactory.nikonikoweb.models.base.DatabaseItem;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
 
 @Controller
@@ -55,9 +49,9 @@ public class RootController {
 	private String login;
 	private String password;
 
-	
-	
-	
+
+
+
 	public final static String BASE_URL = "/";
 
 //	@RequestMapping(value = { "" }, method = RequestMethod.GET)
@@ -67,7 +61,7 @@ public class RootController {
 //	}
 
 	InitDatabase initDatabase;
-	
+
 	@RequestMapping(value = { "init" }, method = RequestMethod.GET)
 	public String initGet(Model model) {
 		initDatabase = new InitDatabase();
@@ -78,7 +72,7 @@ public class RootController {
 		abilityCrud.deleteAll();
 		return "root/init";
 	}
-	
+
 	@RequestMapping(value = { "init" }, method = RequestMethod.POST)
 	public String initPost(Model model) {
 		ArrayList<Function> functions = initDatabase.getFunctionList();
@@ -95,6 +89,7 @@ public class RootController {
 			System.out.println("ability : " + ability);
 			abilityCrud.save(ability);
 		}
+
 		for(Function function : functions) {
 				System.out.println("function save : "+ function.getName());
 				functionCrud.save(function);
@@ -123,9 +118,9 @@ public class RootController {
 		
 		return "redirect:/login";
 	}
-	
-	
-	@RequestMapping(value = { "login" }, method = RequestMethod.GET)
+
+
+	@RequestMapping(path = { BASE_URL, "login" }, method = RequestMethod.GET)
 	public String loginGet(Model model) {
 		System.out.println("root/login (GET)");
 		this.login="";
@@ -134,14 +129,15 @@ public class RootController {
 		model.addAttribute("password",this.password);
 		return "root/login";
 	}
-	
-	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
+
+	@RequestMapping(path = { "login" }, method = RequestMethod.POST)
 	public String loginPost(@ModelAttribute SecurityLogin securityLogin,
 			Model model) {
 		//Map<String, Object> map = model.asMap();
 		Environment environment = Environment.getInstance();
 		
 		List<User> users = userCrud.findByLogin(securityLogin.getLogin());
+
 		for(User user : users) {
 			if(securityLogin.getPassword().equals(user.getPassword())) {
 				environment.setCurrentUser(user);
