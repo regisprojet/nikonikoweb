@@ -8,5 +8,7 @@
 </head>
 <body>
     <h1> Bienvenue ${userName} </h1>
-    abilitées : ${abilities}
+    <div> abilitées : ${abilities} </div>
+    <div> verticale: ${pole} </div>
+
 </body>
