@@ -143,14 +143,27 @@ public class RootController {
 				environment.setCurrentUser(user);
 				String functionName = userCrud.functionById(user.getId());
 
-				Set<BigInteger>ids = userCrud.abilitiesById(user.getId());
-				Set<Ability> abilities = new HashSet<Ability>();
+				Set<BigInteger>ids = userCrud.functionIdsById(user.getId());
+				Set<Function> functions = new HashSet<Function>();
+
 				String string = "";
+				for(BigInteger id : ids) {
+					Function function = functionCrud.findOne(id.longValue());
+					functions.add(function);
+					string += function.getName() + " ";
+				}
+				environment.setAbilities(string);
+				environment.setAllFunctions(functions);
+
+				ids = userCrud.abilitiesById(user.getId());
+				Set<Ability> abilities = new HashSet<Ability>();
+				string = "";
 				for(BigInteger id : ids) {
 					Ability ability = abilityCrud.findOne(id.longValue());
 					abilities.add(ability);
 					string += ability.getName() + " ";
 				}
+
 				environment.setAllAbilities(abilities);
 				environment.setAbilities(string);
 				System.out.println(user+", fonction = "+functionName);
@@ -183,6 +196,10 @@ public class RootController {
 		model.addAttribute("userName", currentUser.getFirstname()
 				+ " " + currentUser.getLastname().toUpperCase());
 		model.addAttribute("abilities", environment.getAbilities());
+
+		model.addAttribute("functions", environment.getFunctions());
+		Pole pole = poleCrud.findOne(userCrud.poleIdById(currentUser.getId()).longValue());
+		model.addAttribute("pole", pole.getName());
 
 		return "root/user";
 	}
