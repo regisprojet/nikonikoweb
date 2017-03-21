@@ -49,7 +49,7 @@ public class inputNikoNikoController {
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 
-		Set<BigInteger> nikosId = userCrud.getNikoNikoById(userId);
+		Set<BigInteger> nikosId = userCrud.getUser_NikoNikobyId(userId);
 		Date currentDate = new Date();
 
 		for (BigInteger nikoId : nikosId) {
