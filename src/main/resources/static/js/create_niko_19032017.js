@@ -60,18 +60,12 @@ function createNiko(index,divId,canvasId,scale,clic,colHappy,colSad,colSoft) {
 
 	if(clic==true) {
 		canvas.setAttribute("onclick","callCreateNiko()");
-		//container.appendChild(canvas);
-		//container.scrollTop = container.scrollHeight;
+		container.appendChild(canvas);
+    container.scrollTop = container.scrollHeight;
 	}
-
-    /* renvoie de la valeur du nikoniko dans le input hidden de la page */
-    /* ---------------------------------------------------------------- */
-    document.getElementById("satisfaction").value = index;
-    //$("#${satisfaction}").val = index;
 }
 
 function callCreateNiko(divId) {
-	//alert("toto");
 	if(fillStyle==1)
 		fillStyle=2;
 	else if (fillStyle==2)

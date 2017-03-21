@@ -39,9 +39,9 @@ public class RootController {
 	private String login;
 	private String password;
 
-	
-	
-	
+
+
+
 	public final static String BASE_URL = "/";
 
 //	@RequestMapping(value = { "" }, method = RequestMethod.GET)
@@ -51,7 +51,7 @@ public class RootController {
 //	}
 
 	InitDatabase initDatabase;
-	
+
 	@RequestMapping(value = { "init" }, method = RequestMethod.GET)
 	public String initGet(Model model) {
 		initDatabase = new InitDatabase();
@@ -60,14 +60,14 @@ public class RootController {
 		userCrud.deleteAll();
 		return "root/init";
 	}
-	
+
 	@RequestMapping(value = { "init" }, method = RequestMethod.POST)
 	public String initPost(Model model) {
 		ArrayList<Function> functions = initDatabase.getFunctionList();
 		ArrayList<Ability> abilities= initDatabase.getAbilityList();
 		User admin = initDatabase.getUserAdmin();
-		
-		
+
+
 		for(Function function : functions) {
 				functionCrud.save(function);
 		}
@@ -75,13 +75,13 @@ public class RootController {
 			abilityCrud.save(ability);
 		}
 		userCrud.save(admin);
-		
-		
+
+
 		return "redirect:/login";
 	}
-	
-	
-	@RequestMapping(value = { "login" }, method = RequestMethod.GET)
+
+
+	@RequestMapping(path = { BASE_URL, "login" }, method = RequestMethod.GET)
 	public String loginGet(Model model) {
 		System.out.println("root/login (GET)");
 		this.login="";
@@ -90,12 +90,12 @@ public class RootController {
 		model.addAttribute("password",this.password);
 		return "root/login";
 	}
-	
-	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
+
+	@RequestMapping(path = { "login" }, method = RequestMethod.POST)
 	public String loginPost(@ModelAttribute SecurityLogin securityLogin,
 			Model model) {
 		//Map<String, Object> map = model.asMap();
-		
+
 		List<User> users = userCrud.findByLogin("admin");
 		User admin = null;
 		for(User user : users) {
@@ -103,11 +103,11 @@ public class RootController {
 			break;
 		}
 
-		if((admin.getLogin().equals(securityLogin.getLogin())) && 
+		if((admin.getLogin().equals(securityLogin.getLogin())) &&
 			(admin.getPassword().equals(securityLogin.getPassword()))) {
 			return "redirect:/admin";
 		}
-		
+
 		return "redirect:/login";
 	}
 
