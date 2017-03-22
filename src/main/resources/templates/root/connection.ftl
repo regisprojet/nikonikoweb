@@ -30,22 +30,23 @@
             <div class="row">
             <div class="col-1"></div>
         		<div class="col-10" id="formulaire">
-         			<form  ENCTYPE="multipart/form-data" method="post" action="">
-                  <div id="connectezVous">
+        		<form action="" method="post">
+         		  <div id="connectezVous">
               				<span >Connectez-vous :</span>
             			</div>
             			<div class="formField">
               				<span >Utilisateur :</span>
             			</div>
             			<div class="inputText">
-              				<input  type="texte" name="login">
+              				<input  type="texte" name="login" id="login">
             			</div>
             			<div class="formField">
               				<span >Mot de passe :</span>
             			</div>
             			<div class="inputText">
-              				<input type="password" name="mot_de_passe">
+              				<input type="password" name="password"  id="password" >
             			</div>
+            			<input type="submit" value="Go!">
           		</form>
         		</div>
             <div class="col-1"></div>

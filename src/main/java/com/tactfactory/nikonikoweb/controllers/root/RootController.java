@@ -127,7 +127,7 @@ public class RootController {
 		this.password="";
 		model.addAttribute("login",this.login);
 		model.addAttribute("password",this.password);
-		return "root/login";
+		return "root/connection";
 	}
 
 	@RequestMapping(path = { "login" }, method = RequestMethod.POST)
