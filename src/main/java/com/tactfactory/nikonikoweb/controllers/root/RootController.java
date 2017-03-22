@@ -192,6 +192,12 @@ public class RootController {
 		return "redirect:/login";
 	}
 
+	@RequestMapping(path = { "logout" }, method = RequestMethod.GET)
+	public String logoutGet(@ModelAttribute SecurityLogin securityLogin,
+			Model model) {
+		return "redirect:/login";
+	}
+	
 	@RequestMapping(value = { "admin" }, method = RequestMethod.GET)
 	public String adminGet(Model model) {
 		Environment environment = Environment.getInstance();
