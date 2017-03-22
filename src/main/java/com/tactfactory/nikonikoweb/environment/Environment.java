@@ -18,6 +18,13 @@ public class Environment {
 	private String abilities;
 	private String functions;
 	
+	public void reset() {
+     	this.allAbilities = new HashSet<Ability>();
+     	this.allFunctions = new HashSet<Function>();
+     	this.abilities = "";
+     	this.functions = "";
+     	this.currentUser = null;
+	}
 	
     public static Environment getInstance() {
         if (null == instance) { 
@@ -30,7 +37,8 @@ public class Environment {
     * son appel et forcer à passer par la méthode <link
     */
     private Environment() {
-    	this.allAbilities = new HashSet<Ability>();
+     	this.allAbilities = new HashSet<Ability>();
+     	this.allFunctions = new HashSet<Function>();
     }
 
     public User getCurrentUser() {
