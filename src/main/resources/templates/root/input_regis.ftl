@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="utf-8">
+    <title>Exemples JavaScript</title>
+    <meta name="viewport" content="initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="css/nikoniko_regis_denis.css" rel="stylesheet" >
+
     <#include "../includable/bootstrap.ftl">
     <#include "../includable/jquery.ftl">
-    <link href="css/nikoniko_regis_denis.css" rel="stylesheet" >
+
     <script type="text/javascript" src="js/create_niko.js"></script>
 
   </head>
@@ -46,19 +54,17 @@
 								<p>Comment s'est passée votre journée ?</p>
 							</div>
 							<div class="row "nikoNikoDuJour"">
-								<div class="col-3" id="nikoImg">
+								<div class="col-10" id="nikoImg">
 									<canvas id="canvas" width="100" height="100"></canvas>
 								</div>
-								<div class="col-9 nikoComment" >
-									<textarea form="formulaire2" name="comment" id="nikoComment" maxlength="160" placeholder="Tapez vos commentaires ici">${nikoComment}</textarea>
+								<div class="col-2"">
+									<input type="submit" class="button" id="valider" src="./images/validation.png" >
+									<input type="hidden" id="satisfaction" name="satisfaction" value="0">
 								</div>
 							</div>
-							<div >
-								<input type="submit" class="button" id="valider" src="./images/validation.png" >
-								<input type="hidden" id="satisfaction" name="satisfaction" value="0">
-								<input type="hidden" id="isanonymous" name="isanonymous" value=0>
 
-								<input type="hidden" id="nikoId" name="nikoId" value=${nikoId}>
+							<div class="nikoComment" >
+								<textarea form="formulaire2" name="comment" id="nikoComment" maxlength="160" placeholder="Tapez vos 2 commentaires ici"></textarea>
 							</div>
 						 </form>
 					</div>
@@ -89,7 +95,7 @@
     </script>
     <script>
        $(document).ready(function() {
-           callCreateNiko("nikoImg",${nikoSatisfaction});
+           callCreateNiko("nikoImg");
        })
     </script>
   </body>

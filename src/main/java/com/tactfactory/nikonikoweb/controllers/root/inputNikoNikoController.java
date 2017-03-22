@@ -32,6 +32,7 @@ public class inputNikoNikoController {
 
 	public inputNikoNikoController() {
 		this.inputNikoView = PATH + BASE + PATH + "input";
+		this.inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
 	}
 
 	@Autowired
@@ -54,36 +55,64 @@ public class inputNikoNikoController {
 		String currentDate = sm.format(new Date());
 
 		Set<BigInteger> nikoNikoIds = userCrud.getUser_NikoNikobyId(userId);
+		String nikoComment="";
+		int nikoSatisfaction = -1;
+		Long nikoId = 0l; //prend la valeur de l'id du nikoniko existant
+		boolean isanonymous = false;
 
 		// find if it's a create or update vote
 		// ------------------------------------
 		Boolean nikoExist = false;
 		for (BigInteger nikoNikoId : nikoNikoIds) {
-			System.err.println("nikoNikoId=" + nikoNikoId + "  (" + nikoNikoId.longValue() + ")");
-			NikoNiko nikoniko = nikoNikoCrud.findOne(nikoNikoId.longValue());
+			//System.err.println("nikoNikoId=" + nikoNikoId + "  (" + nikoNikoId.longValue() + ")");
+			NikoNiko nikoniko = new NikoNiko();
+			nikoniko = nikoNikoCrud.findOne(nikoNikoId.longValue());
 
 			String nikoDate = sm.format(nikoniko.getLog_date());
 			if(nikoDate.equals(currentDate)) {
 				nikoExist = true;
+				nikoSatisfaction = nikoniko.getSatisfaction();
+				nikoComment = nikoniko.getComment();
+				nikoId = nikoNikoId.longValue();
+				isanonymous = nikoniko.getIsAnonymous();
+				break;
 			}
 		}
-		if(nikoExist == false) {
+		/*if(nikoExist == false) {
 			model.addAttribute("voteType", "create");
-			System.err.println("vote is create");
+			//System.err.println("vote is create");
 
 		} else {
 			model.addAttribute("voteType", "update");
-			System.err.println("vote is update");
-		}
+			//System.err.println("vote is update");
+		}*/
+
+		// add comment and satisfaction of existing nikoniko
+		// -------------------------------------------------
+		model.addAttribute("nikoComment", nikoComment);
+		model.addAttribute("nikoSatisfaction", nikoSatisfaction);
+		model.addAttribute("nikoId", nikoId);
+		model.addAttribute("isanonymous", isanonymous);
 		return inputNikoView;
 	}
 
 	@RequestMapping(value = ROUTE_INPUT_NIKO , method = RequestMethod.POST)
-	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, Model model) {
+	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, Long nikoId, Model model) {
 
 		User currentUser =  userCrud.findOne(userId);
 		System.err.println(currentUser.getFirstname() + " " + currentUser.getLastname() + " ("
-				+ nikoNiko.getSatisfaction() + ") [" + nikoNiko.getComment() + "]");
-		return inputNikoView;
+				+ nikoNiko.getSatisfaction() + ") [" + nikoNiko.getComment() + "] " + nikoNiko.getIsAnonymous() +" " + nikoId);
+
+		if(nikoId == 0) {
+			nikoNiko.setLog_date(new Date());
+			nikoNikoCrud.save(nikoNiko);
+		} else {
+			nikoNiko.setId(nikoId);
+			nikoNiko.setChange_date(new Date());
+			nikoNikoCrud.save(nikoNiko);
+		}
+
+
+		return inputNikoRedirect;
 	}
 }

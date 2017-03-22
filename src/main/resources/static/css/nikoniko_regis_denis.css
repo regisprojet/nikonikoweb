@@ -55,12 +55,12 @@
  }
 
  .button#valider {
- 	margin-left: 100px;
+ 	/*margin-left: 100px;*/
  	background-color: lightgrey;
  	font-size:30px;
  	color: #E11836;
  	margin-top: 10px;
- 	float: right;
+ 	/*float: right;*/
  }
 
  #connectezVous {
@@ -136,11 +136,11 @@ div #zone{
 	margin-bottom: 10px;
 	background-color: yellow;
 	display:block;
-	float: left;
+	/*float: left;*/
 }
 #nikoComment {
 	width: 100%;
-	height: 100%;
+	height: 90%;
 }
 #nikoImg {
 	margin-top: 20px;
