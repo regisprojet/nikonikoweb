@@ -1,9 +1,12 @@
 package com.tactfactory.nikonikoweb.controllers.root;
 
 import java.math.BigInteger;
-
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
+
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,6 +61,20 @@ public class inputNikoNikoController {
 			return "redirect:/login";
 		}
 		
+		
+		Set<NikoNiko> nikonikos = nikoCrud.getAllByUserId(currentUser.getId());
+		Date today = new Date();
+		for(NikoNiko nikoniko : nikonikos) {
+			Date date1 = nikoniko.getLog_date();
+			Date date2 = today;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String date1String = sdf.format(date1);
+			String date2String = sdf.format(date2);
+			if(date1String.equals(date2String)) {
+				System.out.println("Vous avez déjà voté aujourd'hui");
+			}
+		}
+		
 		BigInteger bigId = userCrud.poleIdById(currentUser.getId());
 		if(bigId!=null) {
 			Pole pole = poleCrud.findOne(bigId.longValue());
@@ -92,8 +109,9 @@ public class inputNikoNikoController {
 		if(currentUser==null) {
 			return "redirect:/login";
 		}
+		
 		nikoNiko.setIsAnonymous(true);
-		nikoNiko.setUser(currentUser);
+		nikoNiko.setUser(currentUser); // a besoin de @OneToMany(fetch = FetchType.EAGER) sur nikonikos
 		nikoNiko.setLog_date(new Date());
 	
 		nikoNiko = nikoCrud.save(nikoNiko);
