@@ -52,20 +52,6 @@
             <div class="col-1"></div>
       		</div>
         </div>
-        <div class="col-2 rightArea">
-         		<div id="inputMenue">
-	              	<a href="input.html">
-	              	<img src='./images/vote.png' alt='' class="imgMenue"></a>
-	            </div>
-	            <div id="consultMenue">
-	              	<a href="calendrier.html">
-	              	<img src='./images/resultat.png' alt='' class="imgMenue"></a>
-	            </div>
-	            <div id="quitMenue">
-	              	<a href="connection.html">
-	              	<img src='./images/deconnexion.png' alt='' class="imgMenue"></a>
-	            </div>
-         </div>
       </div>
     </div>
 
