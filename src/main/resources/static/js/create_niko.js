@@ -1,4 +1,11 @@
 var fillStyle = 0;
+monthNames = [
+    "Janvier", "Février", "Mars",
+    "Avril", "Mai", "Juin", "Juillet",
+    "Août", "Septembre", "Octobre",
+    "Novembre", "Décembre"
+  	];
+
 function createNiko(satisfaction,divId,canvasId,scale,clic,colHappy,colSad,colSoft) {
 	 var container = document.getElementById(divId);
 	 var canvas = document.getElementById(canvasId);
@@ -99,12 +106,12 @@ function callCreateNiko(divId,satisfaction) {
 	var canvas = "canvas";
 	createNiko(satisfaction,divId,canvas,1,true,"green","red","yellow");
 
-	var monthNames = [
+	/*var monthNames = [
     "Janvier", "Février", "Mars",
     "Avril", "Mai", "Juin", "Juillet",
     "Août", "Septembre", "Octobre",
     "Novembre", "Décembre"
-  	];
+  	];*/
 
   	var dayNames = [
     "lundi", "mardi", "mercredi",
@@ -117,4 +124,76 @@ function callCreateNiko(divId,satisfaction) {
  	var year = date.getFullYear();
 
 	document.getElementById("DateDuJour").innerHTML = day + " " + monthNames[monthIndex] + " " + year;
+}
+
+
+function setJourPreced(n) {
+
+ 	var DateDuJour = document.getElementById("DateDuJour").innerHTML;
+	console.log(DateDuJour);
+	var dateSplit = DateDuJour.split(" ");
+  	var day = dateSplit[0];
+ 	var month = dateSplit[1];
+ 	var year = dateSplit[2];
+
+ 	var numMonth = -1;
+ 	for(var j=0; j<12; j++) {
+ 		if(monthNames[j] == month)
+ 			numMonth = j;
+	}
+	console.log( "->" +monthNames[numMonth] ) ;
+
+ 	var date = new Date();
+	var nDayprecedMonth = new Date(date.getFullYear(), date.getMonth(), -1).getDate()+1;
+	console.log( "->" + nDayprecedMonth ) ;
+
+	if(day > date.getDate()-n) {
+		day--;
+		if(day==0) {
+			day = nDayprecedMonth;
+			numMonth --;
+			month = monthNames[numMonth];
+			if(numMonth == 0) {
+				numMonth = 12;
+				year--;
+			}
+		}
+	}
+
+	document.getElementById("DateDuJour").innerHTML = day + " " + month + " " + year;
+}
+
+function setJourSuiv() {
+
+ 	var DateDuJour = document.getElementById("DateDuJour").innerHTML;
+	console.log(DateDuJour);
+	var dateSplit = DateDuJour.split(" ");
+  	var day = dateSplit[0];
+ 	var month = dateSplit[1];
+ 	var year = dateSplit[2];
+
+ 	var numMonth = -1;
+ 	for(var j=0; j<12; j++) {
+ 		if(monthNames[j] == month)
+ 			numMonth = j;
+	}
+	console.log( "->" +monthNames[numMonth] ) ;
+
+ 	var date = new Date();
+	var nDayCurrentMonth = new Date(date.getFullYear(), date.getMonth(), + 0).getDate()+1;
+	console.log( "->" + nDayCurrentMonth ) ;
+
+	if(day < date.getDate()) {
+		day++;
+		if(day>nDayCurrentMonth) {
+			day = 1;
+			numMonth ++;
+			if(numMonth == 13) {
+				numMonth = 1;
+				year++;
+			}
+		}
+	}
+
+	document.getElementById("DateDuJour").innerHTML = day + " " + month + " " + year;
 }

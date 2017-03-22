@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.dao.base.IBaseCrudRepository;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
@@ -36,7 +37,7 @@ public class inputNikoNikoController {
 	}
 
 	@Autowired
-	private IBaseCrudRepository<NikoNiko> nikoNikoCrud;
+	private INikoNikoCrudRepository nikoNikoCrud;
 
 	@Autowired
 	private IUserCrudRepository userCrud;
@@ -58,11 +59,10 @@ public class inputNikoNikoController {
 		String nikoComment="";
 		int nikoSatisfaction = -1;
 		Long nikoId = 0l; //prend la valeur de l'id du nikoniko existant
-		boolean isanonymous = false;
+		boolean isanonymous = true;
 
 		// find if it's a create or update vote
 		// ------------------------------------
-		Boolean nikoExist = false;
 		for (BigInteger nikoNikoId : nikoNikoIds) {
 			//System.err.println("nikoNikoId=" + nikoNikoId + "  (" + nikoNikoId.longValue() + ")");
 			NikoNiko nikoniko = new NikoNiko();
@@ -70,22 +70,14 @@ public class inputNikoNikoController {
 
 			String nikoDate = sm.format(nikoniko.getLog_date());
 			if(nikoDate.equals(currentDate)) {
-				nikoExist = true;
 				nikoSatisfaction = nikoniko.getSatisfaction();
 				nikoComment = nikoniko.getComment();
 				nikoId = nikoNikoId.longValue();
 				isanonymous = nikoniko.getIsAnonymous();
+
 				break;
 			}
 		}
-		/*if(nikoExist == false) {
-			model.addAttribute("voteType", "create");
-			//System.err.println("vote is create");
-
-		} else {
-			model.addAttribute("voteType", "update");
-			//System.err.println("vote is update");
-		}*/
 
 		// add comment and satisfaction of existing nikoniko
 		// -------------------------------------------------
@@ -100,15 +92,27 @@ public class inputNikoNikoController {
 	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, Long nikoId, Model model) {
 
 		User currentUser =  userCrud.findOne(userId);
-		System.err.println(currentUser.getFirstname() + " " + currentUser.getLastname() + " ("
-				+ nikoNiko.getSatisfaction() + ") [" + nikoNiko.getComment() + "] " + nikoNiko.getIsAnonymous() +" " + nikoId);
 
 		if(nikoId == 0) {
+			nikoNiko.setIsAnonymous(true);
 			nikoNiko.setLog_date(new Date());
-			nikoNikoCrud.save(nikoNiko);
+
+			// insertion du nouveau nikoniko
+			// -----------------------------
+			NikoNiko newNiko = nikoNikoCrud.save(nikoNiko);
+
+			// insertion de la relation user_nikoniko
+			// --------------------------------------
+//			nikoNikoCrud.insert_user_NikoNiko_relation(userId.longValue(), newNiko.getId().longValue());
+
+
 		} else {
+System.err.println(currentUser.getFirstname() + " " + currentUser.getLastname()+ " " + nikoNiko.getLog_date().toString() + " ("
+	+ nikoNiko.getSatisfaction() + ") [" + nikoNiko.getComment() + "] " + nikoNiko.getIsAnonymous() +" " + nikoId);
+
 			nikoNiko.setId(nikoId);
 			nikoNiko.setChange_date(new Date());
+
 			nikoNikoCrud.save(nikoNiko);
 		}
 

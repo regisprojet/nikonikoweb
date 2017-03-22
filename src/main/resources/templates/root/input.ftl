@@ -28,12 +28,21 @@
 				<div class="row">
 					<div class="col-1"></div>
 					<div class="col-10" id="formulaire1">
-						<form  ENCTYPE="multipart/form-data" method="post" action="changeDate">
-							<div class="divDateDuJour">
-								<span id = "DateDuJour" ></span>
-								<button class="button" id="autreDate">Autre Date</button>
+						<!--form  ENCTYPE="multipart/form-data" method="post" action=""-->
+							<div class="row divDateDuJour">
+								<div class="col-1"></div>
+								<div class="col-2">
+									<button class="button" id="jourPreced" onclick="setJourPreced(3)"></button>
+								</div>
+								<div class="col-6">
+									<span id = "DateDuJour" ></span>
+								</div>
+								<div class="col-2">
+									<button class="button" id="joursuivant" onclick="setJourSuiv()"></button>
+								</div>
+								<div class="col-1"></div>
 							</div>
-						</form>
+						<!--/form-->
 					</div>
 					<div class="col-1"></div>
 				</div>
