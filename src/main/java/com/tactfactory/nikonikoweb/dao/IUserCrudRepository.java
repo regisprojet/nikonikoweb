@@ -29,7 +29,7 @@ public interface IUserCrudRepository extends IBaseCrudRepository<User>{
 	@Query(value = "SELECT pole_id FROM user u WHERE u.id=:id", nativeQuery = true)
 	public BigInteger poleIdById(@Param("id") long id);
 
-	@Query(value = "SELECT nikonikos_id from user_nikoniko INNER JOIN user ON user_nikoniko.User_id = user.id WHERE user.id = :ident",
+	/*@Query(value = "SELECT nikonikos_id from user_nikoniko INNER JOIN user ON user_nikoniko.User_id = user.id WHERE user.id = :ident",
 			nativeQuery = true)
-	public Set<BigInteger> getUser_NikoNikobyId(@Param("ident") long ident);
+	public Set<BigInteger> getUser_NikoNikobyId(@Param("ident") long ident);*/
 }

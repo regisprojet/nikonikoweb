@@ -32,17 +32,16 @@
 							<div class="row divDateDuJour">
 								<div class="col-1"></div>
 								<div class="col-2">
-									<button class="button" id="jourPreced" onclick="setJourPreced(5)"></button>
+									<button class="button" id="jourPreced" onclick="setJourPreced(25)"></button>
 								</div>
 								<div class="col-6">
-									<span id = "DateDuJour" >${newDayDate?string("dd MMMM yyyy")}</span>
+									<span id = "DateDuJour" >${newDayDate}</span>
 								</div>
 								<div class="col-2">
 									<button class="button" id="joursuivant" onclick="setJourSuiv()"></button>
 								</div>
 								<div class="col-1"></div>
-								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
-								<input type="hidden" id="newDayDateStr" name="newDayDateStr" value=${newDayDate?string("yyyy-MM-dd-HH-mm-ss")}>
+								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate}>
 							</div>
 						</form>
 					</div>
@@ -67,10 +66,10 @@
 							<div >
 								<input type="submit" class="button" id="valider" src="./images/validation.png" >
 								<input type="hidden" id="satisfaction" name="satisfaction" value="0">
-								<input type="hidden" id="isanonymous" name="is_anonymous" value=${isanonymous?c}>
+								<input type="hidden" id="isanonymous" name="isanonymous" value=0>
+
 								<input type="hidden" id="nikoId" name="nikoId" value=${nikoId}>
-								<input type="hidden" id="log_date" name="Log_date" value=${log_date?string("yyyy/MM/dd HH:mm:ss")}>
-								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>							</div>
+							</div>
 						 </form>
 					</div>
 					<div class="col-1"></div>
@@ -96,7 +95,6 @@
 
     <!-- Lancement des scripts -->
     <!--#######################-->
-
     <script type="text/javascript" src="js/create_niko.js">
     </script>
     <script>

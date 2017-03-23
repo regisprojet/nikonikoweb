@@ -1,8 +1,10 @@
 package com.tactfactory.nikonikoweb.controllers.root;
 
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.dao.base.IBaseCrudRepository;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
 import com.tactfactory.nikonikoweb.models.User;
+import com.tactfactory.nikonikoweb.utils.DumpFields;
 
 @Controller
 public class inputNikoNikoController {
@@ -30,6 +33,8 @@ public class inputNikoNikoController {
 	private String inputNikoView;
 	private String inputNikoRedirect;
 	private Long userId = 21l;
+	Date currentDate = new Date();
+	SimpleDateFormat sm = new SimpleDateFormat("dd MM YYYY");
 
 	public inputNikoNikoController() {
 		this.inputNikoView = PATH + BASE + PATH + "input";
@@ -52,71 +57,98 @@ public class inputNikoNikoController {
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 
-		SimpleDateFormat sm = new SimpleDateFormat("YYYY-MM-dd");
-		String currentDate = sm.format(new Date());
+		/*if(currentDate.equals(""))
+			currentDate = sm.format(new Date());*/
 
-		Set<BigInteger> nikoNikoIds = userCrud.getUser_NikoNikobyId(userId);
 		String nikoComment="";
-		int nikoSatisfaction = -1;
+		int nikoSatisfaction = 0;
 		Long nikoId = 0l; //prend la valeur de l'id du nikoniko existant
-		boolean isanonymous = true;
+		Boolean isanonymous = true;
+		Date nikoLogDate = new Date();
 
-		// find if it's a create or update vote
-		// ------------------------------------
-		for (BigInteger nikoNikoId : nikoNikoIds) {
-			//System.err.println("nikoNikoId=" + nikoNikoId + "  (" + nikoNikoId.longValue() + ")");
-			NikoNiko nikoniko = new NikoNiko();
-			nikoniko = nikoNikoCrud.findOne(nikoNikoId.longValue());
+		//NikoNiko currentNikoniko = new NikoNiko();
+		List<NikoNiko> nikoNikos = nikoNikoCrud.getNikonikoByUserId(userId);
 
-			String nikoDate = sm.format(nikoniko.getLog_date());
-			if(nikoDate.equals(currentDate)) {
-				nikoSatisfaction = nikoniko.getSatisfaction();
-				nikoComment = nikoniko.getComment();
-				nikoId = nikoNikoId.longValue();
-				isanonymous = nikoniko.getIsAnonymous();
-
-				break;
+		if(nikoNikos.isEmpty())
+			System.err.println("PAS DE NIKONIKOS ");
+		else
+			for (NikoNiko nikoNiko : nikoNikos) {
+				String nikoDate = sm.format(nikoNiko.getLog_date());
+				String currentDateStr = sm.format(currentDate);
+				if(nikoDate.equals(currentDateStr)) {
+					nikoSatisfaction = nikoNiko.getSatisfaction();
+					nikoComment = nikoNiko.getComment();
+					isanonymous = nikoNiko.getIsAnonymous();
+					nikoId = nikoNiko.getId();
+					nikoLogDate = nikoNiko.getLog_date();
+					break;
+				}
 			}
-		}
 
 		// add comment and satisfaction of existing nikoniko
 		// -------------------------------------------------
 		model.addAttribute("nikoComment", nikoComment);
 		model.addAttribute("nikoSatisfaction", nikoSatisfaction);
-		model.addAttribute("nikoId", nikoId);
+
 		model.addAttribute("isanonymous", isanonymous);
+		//System.err.println("  envoi isanonimous= " + isanonymous);
+
+		model.addAttribute("log_date", nikoLogDate);
+		//System.err.println("  envoi log_date= " + nikoLogDate);
+
+		model.addAttribute("nikoId", nikoId);
+
+		model.addAttribute("newDayDate",currentDate);
 		return inputNikoView;
 	}
 
 	@RequestMapping(value = ROUTE_INPUT_NIKO , method = RequestMethod.POST)
-	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, Long nikoId, Model model) {
+	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, boolean is_anonymous, Long nikoId, Model model) {
 
-		User currentUser =  userCrud.findOne(userId);
+		nikoNiko.setUser(userCrud.findOne(userId));
 
-		if(nikoId == 0) {
+		// insert new nikoniko
+		// -------------------
+		if((nikoId == 0)&&(nikoNiko.getSatisfaction()>0)) {
 			nikoNiko.setIsAnonymous(true);
-			nikoNiko.setLog_date(new Date());
+			//nikoNiko.setLog_date(new Date());
+			nikoNiko.setLog_date(currentDate);
 
-			// insertion du nouveau nikoniko
-			// -----------------------------
-			NikoNiko newNiko = nikoNikoCrud.save(nikoNiko);
+			nikoNikoCrud.save(nikoNiko);
 
-			// insertion de la relation user_nikoniko
-			// --------------------------------------
-//			nikoNikoCrud.insert_user_NikoNiko_relation(userId.longValue(), newNiko.getId().longValue());
-
-
+		// update nikoniko
+		// ---------------
 		} else {
-System.err.println(currentUser.getFirstname() + " " + currentUser.getLastname()+ " " + nikoNiko.getLog_date().toString() + " ("
-	+ nikoNiko.getSatisfaction() + ") [" + nikoNiko.getComment() + "] " + nikoNiko.getIsAnonymous() +" " + nikoId);
-
+			System.err.println("  EXIST NIKINIKO");
+			nikoNiko.setIsAnonymous(is_anonymous);
 			nikoNiko.setId(nikoId);
-			nikoNiko.setChange_date(new Date());
+			nikoNiko.setChange_date(currentDate);
 
 			nikoNikoCrud.save(nikoNiko);
 		}
 
+		// initialisation de currentDate à la date courante
+		// ------------------------------------------------
+		/*currentDate = new Date();*/
 
 		return inputNikoRedirect;
 	}
+
+	@RequestMapping(value = "/inputDateSave" , method = RequestMethod.POST)
+	public String inputNikoPost(String newDayDate, Model model) {
+
+		System.err.println("  envoi newDayDate= " + newDayDate);
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+		Date date = new Date();
+		try {
+			date = formatter.parse(newDayDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		currentDate = date;
+		return inputNikoRedirect;
+	}
+
 }
