@@ -177,7 +177,7 @@ public class RootController {
 						return "redirect:/admin";
 					}
 					if(functionName.equals("developpeur") || functionName.equals("chef de projet"))  {
-						return "redirect:/user";
+						return "redirect:/inputNiko";
 					}
 					if(functionName.equals("vip")) {
 						return "redirect:/vip";
@@ -200,14 +200,14 @@ public class RootController {
 		return "redirect:/login";
 	}
 	
-	@RequestMapping(value = { "admin" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "admin2" }, method = RequestMethod.GET)
 	public String adminGet(Model model) {
 		Environment environment = Environment.getInstance();
 		model.addAttribute("abilities", environment.getAbilities());
 		return "root/admin";
 	}
 
-	@RequestMapping(value = { "user" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "user2" }, method = RequestMethod.GET)
 	public String userGet(Model model) {
 		Environment environment = Environment.getInstance();
 		User currentUser = environment.getCurrentUser();

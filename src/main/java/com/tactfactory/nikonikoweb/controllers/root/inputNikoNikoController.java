@@ -115,7 +115,7 @@ public class inputNikoNikoController {
 		nikoNiko.setLog_date(new Date());
 	
 		nikoNiko = nikoCrud.save(nikoNiko);
-		currentUser.getNikoNikos().add(nikoNiko);
+		currentUser.getNikonikos().add(nikoNiko);
 		userCrud.save(currentUser);
 	
 		return "redirect:/voteOk";

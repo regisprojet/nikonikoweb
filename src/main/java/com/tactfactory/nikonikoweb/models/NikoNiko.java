@@ -159,8 +159,8 @@ public class NikoNiko extends DatabaseItem {
 		this.project = project;
 		this.setSatisfaction(satisfaction);
 		this.log_date = new Date();
-		this.user.getNikoNikos().add(this);
-		this.project.getNikoNikos().add(this);
+		this.user.getNikonikos().add(this);
+		this.project.getNikonikos().add(this);
 	}
 
 	public NikoNiko(User user, Project project, int satisfaction, String comment) {

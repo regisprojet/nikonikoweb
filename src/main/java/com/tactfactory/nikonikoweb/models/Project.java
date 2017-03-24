@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -32,9 +34,12 @@ public class Project extends DatabaseItem {
 	private Date end_date;
 
 	@OneToMany
-	private Set<NikoNiko> nikoNikos;
+	private Set<NikoNiko> nikonikos;
 
 	@ManyToMany
+	@JoinTable(name = "teams_projects",
+		joinColumns = @JoinColumn(name = "project_id"),
+		inverseJoinColumns = @JoinColumn(name = "team_id"))
 	private Set<Team> teams;
 
 	/**
@@ -85,16 +90,16 @@ public class Project extends DatabaseItem {
 	/**
 	 * @return the nikoNikos
 	 */
-	public Set<NikoNiko> getNikoNikos() {
-		return nikoNikos;
+	public Set<NikoNiko> getNikonikos() {
+		return nikonikos;
 	}
 
 	/**
-	 * @param nikoNikos
+	 * @param nikonikos
 	 *            the nikoNikos to set
 	 */
-	public void setNikoNikos(Set<NikoNiko> nikoNikos) {
-		this.nikoNikos = nikoNikos;
+	public void setNikonikos(Set<NikoNiko> nikonikos) {
+		this.nikonikos = nikonikos;
 	}
 
 	/**

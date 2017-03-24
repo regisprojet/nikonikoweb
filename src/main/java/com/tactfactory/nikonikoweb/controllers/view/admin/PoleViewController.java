@@ -1,4 +1,4 @@
-package com.tactfactory.nikonikoweb.controllers;
+package com.tactfactory.nikonikoweb.controllers.view.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -6,12 +6,12 @@ import com.tactfactory.nikonikoweb.controllers.base.view.ViewBaseController;
 import com.tactfactory.nikonikoweb.models.Pole;
 
 @Controller
-@RequestMapping(PoleController.BASE_URL)
-public class PoleController extends ViewBaseController<Pole>{
+@RequestMapping(PoleViewController.BASE_URL)
+public class PoleViewController extends ViewBaseController<Pole>{
 
-	public final static String BASE_URL = "/pole";
+	public final static String BASE_URL = "/admin/pole";
 
-	public PoleController() {
+	public PoleViewController() {
 		super(Pole.class, BASE_URL);
 	}
 }

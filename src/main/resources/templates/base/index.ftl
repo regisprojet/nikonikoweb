@@ -34,7 +34,24 @@
                         </#if>
                     </#list>
                 </#list>
-                <td><a href="${item["id"]}/show">Select</a></td>
+                <#list currentItem?keys as key>
+                    <#assign subItem = currentItem[key]>
+                    <#if subItem['ManyToMany']?? || subItem['OneToMany']??>
+                        <td>
+                            <a href="${item["id"]}/${subItem['name']?lower_case}">${subItem['name']?lower_case}</a>
+                            <br>
+                            <a href="${item["id"]}/${subItem['name']?lower_case}link">Associate ${subItem['name']?lower_case}</a>
+                        </td>
+                    </#if>
+                    <#if subItem['ManyToOne']?? || subItem['OneToOne']??>
+                        <td>
+                            <a href="${item["id"]}/${subItem['name']?lower_case}">${subItem['name']?lower_case}</a>
+                            <br>
+                            <a href="${item["id"]}/${subItem['name']?lower_case}link">Associate ${subItem['name']?lower_case}</a>
+                        </td>
+                    </#if>
+                </#list>
+
                 <td>
                     <form action="${item["id"]}/delete" method="POST">
                         <input type="hidden" name="id" value="${item["id"]}">
@@ -44,4 +61,7 @@
             </tr>
         </#list>
     </table>
+    <br>
+        <a href="../">Back</a>
+    </br>
 </body>

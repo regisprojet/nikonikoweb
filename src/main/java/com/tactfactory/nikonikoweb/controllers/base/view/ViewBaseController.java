@@ -1,7 +1,5 @@
 package com.tactfactory.nikonikoweb.controllers.base.view;
 
-import java.util.Map;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,10 @@ import com.tactfactory.nikonikoweb.utils.DumpFields;
 public abstract class ViewBaseController<T extends DatabaseItem> extends
 		BaseController<T> {
 
-	private String baseName;
+	protected String baseName;
+	protected String basePath;
+
+	protected String basePage;
 
 	protected String createView;
 	protected String createRedirect;
@@ -33,11 +34,13 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 	protected String listRedirect;
 	protected String baseView;
 
-	protected ViewBaseController(Class<T> clazz, String baseName) {
+	protected ViewBaseController(Class<T> clazz, String basePath) {
 		super(clazz);
 
-		this.baseName = baseName;
+		this.baseName = clazz.getSimpleName();
+		this.basePath = basePath;
 		this.baseView = "base";
+		this.basePage = LIST_ACTION;
 
 		this.createView = this.baseView + PATH_CREATE_FILE;
 		this.deleteView = this.baseView + PATH_DELETE_FILE;
@@ -45,18 +48,18 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		this.showView = this.baseView + PATH_SHOW_FILE;
 		this.listView = this.baseView + PATH_LIST_FILE;
 
-		this.createRedirect = REDIRECT + this.baseName + PATH + ROUTE_LIST;
-		this.deleteRedirect = REDIRECT + this.baseName + PATH + ROUTE_LIST;
-		this.updateRedirect = REDIRECT + this.baseName + PATH + ROUTE_LIST;
-		this.showRedirect = REDIRECT + this.baseName + PATH + ROUTE_LIST;
-		this.listRedirect = REDIRECT + this.baseName + PATH + ROUTE_LIST;
+		this.createRedirect = REDIRECT + this.basePath + PATH + ROUTE_LIST;
+		this.deleteRedirect = REDIRECT + this.basePath + PATH + ROUTE_LIST;
+		this.updateRedirect = REDIRECT + this.basePath + PATH + ROUTE_LIST;
+		this.showRedirect = REDIRECT + this.basePath + PATH + ROUTE_LIST;
+		this.listRedirect = REDIRECT + this.basePath + PATH + ROUTE_LIST;
 	}
 
 	@RequestMapping(value = { PATH, ROUTE_LIST }, method = RequestMethod.GET)
 	public String index(Model model) {
 		model.addAttribute("page", this.baseName + " " + LIST_ACTION);
-		String[] item = DumpFields.createContentsEmpty(super.getClazz()).fields;
-		model.addAttribute("fields",item);
+		model.addAttribute("fields",
+				DumpFields.createContentsEmpty(super.getClazz()).fields);
 		model.addAttribute("items", DumpFields.listFielder(super.getItems()));
 		return listView;
 	}
@@ -73,12 +76,14 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 	@RequestMapping(path = ROUTE_CREATE, method = RequestMethod.GET)
 	public String createItemGet(Model model) {
 		model.addAttribute("page", this.baseName + " " + CREATE_ACTION);
-		T item = DumpFields.createContentsEmpty(super.getClazz());
-		model.addAttribute("fields", item.fields);
-		Map<String, Map<String,Object>> currentItem = DumpFields.fielderAdvance(
-				DumpFields.createContentsEmpty(super.getClazz()),
-				super.getClazz());	
-		model.addAttribute("currentItem", currentItem);
+		model.addAttribute("fields",
+				DumpFields.createContentsEmpty(super.getClazz()).fields);
+		model.addAttribute(
+				"currentItem",
+				DumpFields.fielderAdvance(
+						DumpFields.createContentsEmpty(super.getClazz()),
+						super.getClazz()));
+		model.addAttribute("basePage",basePage);
 		return createView;
 	}
 

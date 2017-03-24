@@ -25,9 +25,9 @@
                         <#elseif subItem['type'] = "Boolean">
                             <br>${key} :
                                 <input id="${key}checkbox" type="checkbox"
-                                    name="${key}checkbox" value="${subItem['value']?c}"
-                                    <#if subItem['value']?c = "true"> checked="true"</#if>>
-                                <input id="${key}" type="hidden" name="${key}" value="${subItem['value']?c}}">
+                                    name="${key}checkbox" value="<#if subItem['value']?is_boolean>${subItem['value']?c}</#if>"
+                                    <#if subItem['value']?is_boolean && subItem['value']?c = "true"> checked="true"</#if>>
+                                <input id="${key}" type="hidden" name="${key}" value="<#if subItem['value']?is_boolean>${subItem['value']?c}</#if>">
                             </br>
                         <#else>
                             <br>${key} :

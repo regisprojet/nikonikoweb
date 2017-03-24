@@ -1,13 +1,10 @@
 package com.tactfactory.nikonikoweb.models;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -35,7 +32,7 @@ public class User extends SecurityUser {
 	public static final String TABLE = "user";
 
     @Transient
-	public static final String[] FIELDS = { "id", "login", "password", "sex", "lastname", "firstname",
+	public static final String[] FIELDS = { "id", "login", "password", "enable", "sex", "lastname", "firstname",
 			"registration_cgi" };
 
     @Column(nullable = false)
@@ -47,32 +44,37 @@ public class User extends SecurityUser {
     @Column(nullable = false)
 	private String registration_cgi;
 
-	//@OneToMany
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany
 	private Set<NikoNiko> nikonikos;
 
 	@ManyToMany
+	@JoinTable(name = "teams_users",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "team_id"))
 	private Set<Team> teams;
 
 	private Character sex;
 
 	@ManyToMany
+	
+	
 	private Set<Function> functions;
-
+	
 	@JoinColumn(name="pole_id")
 	@OneToOne
 	private Pole pole;
-
+	
 	@JoinColumn(name="agency_id")
 	@OneToOne
 	private Agency agency;
 
-	public Agency getAgency() {
-		return agency;
+	
+	public Set<Function> getFunctions() {
+		return functions;
 	}
 
-	public void setAgency(Agency agency) {
-		this.agency = agency;
+	public void setFunctions(Set<Function> functions) {
+		this.functions = functions;
 	}
 
 	public Pole getPole() {
@@ -83,12 +85,12 @@ public class User extends SecurityUser {
 		this.pole = pole;
 	}
 
-	public Set<Function> getFunctions() {
-		return functions;
+	public Agency getAgency() {
+		return agency;
 	}
 
-	public void setFunctions(Set<Function> functions) {
-		this.functions = functions;
+	public void setAgency(Agency agency) {
+		this.agency = agency;
 	}
 
 	/**
@@ -162,16 +164,16 @@ public class User extends SecurityUser {
 	/**
 	 * @return the nikoNikos
 	 */
-	public Set<NikoNiko> getNikoNikos() {
+	public Set<NikoNiko> getNikonikos() {
 		return nikonikos;
 	}
 
 	/**
-	 * @param nikoNikos
+	 * @param nikonikos
 	 *            the nikoNikos to set
 	 */
-	public void setNikoNikos(Set<NikoNiko> nikoNikos) {
-		this.nikonikos = nikoNikos;
+	public void setNikonikos(Set<NikoNiko> nikonikos) {
+		this.nikonikos = nikonikos;
 	}
 
 	/**
@@ -194,9 +196,6 @@ public class User extends SecurityUser {
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.registration_cgi = registration_cgi;
-		this.functions = (Set<Function>) new HashSet<Function>();
-		this.nikonikos = (Set<NikoNiko>) new HashSet<NikoNiko>();
-		this.pole = null;
 	}
 
 	public User() {
@@ -212,8 +211,5 @@ public class User extends SecurityUser {
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.sex = sex;
-		this.functions = (Set<Function>) new HashSet<Function>();
-		this.nikonikos = (Set<NikoNiko>) new HashSet<NikoNiko>();
-		this.pole = null;
 	}
 }

@@ -32,29 +32,29 @@
                         </#list>
                     </#list>
                     <td>
-                        <#if linkedItems?has_content>
-                            <#if linkedItems?seq_contains(item['id'])>
-                                <input id="${item['id']}" type="checkbox" checked
-                                    name="ids[]"
+                        <#if linkedItem??>
+                            <#if item['id'] == linkedItem>
+                                <input id="${item['id']}" type="radio" checked
+                                    name="idLinked"
                                     value="${item['id']}" />
                             <#else>
-                                <input id="${item['id']}" type="checkbox"
-                                    name="ids[]"
+                                <input id="${item['id']}" type="radio"
+                                    name="idLinked"
                                     value="${item['id']}" />
                             </#if>
                         <#else>
-                            <input id="${item['id']}" type="checkbox"
-                                name="ids[]"
+                            <input id="${item['id']}" type="radio"
+                                name="idLinked"
                                 value="${item['id']}" />
                         </#if>
                     </td>
                 </tr>
             </#list>
+            <input type="hidden"
+               name="${_csrf.parameterName}"
+               value="${_csrf.token}"/>
             <tr>
                 <td>
-                    <input id="0" type="hidden"
-                        name="ids[]"
-                        value="0" />
                     <input type="submit" value="Validate"/>
                 </td>
             </tr>

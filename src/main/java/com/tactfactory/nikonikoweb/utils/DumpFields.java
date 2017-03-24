@@ -5,6 +5,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.hibernate.mapping.ManyToOne;
 
 import com.tactfactory.nikonikoweb.models.base.DatabaseItem;
 
@@ -210,16 +213,90 @@ public class DumpFields {
 		return listMap;
 	}
 
-	public static <T> Map<String,Map<String, Object>> fielderAdvance(T item, Class klazz) {
+	public static <T> Map<String, Map<String, Object>> fielderAdvance(
+			Object item, Class klazz) {
 		Map<String, Object> fields = DumpFields.fielder(item);
-		Map<String,Map<String,Object>> tempMap = new HashMap<String, Map<String,Object>>();
+		Map<String, Map<String, Object>> tempMap = new HashMap<String, Map<String, Object>>();
 		ArrayList<Field> realFields = getFields(klazz);
 		for (Entry<String, Object> field : fields.entrySet()) {
 			Map<String, Object> tempField = new HashMap<String, Object>();
 			tempField.put("value", field.getValue());
+
+			Field realFieldSelected = null;
+
 			for (Field realField : realFields) {
 				if (realField.getName().equals(field.getKey())) {
 					tempField.put("type", realField.getType().getSimpleName());
+					tempField.put("name", realField.getName());
+					tempField.put("isbase", true);
+					realFieldSelected = realField;
+					break;
+				}
+			}
+
+			if (realFieldSelected != null) {
+				if (realFieldSelected
+						.getAnnotation(javax.persistence.ManyToOne.class) != null) {
+					javax.persistence.ManyToOne annotation = realFieldSelected
+							.getAnnotation(javax.persistence.ManyToOne.class);
+					tempField.putIfAbsent("ManyToOne", annotation.targetEntity()
+							.getName());
+					tempField.putIfAbsent("isbase", false);
+
+					if (field.getValue() == "") {
+						Object value = null;
+						for (Field realField : realFields) {
+							if (realField.getName().equals(field.getKey())) {
+								value = DumpFields
+										.createContentsEmpty(realField
+												.getType());
+								tempField.put(
+										"value",
+										fielderAdvance(value,
+												realField.getType()));
+								break;
+							}
+						}
+					} else {
+						for (Field realField : realFields) {
+							if (realField.getName().equals(field.getKey())) {
+								tempField.put(
+										"value",
+										fielderAdvance(field.getValue(),
+												realField.getType()));
+								break;
+							}
+						}
+					}
+				}
+
+				if (realFieldSelected
+						.getAnnotation(javax.persistence.ManyToMany.class) != null) {
+					javax.persistence.ManyToMany annotation = realFieldSelected
+							.getAnnotation(javax.persistence.ManyToMany.class);
+					tempField.putIfAbsent("ManyToMany", annotation.targetEntity()
+							.getName());
+					tempField.putIfAbsent("isbase", false);
+				}
+				if (realFieldSelected
+						.getAnnotation(javax.persistence.OneToMany.class) != null) {
+					javax.persistence.OneToMany annotation = realFieldSelected
+							.getAnnotation(javax.persistence.OneToMany.class);
+					tempField.put("OneToMany", annotation.targetEntity()
+							.getName());
+					tempField.putIfAbsent("isbase", false);
+				}
+				if (realFieldSelected
+						.getAnnotation(javax.persistence.OneToOne.class) != null) {
+					javax.persistence.OneToOne annotation = realFieldSelected
+							.getAnnotation(javax.persistence.OneToOne.class);
+					tempField.put("OneToOne", annotation.targetEntity()
+							.getName());
+					tempField.putIfAbsent("isbase", false);
+					tempField.put(
+							"value",
+							fielderAdvance(field.getValue(), field.getValue()
+									.getClass()));
 				}
 			}
 
@@ -229,9 +306,10 @@ public class DumpFields {
 		return tempMap;
 	}
 
-	public static <T> ArrayList<Map<Map<String, Object>, String>> listFielderAdvance(List<T> items, Class klazz) {
-		ArrayList<Map<Map<String,Object>, String>> listMap = new ArrayList<Map<Map<String,Object>,String>>();
-		Map<Map<String,Object>, String> tempMap = new HashMap<Map<String,Object>, String>();
+	public static <T> ArrayList<Map<Map<String, Object>, String>> listFielderAdvance(
+			List<T> items, Class klazz) {
+		ArrayList<Map<Map<String, Object>, String>> listMap = new ArrayList<Map<Map<String, Object>, String>>();
+		Map<Map<String, Object>, String> tempMap = new HashMap<Map<String, Object>, String>();
 		for (T item : items) {
 			fielderAdvance(item, klazz);
 			listMap.add(tempMap);
@@ -269,8 +347,7 @@ public class DumpFields {
 		}
 
 		for (Class class1 : classes) {
-			result.add(class1.getSimpleName().replace("ViewController", "")
-					.toLowerCase());
+			result.add(class1.getSimpleName());
 		}
 		return result;
 	}

@@ -13,6 +13,6 @@
             <input type="submit" value="submit"/>
         </br>
     </form>
-    <a href="list">Back</a>
+    <a href="${basePage}">Back</a>
 </body>
 </html>
