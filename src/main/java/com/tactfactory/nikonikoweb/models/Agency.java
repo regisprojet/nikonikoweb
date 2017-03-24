@@ -1,5 +1,7 @@
 package com.tactfactory.nikonikoweb.models;
 
+import java.util.HashSet;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -26,5 +28,9 @@ public class Agency extends DatabaseItem {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Agency() {
+		super(Agency.TABLE, Agency.FIELDS);
 	}
 }

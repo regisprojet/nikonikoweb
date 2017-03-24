@@ -169,3 +169,12 @@ div #zone{
 	padding-top: 10px;
 }
 
+#sub-left {
+   float: left;
+}
+#sub-right {
+   float: right;
+}
+.clear-both {
+   clear: both;
+}

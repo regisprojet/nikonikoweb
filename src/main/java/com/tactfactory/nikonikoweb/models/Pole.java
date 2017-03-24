@@ -27,4 +27,8 @@ public class Pole extends DatabaseItem {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public Pole() {
+		super(Pole.TABLE, Pole.FIELDS);
+	}
 }

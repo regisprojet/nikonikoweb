@@ -8,21 +8,32 @@
     <table class="table table-bordered table-hover">
         <tr>
             <#list items as item>
+               <#if fields??>
                 <#list fields as field>
-                    <#list item?keys as key>
+                <#if field??>
+                     <#list item?keys as key>
+                     <#if key??>
                         <#if field == key>
                             <th>${key}</th>
                         </#if>
+                    </#if>
                     </#list>
-                </#list>
+               </#if>
+               </#list>
+                <#else>
+                           <script type="text/javascript"> console.log("erreur de fields "+${fields})  </script>
+                </#if>
                 <#break>
             </#list>
         </tr>
 
         <#list items as item>
             <tr>
-                <#list fields as field>
+            	<#if fields??>
+               <#list fields as field>
+                    <#if field??> 
                     <#list item?keys as key>
+                        <#if key??>
                         <#if field == key>
                             <#if item[key]?is_boolean>
                                 <td>${item[key]?c}</td>
@@ -31,8 +42,13 @@
                             <#else>
                                 <td>${item[key]}</td>
                             </#if>
+                        
+                        </#if>
+                         <#else>
+                           <script type="text/javascript"> console.log("erreur "+${field})  </script>
                         </#if>
                     </#list>
+                    </#if>
                 </#list>
                 <td><a href="${item["id"]}/show">Select</a></td>
                 <td>
@@ -42,6 +58,7 @@
                     </form>
                 </td>
             </tr>
+            </#if>
         </#list>
     </table>
 </body>

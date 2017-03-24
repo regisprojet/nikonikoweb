@@ -3,6 +3,7 @@
                 <#assign subItem = currentItem[key]>
                 <#if field == key>
                     <#if field != "id">
+                        <#if subItem?has_content>
                         <#if subItem['type'] == "Date">
                             <br>
                                 ${key}
@@ -37,6 +38,7 @@
                                     name="${key}"
                                     value="" />
                             </br>
+                        </#if>
                         </#if>
                     </#if>
                 </#if>

@@ -1,5 +1,7 @@
 package com.tactfactory.nikonikoweb.controllers.base.view;
 
+import java.util.Map;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,8 +55,8 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 	@RequestMapping(value = { PATH, ROUTE_LIST }, method = RequestMethod.GET)
 	public String index(Model model) {
 		model.addAttribute("page", this.baseName + " " + LIST_ACTION);
-		model.addAttribute("fields",
-				DumpFields.createContentsEmpty(super.getClazz()).fields);
+		String[] item = DumpFields.createContentsEmpty(super.getClazz()).fields;
+		model.addAttribute("fields",item);
 		model.addAttribute("items", DumpFields.listFielder(super.getItems()));
 		return listView;
 	}
@@ -71,13 +73,12 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 	@RequestMapping(path = ROUTE_CREATE, method = RequestMethod.GET)
 	public String createItemGet(Model model) {
 		model.addAttribute("page", this.baseName + " " + CREATE_ACTION);
-		model.addAttribute("fields",
-				DumpFields.createContentsEmpty(super.getClazz()).fields);
-		model.addAttribute(
-				"currentItem",
-				DumpFields.fielderAdvance(
-						DumpFields.createContentsEmpty(super.getClazz()),
-						super.getClazz()));
+		T item = DumpFields.createContentsEmpty(super.getClazz());
+		model.addAttribute("fields", item.fields);
+		Map<String, Map<String,Object>> currentItem = DumpFields.fielderAdvance(
+				DumpFields.createContentsEmpty(super.getClazz()),
+				super.getClazz());	
+		model.addAttribute("currentItem", currentItem);
 		return createView;
 	}
 
