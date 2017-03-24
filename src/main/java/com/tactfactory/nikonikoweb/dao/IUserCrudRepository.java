@@ -14,8 +14,10 @@ import com.tactfactory.nikonikoweb.models.User;
 
 public interface IUserCrudRepository extends IBaseCrudRepository<User>{
 	@Query(value = "SELECT * FROM user u WHERE u.login = :login", nativeQuery = true)
-	public List<User> findByLogin(@Param("login") String login);
+	public List<User> findAllByLogin(@Param("login") String login);
 
+	public User findByLogin(String login);
+	
 	@Query(value = "SELECT f.name FROM user_function uf,function f WHERE uf.User_id=:id AND uf.functions_id=f.id", nativeQuery = true)
 	public String functionById(@Param("id") long id);
 
@@ -37,4 +39,5 @@ public interface IUserCrudRepository extends IBaseCrudRepository<User>{
 			nativeQuery = true)
 	public Set<BigInteger> getNikoNikoById(@Param("ident") long ident);
 
+	
 }

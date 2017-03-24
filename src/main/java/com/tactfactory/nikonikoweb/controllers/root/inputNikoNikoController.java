@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -53,6 +54,7 @@ public class inputNikoNikoController {
 	@Autowired
 	private INikoNikoCrudRepository nikoCrud;
 	
+	@Secured("user")
 	@RequestMapping(value =  ROUTE_INPUT_NIKO , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
 		Environment environment = Environment.getInstance();

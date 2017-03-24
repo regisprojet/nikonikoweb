@@ -56,8 +56,6 @@ public class User extends SecurityUser {
 	private Character sex;
 
 	@ManyToMany
-	
-	
 	private Set<Function> functions;
 	
 	@JoinColumn(name="pole_id")

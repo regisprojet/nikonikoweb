@@ -120,7 +120,7 @@ public class RootController {
 	}
 
 
-	@RequestMapping(path = { BASE_URL, "login" }, method = RequestMethod.GET)
+	@RequestMapping(path = { BASE_URL, "login2" }, method = RequestMethod.GET)
 	public String loginGet(Model model) {
 		System.out.println("root/login (GET)");
 		this.login="";
@@ -136,7 +136,7 @@ public class RootController {
 		//Map<String, Object> map = model.asMap();
 		Environment environment = Environment.getInstance();
 
-		List<User> users = userCrud.findByLogin(securityLogin.getLogin());
+		List<User> users = userCrud.findAllByLogin(securityLogin.getLogin());
 
 		for(User user : users) {
 			if(securityLogin.getPassword().equals(user.getPassword())) {
@@ -192,7 +192,7 @@ public class RootController {
 		return "redirect:/login";
 	}
 
-	@RequestMapping(path = { "logout" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "logout2" }, method = RequestMethod.GET)
 	public String logoutGet(@ModelAttribute SecurityLogin securityLogin,
 			Model model) {
 		Environment environment = Environment.getInstance();
