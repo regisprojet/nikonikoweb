@@ -1,5 +1,6 @@
 package com.tactfactory.nikonikoweb.controllers.base.view;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		this.listRedirect = REDIRECT + this.basePath + PATH + ROUTE_LIST;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = { PATH, ROUTE_LIST }, method = RequestMethod.GET)
 	public String index(Model model) {
 		model.addAttribute("page", this.baseName + " " + LIST_ACTION);
@@ -64,6 +66,7 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		return listView;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_SHOW, method = RequestMethod.GET)
 	public String itemGet(@PathVariable Long id, Model model) {
 		model.addAttribute("page", this.baseName + " " + SHOW_ACTION);
@@ -73,6 +76,7 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		return showView;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_CREATE, method = RequestMethod.GET)
 	public String createItemGet(Model model) {
 		model.addAttribute("page", this.baseName + " " + CREATE_ACTION);
@@ -87,6 +91,7 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		return createView;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_CREATE, method = RequestMethod.POST)
 	public String createItemPost(T item, Model model) {
 		try {
@@ -97,6 +102,7 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		return createRedirect;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_UPDATE, method = RequestMethod.GET)
 	public String updateItemGet(@PathVariable Long id, Model model) {
 		model.addAttribute("page", this.baseName + " " + UPDATE_ACTION);
@@ -108,12 +114,14 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		return updateView;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_UPDATE, method = RequestMethod.POST)
 	public String updateItemPost(@ModelAttribute T item) {
 		super.updateItem(item);
 		return updateRedirect;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_DELETE, method = RequestMethod.GET)
 	public String deleteItemGet(@PathVariable Long id, Model model) {
 		model.addAttribute("page", this.baseName + " " + DELETE_ACTION);
@@ -123,6 +131,7 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		return deleteView;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_DELETE, method = RequestMethod.POST)
 	public String deleteItemPost(@PathVariable Long id) {
 		super.deleteItem(id);

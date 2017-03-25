@@ -22,12 +22,16 @@ public class UserDetailsServiceImp implements UserDetailsService{
 	@Autowired
 	private IUserCrudRepository userCrud;
 	
+	// renvoyé automatiquement dans le post
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String login)
 			throws UsernameNotFoundException {
+        boolean enabled = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
 		
-		// renvoyé automatiquement dans le post
 		User user = userCrud.findByLogin(login);
 		
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -37,6 +41,16 @@ public class UserDetailsServiceImp implements UserDetailsService{
 				grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
 			}
 		}
-		return new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPassword(), grantedAuthorities );
+		org.springframework.security.core.userdetails.User userDetails = 
+				new org.springframework.security.core.userdetails.User(
+//						user.getLogin(),
+//						user.getPassword(),
+//						grantedAuthorities );
+//		
+		user.getLogin(), user.getPassword(), enabled, accountNonExpired,
+        credentialsNonExpired, accountNonLocked, grantedAuthorities
+        );
+		
+		return userDetails;
 	}
 }

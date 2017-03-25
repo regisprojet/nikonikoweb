@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -120,7 +123,7 @@ public class RootController {
 	}
 
 
-	@RequestMapping(path = { BASE_URL, "login2" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/login2" }, method = RequestMethod.GET)
 	public String loginGet(Model model) {
 		System.out.println("root/login (GET)");
 		this.login="";
@@ -130,8 +133,8 @@ public class RootController {
 		return "root/connection";
 	}
 
-	@RequestMapping(path = { "login" }, method = RequestMethod.POST)
-	public String loginPost(@ModelAttribute SecurityLogin securityLogin,
+	@RequestMapping(path = { "login2" }, method = RequestMethod.POST)
+	public String login2Post(@ModelAttribute SecurityLogin securityLogin,
 			Model model) {
 		//Map<String, Object> map = model.asMap();
 		Environment environment = Environment.getInstance();
@@ -190,6 +193,17 @@ public class RootController {
 		}
 
 		return "redirect:/login";
+	}
+
+	@Secured(value={"ROLE_ADMIN","ROLE_USER"})
+	@RequestMapping(path = { "/home" }, method = RequestMethod.GET)
+	public String home(Model model) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		
+		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
+		return "root/home";
 	}
 
 	@RequestMapping(path = { "logout2" }, method = RequestMethod.GET)

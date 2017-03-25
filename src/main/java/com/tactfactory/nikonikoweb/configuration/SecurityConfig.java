@@ -24,7 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			    	.loginPage("/login")
 			    	.usernameParameter("username")
 			    	.passwordParameter("password")
-			    	.permitAll(); // sinon il faudrait déjà être authentifié
+			    	.permitAll() // sinon il faudrait déjà être authentifié
+			.and()			
+		            .logout()                                    
+                    .permitAll();
 			
 	}
 	
