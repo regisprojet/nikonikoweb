@@ -42,15 +42,12 @@ public class SecurityController {
 
 		@RequestMapping(path ="/login", method =  RequestMethod.GET)
 		public String loginGet() {
-			return "security/login";
+			return "root/login";
 		}
 
 		// add by Denis
-		@Secured("ROLE_USER")
-		@RequestMapping(path = ROUTE_INPUT_PAGE, method =  RequestMethod.POST)
+		@RequestMapping(path = "/login", method =  RequestMethod.POST)
 		public String loginPost() {
-			System.err.println(inputNiko.getInputNikoRedirect());
-
 			return inputNiko.getInputNikoRedirect();
 		}
 

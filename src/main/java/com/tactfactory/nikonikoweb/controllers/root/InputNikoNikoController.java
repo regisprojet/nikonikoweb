@@ -24,9 +24,7 @@ public class InputNikoNikoController {
 
 	public final static String PATH = "/";
 	public static final String BASE = "root";
-	//public final static String ROUTE_INPUT_NIKO = "{userId}/inputNiko";
 	public final static String ROUTE_INPUT_NIKO = "/inputNiko";
-	public final static String ROUTE_OUTPUT_NIKO = "{nikoSatisfaction}/inputNiko";
 	private String inputNikoView;
 	private String inputNikoRedirect;
 	private Long userId = 4l;
@@ -56,7 +54,7 @@ public class InputNikoNikoController {
 	private INikoNikoCrudRepository nikoCrud;
 
 	@Secured("ROLE_USER")
-	@RequestMapping(value =  ROUTE_INPUT_NIKO , method = RequestMethod.GET)
+	@RequestMapping(path = {PATH, ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
 		model.addAttribute("page", "inputNikoNiko");
 		model.addAttribute("equipe", "teamName");
@@ -105,6 +103,7 @@ public class InputNikoNikoController {
 		return inputNikoView;
 	}
 
+	@Secured("ROLE_USER")
 	@RequestMapping(value = ROUTE_INPUT_NIKO , method = RequestMethod.POST)
 	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, boolean is_anonymous, Long nikoId, Model model) {
 
@@ -136,6 +135,7 @@ public class InputNikoNikoController {
 		return inputNikoRedirect;
 	}
 
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/inputDateSave" , method = RequestMethod.POST)
 	public String inputNikoPost(String newDayDate, Model model) {
 
@@ -151,6 +151,15 @@ public class InputNikoNikoController {
 		}
 		currentDate = date;
 		return inputNikoRedirect;
+	}
+
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/quit" , method = RequestMethod.POST)
+	public String inputNikoLogoutPost( Model model) {
+
+		System.err.println("  Coucou envoi" );
+
+		return "login";
 	}
 
 }

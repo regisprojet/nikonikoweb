@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -36,7 +38,8 @@ public class NikoNiko extends DatabaseItem {
 	@Column(name = "isanonymous", nullable = false)
 	private Boolean isAnonymous;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	private User user;
 
 	@ManyToOne
