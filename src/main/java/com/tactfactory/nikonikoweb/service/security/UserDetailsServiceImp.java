@@ -43,13 +43,14 @@ public class UserDetailsServiceImp implements UserDetailsService{
 		}
 		org.springframework.security.core.userdetails.User userDetails = 
 				new org.springframework.security.core.userdetails.User(
-//						user.getLogin(),
-//						user.getPassword(),
-//						grantedAuthorities );
+   					user.getLogin(),
+						user.getPassword(),
+						grantedAuthorities
 //		
-		user.getLogin(), user.getPassword(), enabled, accountNonExpired,
-        credentialsNonExpired, accountNonLocked, grantedAuthorities
+//		user.getLogin(), user.getPassword(), enabled, accountNonExpired,
+//        credentialsNonExpired, accountNonLocked, grantedAuthorities
         );
+		System.out.println(""+user.getLogin()+" "+user.getPassword()+" "+grantedAuthorities);
 		
 		return userDetails;
 	}

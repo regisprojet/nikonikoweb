@@ -7,5 +7,5 @@
     <link rel="stylesheet" type="text/css" href="/css/custom.css"/>
 </head>
 <body>
-    <h1> Bienvenue chef ${userName} </h1>
+    <h1> Bienvenue vip ${username} </h1>
 </body>
