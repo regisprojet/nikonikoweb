@@ -24,13 +24,13 @@ import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
 
-@Controller
+/*@Controller
 public class SecurityController {
 
 	    // add by Régis
 		@Autowired
 		private UserDetailsService userService;
-	
+
         // add by Régis
 		@Autowired
 		private IUserCrudRepository userCrud;
@@ -39,7 +39,7 @@ public class SecurityController {
 		public String loginGet() {
 			return "security/login";
 		}
-		
+
 		// add by Régis
 		@Secured(value={"ROLE_ADMIN","ROLE_USER"})
 		@RequestMapping(path ="/login", method =  RequestMethod.POST)
@@ -52,13 +52,13 @@ public class SecurityController {
 			UserDetails userDetails =
 					 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			User user2 = userCrud.findByLogin(userDetails.getUsername());
-			
-			
+
+
 			return "redirect:/home";
 		}
-		
-		
-		
+
+
+
 		@RequestMapping(path ="/logout", method =  RequestMethod.GET)
 		public String logout(HttpServletRequest request, HttpServletResponse response) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -67,4 +67,4 @@ public class SecurityController {
 			}
 			return "redirect:/login?logout";
 		}
-}
+}*/

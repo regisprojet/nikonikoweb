@@ -50,11 +50,11 @@ public class inputNikoNikoController {
 
 	@Autowired
 	private IPoleCrudRepository poleCrud;
-	
+
 	@Autowired
 	private INikoNikoCrudRepository nikoCrud;
-	
-	@Secured("user")
+
+	//@Secured("ROLE_USER")
 	@RequestMapping(value =  ROUTE_INPUT_NIKO , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
 		Environment environment = Environment.getInstance();
@@ -62,8 +62,8 @@ public class inputNikoNikoController {
 		if(currentUser==null) {
 			return "redirect:/login";
 		}
-		
-		
+
+
 		Set<NikoNiko> nikonikos = nikoCrud.getAllByUserId(currentUser.getId());
 		Date today = new Date();
 		for(NikoNiko nikoniko : nikonikos) {
@@ -76,7 +76,7 @@ public class inputNikoNikoController {
 				System.out.println("Vous avez déjà voté aujourd'hui");
 			}
 		}
-		
+
 		BigInteger bigId = userCrud.poleIdById(currentUser.getId());
 		if(bigId!=null) {
 			Pole pole = poleCrud.findOne(bigId.longValue());
@@ -85,7 +85,7 @@ public class inputNikoNikoController {
 		else {
 			model.addAttribute("verticale", "verticaleName");
 		}
-			
+
 		model.addAttribute("page", "inputNikoNiko");
 		model.addAttribute("equipe", "teamName");
 
@@ -111,15 +111,15 @@ public class inputNikoNikoController {
 		if(currentUser==null) {
 			return "redirect:/login";
 		}
-		
+
 		nikoNiko.setIsAnonymous(true);
 		nikoNiko.setUser(currentUser); // a besoin de @OneToMany(fetch = FetchType.EAGER) sur nikonikos
 		nikoNiko.setLog_date(new Date());
-	
+
 		nikoNiko = nikoCrud.save(nikoNiko);
 		currentUser.getNikonikos().add(nikoNiko);
 		userCrud.save(currentUser);
-	
+
 		return "redirect:/voteOk";
 	}
 
@@ -130,8 +130,8 @@ public class inputNikoNikoController {
 		if(currentUser==null) {
 			return "redirect:/login";
 		}
-		
+
 	    return "root/voteOk";
 	}
-	
+
 }
