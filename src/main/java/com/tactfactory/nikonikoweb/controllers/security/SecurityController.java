@@ -20,12 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tactfactory.nikonikoweb.controllers.root.InputNikoNikoController;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
 
-/*@Controller
+@Controller
 public class SecurityController {
+
+		//public static String inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
+		InputNikoNikoController inputNiko = new InputNikoNikoController();
+		private final static String ROUTE_INPUT_PAGE = "toInputPage";
 
 	    // add by Régis
 		@Autowired
@@ -40,8 +45,17 @@ public class SecurityController {
 			return "security/login";
 		}
 
+		// add by Denis
+		@Secured("ROLE_USER")
+		@RequestMapping(path = ROUTE_INPUT_PAGE, method =  RequestMethod.POST)
+		public String loginPost() {
+			System.err.println(inputNiko.getInputNikoRedirect());
+
+			return inputNiko.getInputNikoRedirect();
+		}
+
 		// add by Régis
-		@Secured(value={"ROLE_ADMIN","ROLE_USER"})
+		/*@Secured(value={"ROLE_ADMIN","ROLE_USER"})
 		@RequestMapping(path ="/login", method =  RequestMethod.POST)
 		public String loginPost(
 //				HttpServletRequest request, HttpServletResponse response,
@@ -55,7 +69,8 @@ public class SecurityController {
 
 
 			return "redirect:/home";
-		}
+		}*/
+
 
 
 
@@ -67,4 +82,4 @@ public class SecurityController {
 			}
 			return "redirect:/login?logout";
 		}
-}*/
+}

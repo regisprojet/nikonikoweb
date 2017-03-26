@@ -1,12 +1,12 @@
 <html>
 	<body>
-		<form action="/login" method="post">
+		<form  ENCTYPE="multipart/form-data" method="post" action="toInputPage">
 			<input type="text" name="username">
 			<input type="password" name="password">
 			<input type="hidden"
 				name="${_csrf.parameterName}"
 				value="${_csrf.token}"/>
 			<input type="submit" value="validate"/>
-		</form>	
+		</form>
 	</body>
 </html>
