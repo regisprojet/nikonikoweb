@@ -44,7 +44,7 @@ public class User extends SecurityUser {
     @Column(nullable = false)
 	private String registration_cgi;
 
-	@OneToMany
+	@OneToMany(mappedBy = "user")
 	private Set<NikoNiko> nikonikos;
 
 	@ManyToMany
@@ -57,16 +57,16 @@ public class User extends SecurityUser {
 
 	@ManyToMany
 	private Set<Function> functions;
-	
+
 	@JoinColumn(name="pole_id")
 	@OneToOne
 	private Pole pole;
-	
+
 	@JoinColumn(name="agency_id")
 	@OneToOne
 	private Agency agency;
 
-	
+
 	public Set<Function> getFunctions() {
 		return functions;
 	}
