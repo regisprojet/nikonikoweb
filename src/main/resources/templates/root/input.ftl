@@ -17,9 +17,13 @@
 					<div class="col-6" id="NikoTitle">
 					   <img src='./images/bandeau.png' alt='' id="logo">
 					</div>
-					<div class="col-4" id="VerticaleEquipe">
-						<p id="verticaleName">Verticale: ${verticale}</p>
-						<p id="teamName">Equipe: ${equipe}</p>
+					<div class="col-2" id="VerticaleEquipeTitre">
+						<p id="verticaleTitle">Verticale :</p>
+						<p id="teamName">Equipe :</p>
+					</div>
+					<div class="col-2" id="VerticaleEquipeName">
+						<p id="verticaleTitle">${verticale}</p>
+						<p id="teamTitle">${equipe}</p>
 					</div>
 					<div class="col-1">
 					</div>
@@ -78,7 +82,7 @@
 					</div>
 					<div class="col-1"></div>
 				</div>
-				<div class="row">
+				<div class="row" id="menu">
 					<div class="col-9"></div>
 					<div class="col-1">
 						<form action="quit" method="post" id="restitution" >

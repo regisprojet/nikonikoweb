@@ -9,16 +9,23 @@
 	border-left: 10px solid lightgrey;
 	border-right: 10px solid lightgrey;
 	margin-bottom: 10px;
+	padding-bottom: 10px;
 }
 
-#NikoTitle, #VerticaleEquipe {
+#NikoTitle, #VerticaleEquipeTitre, #VerticaleEquipeName {
  	border-bottom: 5px solid #E11836;
 	padding-top: 10px;
  	padding-bottom: 20px;
  }
 
- #VerticaleEquipe {
- 	text-align: left;
+#VerticaleEquipeTitre {
+	text-align: left;
+	color: #E11836;
+ 	font-size:25px;
+}
+
+ #VerticaleEquipeName {
+ 	text-align: right;
  	color: #E11836;
  	font-size:25px;
  }
@@ -34,15 +41,15 @@
  }
 #formulaire1 {
  	color: #E11836;
- 	padding-bottom: 40px;
+ 	padding-bottom: 10px;
  	padding-left: 40px;
  	padding-right: 40px;
  }
  #formulaire2 {
  	color: #E11836;
  	border-bottom: 5px solid #E11836;
- 	margin-bottom: 40px;
- 	padding-bottom: 40px;
+ 	margin-bottom: 20px;
+ 	padding-bottom: 20px;
  	padding-left: 40px;
  	padding-right: 40px;
  }
@@ -56,12 +63,10 @@
  }
 
  .button#valider {
- 	/*margin-left: 100px;*/
  	background-color: lightgrey;
- 	font-size:30px;
+ 	font-size:25px;
  	color: #E11836;
  	margin-top: 10px;
- 	/*float: right;*/
  }
 
  #connectezVous {
@@ -153,17 +158,15 @@ div #zone{
 	font-size: 35px;
  	font-weight: bolder;
  	color: #E11836;
- 	text-align: left;
- 	/*margin-left: 10px;*/
 }
 
 .dayQuestion {
-	font-size: 35px;
+	font-size: 25px;
 	font-weight: bolder;
  	color: #E11836;
 	text-align: left;
 	margin-left: 10px;
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 }
 
 .butPrecSuiv {
