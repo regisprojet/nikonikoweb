@@ -187,7 +187,7 @@ div #zone{
     height:50px;
 }
 
-#deconnexion input[type=submit]{
+#deconnexion {
 	background:url('../images/quit2.png') no-repeat;
 	cursor:pointer;
     border:none;
