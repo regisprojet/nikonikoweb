@@ -48,10 +48,7 @@
 								<div class="col-1"></div>
 								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
 								<input type="hidden" id="newDayDateStr" name="newDayDateStr" value=${newDayDate?string("yyyy-MM-dd-HH-mm-ss")}>
-<<<<<<< HEAD
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-=======
->>>>>>> denis
 							</div>
 						</form>
 					</div>
@@ -65,11 +62,7 @@
 								<p> Bonjour ${prenomUser} ${nomUser}, <p>
 								<p>Comment s'est passée votre journée ?</p>
 							</div>
-<<<<<<< HEAD
 							<div class="row "nikoNikoDuJour">
-=======
-							<div class="row "nikoNikoDuJour"">
->>>>>>> denis
 								<div class="col-3" id="nikoImg">
 									<canvas id="canvas" width="100" height="100"></canvas>
 								</div>
@@ -83,14 +76,10 @@
 								<input type="hidden" id="isanonymous" name="is_anonymous" value=${isanonymous?c}>
 								<input type="hidden" id="nikoId" name="nikoId" value=${nikoId}>
 								<input type="hidden" id="log_date" name="Log_date" value=${log_date?string("yyyy/MM/dd HH:mm:ss")}>
-<<<<<<< HEAD
 								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
 								<!--#include "../includable/security/securityToken.ft"-->
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							</div>
-=======
-								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>							</div>
->>>>>>> denis
 						 </form>
 					</div>
 					<div class="col-1"></div>
