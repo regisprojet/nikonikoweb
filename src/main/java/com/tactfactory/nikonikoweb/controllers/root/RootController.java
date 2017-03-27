@@ -264,7 +264,7 @@ public class RootController {
 	    }
 		for (SecurityRole role : user.getRoles()) {
 			if(role.getRole().equals("ROLE_ADMIN")) {
-				return "redirect:/admin";
+				return "redirect:/admin/user/index";
 			}
 			else if(role.getRole().equals("ROLE_USER")) {
 				return "redirect:/inputNiko";
@@ -359,13 +359,4 @@ public class RootController {
 		return "redirect:/home";
 	}
 
-//	@RequestMapping(path = { "/" }, method = RequestMethod.GET)
-//	public String root(Model model) {	
-//		UserDetails userDetails =
-//			 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		if(userDetails==null) {
-//			return "security/login";
-//		}
-//		return "root/home";
-//	}
 }

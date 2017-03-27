@@ -58,9 +58,7 @@ public class InputNikoNikoController {
 	@Secured("ROLE_USER")
 	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
-		model.addAttribute("page", "inputNikoNiko");
-		model.addAttribute("equipe", "teamName");
-		model.addAttribute("verticale", "verticaleName");
+
 
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -69,6 +67,10 @@ public class InputNikoNikoController {
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 
+		model.addAttribute("page", "inputNikoNiko");
+		model.addAttribute("equipe", "teamName");
+		model.addAttribute("verticale", "verticaleName");
+		
 		String nikoComment="";
 		int nikoSatisfaction = 0;
 		Long nikoId = 0l; //prend la valeur de l'id du nikoniko existant

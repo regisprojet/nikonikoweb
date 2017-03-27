@@ -32,10 +32,6 @@ import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 @RequestMapping("/")
 public class SecurityController {
 
-		//public static String inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
-		InputNikoNikoController inputNiko = new InputNikoNikoController();
-		private final static String ROUTE_INPUT_PAGE = "toInputPage";
-
 		@Autowired
 		private UserDetailsService userService;
 
@@ -51,9 +47,8 @@ public class SecurityController {
 		@RequestMapping(path = "/login", method =  RequestMethod.POST)
 		public String loginPost() {
 			// pourquoi cette fonction n'est pas appelée?
-			return inputNiko.getInputNikoRedirect();
+			return "root/inputNiko";
 		}
-
 
 		@RequestMapping(path ="/logout", method =  RequestMethod.GET)
 		public String logout(HttpServletRequest request, HttpServletResponse response) {
