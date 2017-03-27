@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
@@ -29,8 +35,10 @@ import com.tactfactory.nikonikoweb.models.Function;
 import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
+import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 
 @Controller
+@SessionAttributes("thought")
 @RequestMapping(RootController.BASE_URL)
 public class RootController {
 
@@ -195,16 +203,6 @@ public class RootController {
 		return "redirect:/login";
 	}
 
-	@Secured(value={"ROLE_ADMIN","ROLE_USER"})
-	@RequestMapping(path = { "/home" }, method = RequestMethod.GET)
-	public String home(Model model) {
-		UserDetails userDetails =
-				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userCrud.findByLogin(userDetails.getUsername());
-		
-		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
-		return "root/home";
-	}
 
 	@RequestMapping(path = { "logout2" }, method = RequestMethod.GET)
 	public String logoutGet(@ModelAttribute SecurityLogin securityLogin,
@@ -214,14 +212,16 @@ public class RootController {
 		return "redirect:/login";
 	}
 	
-	@RequestMapping(value = { "admin2" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/admin2" }, method = RequestMethod.GET)
 	public String adminGet(Model model) {
 		Environment environment = Environment.getInstance();
 		model.addAttribute("abilities", environment.getAbilities());
 		return "root/admin";
 	}
 
-	@RequestMapping(value = { "user2" }, method = RequestMethod.GET)
+	
+	@Secured(value={"ROLE_ADMIN","ROLE_USER", "ROLE_VIP"})
+	@RequestMapping(value = { "/user2" }, method = RequestMethod.GET)
 	public String userGet(Model model) {
 		Environment environment = Environment.getInstance();
 		User currentUser = environment.getCurrentUser();
@@ -236,36 +236,127 @@ public class RootController {
 		return "root/user";
 	}
 
-
-	@RequestMapping(value = { "multifunction" }, method = RequestMethod.GET)
+	@Secured(value={"ROLE_ADMIN","ROLE_USER", "ROLE_VIP"})
+	@RequestMapping(value = { "/multifunction" }, method = RequestMethod.GET)
 	public String multifunctionGet(Model model) {
-		Environment environment = Environment.getInstance();
-		User currentUser = environment.getCurrentUser();
-		model.addAttribute("userName", currentUser.getFirstname()
-				+ " " + currentUser.getLastname().toUpperCase());
-		model.addAttribute("abilities", environment.getAbilities());
-		model.addAttribute("functions", environment.getFunctions());
-		BigInteger id= userCrud.poleIdById(currentUser.getId());
-		if(id==null) {
-			model.addAttribute("pole", "");
-		}
-		else {
-			Pole pole = poleCrud.findOne(id.longValue());
-
-			model.addAttribute("pole", pole.getName());
-		}
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		
+		model.addAttribute("username", user.getFirstname()
+				+ " " + user.getLastname().toUpperCase());
 		return "root/multifunction";
 	}
 
-	@RequestMapping(value = { "vip" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/", "/redirect" }, method = RequestMethod.GET)
+	public String redirect(Model model) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(userDetails==null) {
+			return "security/login";
+		}
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		model.addAttribute("username", user.getFirstname() + " " + user.getLastname());
+		
+		if(user.getRoles().size()>1) {
+			System.out.println("plusieurs roles");
+			return "root/multifunction";
+	    }
+		for (SecurityRole role : user.getRoles()) {
+			if(role.getRole().equals("ROLE_ADMIN")) {
+				return "redirect:/admin/user/index";
+			}
+			else if(role.getRole().equals("ROLE_USER")) {
+				return "redirect:/inputNiko";
+			}
+			else if(role.getRole().equals("ROLE_VIP")) {
+				return "redirect:/vip";
+			}
+		}
+
+		return "root/redirect";
+	}
+
+	@Secured(value={"ROLE_VIP"})
+	@RequestMapping(value = { "/vip" }, method = RequestMethod.GET)
 	public String vipGet(Model model) {
-		Environment environment = Environment.getInstance();
-		User currentUser = environment.getCurrentUser();
-		model.addAttribute("userName", currentUser.getFirstname()
-				+ " " + currentUser.getLastname().toUpperCase());
-		model.addAttribute("abilities", environment.getAbilities());
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		
+		model.addAttribute("username", user.getFirstname()
+				+ " " + user.getLastname().toUpperCase());
+		//model.addAttribute("abilities", environment.getAbilities());
 
 		return "root/vip";
+	}
+	
+	@Secured(value={"ROLE_USER"})
+	@RequestMapping(path = { "/home" }, method = RequestMethod.GET)
+	public ModelAndView homeGet(/*@RequestParam String thoughtParam*/) {
+		ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("thought", thoughtParam);
+		modelAndView.setViewName("root/home");
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		
+		modelAndView.addObject("username",user.getFirstname()+" "+user.getLastname());
+		return modelAndView;
+	}
+
+	@Secured(value={"ROLE_USER"})
+	@RequestMapping(path = { "/home" }, method = RequestMethod.POST)
+	public String homePost(Model model) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		
+		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
+		return "redirect:/home2";
+	}
+
+	@Secured(value={"ROLE_USER"})
+	@RequestMapping(path = { "/home2" }, method = RequestMethod.GET)
+	public String home2Get(Model model) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		
+		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
+		return "root/home2";
+	}
+
+	// add by Régis
+	@Secured(value={"ROLE_ADMIN","ROLE_USER", "ROLE_VIP"})
+	@RequestMapping(path ="/loginbis", method =  RequestMethod.POST)
+	public String loginBisPost(
+			HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute SecurityLogin securityLogin, 	Model model
+			
+//    	HttpSession session, @ModelAttribute("SecurityLogin") @Valid SecurityLogin securityLogin,
+//        BindingResult result, Model model, final RedirectAttributes redirectAttributes
+
+        ) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		if(user.getRoles().size()>1) {
+			System.out.println("plusieurs roles");
+			return "redirect:/multifunction";
+		}
+		for (SecurityRole role : user.getRoles()) {
+				if(role.getRole().equals("ROLE_ADMIN")) {
+					return "redirect:/admin";
+				}
+				else if(role.getRole().equals("ROLE_USER")) {
+					return "redirect:/inputNiko";
+				}
+				else if(role.getRole().equals("ROLE_VIP")) {
+					return "redirect:/vip";
+				}
+		}
+		return "redirect:/home";
 	}
 
 }

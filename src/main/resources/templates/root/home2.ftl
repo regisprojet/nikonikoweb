@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/css/custom.css"/>
 </head>
 <body>
-    <h1> Bienvenue ${username} </h1>
-
+    <h1> Bienvenue à home2 ${username} </h1>
+ 
+ 
 </body>

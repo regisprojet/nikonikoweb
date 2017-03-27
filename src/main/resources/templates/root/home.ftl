@@ -9,4 +9,16 @@
 <body>
     <h1> Bienvenue ${username} </h1>
  
+     <form action="home" method="POST">
+   
+        <input type='text' name='humeur' value=""/>
+
+        <input type="hidden"
+            name="${_csrf.parameterName}"
+            value="${_csrf.token}"/>
+        <input name="submit" type="submit">
+  
+
+    </form>
+ 
 </body>

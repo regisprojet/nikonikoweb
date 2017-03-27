@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/css/custom.css"/>
 </head>
 <body>
-    <h1> page d'administration </h1>
+    <h1> bienvenue administrateur </h1>
     <a href="admin/adduser">ajouter un utilisateur</a><br>
     <a href="admin/listuser">afficher la liste des utilisateurs</a><br>
     
