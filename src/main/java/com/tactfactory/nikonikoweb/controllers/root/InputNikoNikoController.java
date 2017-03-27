@@ -157,9 +157,15 @@ public class InputNikoNikoController {
 	@RequestMapping(value = "/quit" , method = RequestMethod.POST)
 	public String inputNikoLogoutPost( Model model) {
 
-		System.err.println("  Coucou envoi" );
-
 		return "login";
+	}
+
+
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/calendar" , method = RequestMethod.POST)
+	public String inputNikoRestPost( Model model) {
+
+		return "calendar";
 	}
 
 }

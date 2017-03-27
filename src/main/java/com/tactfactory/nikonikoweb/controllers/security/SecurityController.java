@@ -28,48 +28,10 @@ import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
 @Controller
 public class SecurityController {
 
-		//public static String inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
-		InputNikoNikoController inputNiko = new InputNikoNikoController();
-		private final static String ROUTE_INPUT_PAGE = "toInputPage";
-
-	    // add by Régis
-		@Autowired
-		private UserDetailsService userService;
-
-        // add by Régis
-		@Autowired
-		private IUserCrudRepository userCrud;
-
 		@RequestMapping(path ="/login", method =  RequestMethod.GET)
 		public String loginGet() {
 			return "root/login";
 		}
-
-		// add by Denis
-		@RequestMapping(path = "/login", method =  RequestMethod.POST)
-		public String loginPost() {
-			return inputNiko.getInputNikoRedirect();
-		}
-
-		// add by Régis
-		/*@Secured(value={"ROLE_ADMIN","ROLE_USER"})
-		@RequestMapping(path ="/login", method =  RequestMethod.POST)
-		public String loginPost(
-//				HttpServletRequest request, HttpServletResponse response,
-//				@ModelAttribute SecurityLogin securityLogin, 	Model model)
-			HttpSession session, @ModelAttribute("SecurityLogin") SecurityLogin securityLogin,
-	        BindingResult result, Model model, final RedirectAttributes redirectAttributes
-	        ) {
-			UserDetails userDetails =
-					 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			User user2 = userCrud.findByLogin(userDetails.getUsername());
-
-
-			return "redirect:/home";
-		}*/
-
-
-
 
 		@RequestMapping(path ="/logout", method =  RequestMethod.GET)
 		public String logout(HttpServletRequest request, HttpServletResponse response) {

@@ -33,7 +33,7 @@
 				  				<input type="password" name="password">
 							</div>
 							<div class="formField">
-								<input type="submit" value="valider"/>
+								<input type="submit" value="valider2"/>
 							</div>
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			  			</form>

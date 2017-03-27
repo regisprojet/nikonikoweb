@@ -57,7 +57,7 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 	}
 
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = { PATH, ROUTE_LIST }, method = RequestMethod.GET)
+	@RequestMapping(value = ROUTE_LIST, method = RequestMethod.GET)
 	public String index(Model model) {
 		model.addAttribute("page", this.baseName + " " + LIST_ACTION);
 		model.addAttribute("fields",
