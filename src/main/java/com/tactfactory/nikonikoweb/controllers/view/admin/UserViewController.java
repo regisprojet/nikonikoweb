@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tactfactory.nikonikoweb.controllers.base.view.ViewBaseController;
 import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.ISecurityRoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.ITeamCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
+import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.Team;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityRole;
@@ -107,6 +109,9 @@ public class UserViewController extends ViewBaseController<User> {
 
 	@Autowired
 	ISecurityRoleCrudRepository securityRoleCrud;
+	
+	@Autowired
+	IPoleCrudRepository poleCrud;
 
 	//@Secured("ROLE_PROJECTLEADER")
 	@RequestMapping(path = ROUTE_INDEX, method = RequestMethod.GET)
@@ -297,5 +302,21 @@ public class UserViewController extends ViewBaseController<User> {
 		model.addAttribute("items", DumpFields
 				.<SecurityRole> listFielder(new ArrayList<SecurityRole>(user.getRoles())));
 		return PATH_SECURITYROLES;
+	}
+
+	//@Secured("ROLE_ADMIN")
+	@RequestMapping(path = {"{userId}/polelink"}, method = RequestMethod.GET)
+	public String getSecurityPoleForUser(Model model, @PathVariable Long userId) {
+		User user = super.getItem(userId);
+		model.addAttribute("page",
+				user.getLastname() + " " + user.getFirstname() + " security pole");
+		model.addAttribute("fields", Pole.FIELDS);
+		model.addAttribute("currentItem", DumpFields.fielder(user));
+		model.addAttribute("linkedItem", DumpFields.fielder(user.getPole()));
+		
+		List<Pole> poles = (List<Pole>) poleCrud.findAll();
+		model.addAttribute("items", DumpFields.<Pole> listFielder(poles));
+		
+		return "base/associationMultiEdit";
 	}
 }

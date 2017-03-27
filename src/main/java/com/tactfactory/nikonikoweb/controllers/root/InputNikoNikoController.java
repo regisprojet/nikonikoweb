@@ -66,11 +66,16 @@ public class InputNikoNikoController {
 
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
-
+		
 		model.addAttribute("page", "inputNikoNiko");
 		model.addAttribute("equipe", "teamName");
-		model.addAttribute("verticale", "verticaleName");
-
+		if(currentUser.getPole()!=null) {
+			model.addAttribute("verticale", currentUser.getPole().getName());
+		}
+		else {
+			model.addAttribute("verticale", "verticaleName");
+		}
+		
 		String nikoComment="";
 		int nikoSatisfaction = 0;
 		Long nikoId = 0l; //prend la valeur de l'id du nikoniko existant
