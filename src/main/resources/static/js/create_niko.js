@@ -11,6 +11,19 @@ function createNiko(satisfaction,divId,canvasId,scale,clic,colHappy,colSad,colSo
 	 var canvas = document.getElementById(canvasId);
 	 var ctx = canvas.getContext("2d");
 
+	if(clic==true) {
+		if(satisfaction==-1)
+			satisfaction=0;
+		else if(satisfaction==0)
+			satisfaction=1;
+		else if (satisfaction==1)
+			satisfaction=2;
+		else if (satisfaction==2)
+			satisfaction=3;
+		else if (satisfaction==3)
+			satisfaction=1;
+		}
+
 	 if(satisfaction==1) {
 	 	ctx.fillStyle = colHappy;
 	 } else if(satisfaction==2) {
@@ -75,43 +88,28 @@ function createNiko(satisfaction,divId,canvasId,scale,clic,colHappy,colSad,colSo
 	    ctx.stroke();
      }
 
+
 	if(clic==true) {
-		if(satisfaction==-1)
-		satisfaction=0;
-		else if(satisfaction==0)
-			satisfaction=1;
-		else if (satisfaction==1)
-			satisfaction=2;
-		else if (satisfaction==2)
-			satisfaction=3;
-		else if (satisfaction==3)
-			satisfaction=1;
 		console.log("callCreateNiko("+  divId + "," + satisfaction + ")");
-		canvas.setAttribute("onclick","callCreateNiko('"+  divId + "'," + satisfaction + ")");
-		//container.appendChild(canvas);
-		//container.scrollTop = container.scrollHeight;
+		canvas.setAttribute("onclick","callCreateNiko('"+  divId + "', 'no' ," + satisfaction + ")");
 	}
 
 
     /* renvoie de la valeur du nikoniko dans le input hidden de la page */
     /* ---------------------------------------------------------------- */
     document.getElementById("satisfaction").value = satisfaction;
-    //$("#${satisfaction}").val = satisfaction;
 }
 
-function callCreateNiko(divId,satisfaction) {
-	//alert("toto");
+function callCreateNiko(divId,init,satisfaction) {
 
-	/*if(satisfaction==-1)
-		satisfaction=0;
-	else if(satisfaction==0)
-		satisfaction=1;
-	else if (satisfaction==1)
-		satisfaction=2;
-	else if (satisfaction==2)
-		satisfaction=3;
-	else if (satisfaction==3)
-		satisfaction=1;*/
+	if(init=="yes") {
+		if (satisfaction==3)
+			satisfaction=2;
+		else if (satisfaction==2)
+			satisfaction=1;
+		else if (satisfaction==1)
+			satisfaction=3;
+	}
 
 	var canvas = "canvas";
 	createNiko(satisfaction,divId,canvas,1,true,"green","red","yellow");

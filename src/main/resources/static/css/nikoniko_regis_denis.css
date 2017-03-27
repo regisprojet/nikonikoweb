@@ -9,18 +9,37 @@
 	border-left: 10px solid lightgrey;
 	border-right: 10px solid lightgrey;
 	margin-bottom: 10px;
+	padding-bottom: 10px;
+	color: #E11836;
 }
 
-#NikoTitle, #VerticaleEquipe {
+#NikoTitle {
  	border-bottom: 5px solid #E11836;
 	padding-top: 10px;
  	padding-bottom: 20px;
+ 	font-size:25px;
  }
 
- #VerticaleEquipe {
- 	text-align: left;
- 	color: #E11836;
+.NikoInputTitle {
+ 	border-bottom: 5px solid #E11836;
+	padding-top: 10px;
+ 	padding-bottom: 20px;
  	font-size:25px;
+ 	min-height: 130px;
+ }
+
+#VerticaleEquipeTitre {
+	text-decoration: underline;
+ 	font-size:25px;
+	text-align: right;
+	font-weight: bold;
+}
+
+ #VerticaleEquipeName {
+ 	/*padding-top: 10px;
+ 	padding-bottom: 20px;*/
+ 	font-size:25px;
+ 	text-align: left;
  }
 
  #logo {
@@ -34,15 +53,15 @@
  }
 #formulaire1 {
  	color: #E11836;
- 	padding-bottom: 40px;
+ 	padding-bottom: 10px;
  	padding-left: 40px;
  	padding-right: 40px;
  }
  #formulaire2 {
  	color: #E11836;
  	border-bottom: 5px solid #E11836;
- 	margin-bottom: 40px;
- 	padding-bottom: 40px;
+ 	margin-bottom: 20px;
+ 	padding-bottom: 20px;
  	padding-left: 40px;
  	padding-right: 40px;
  }
@@ -56,12 +75,10 @@
  }
 
  .button#valider {
- 	/*margin-left: 100px;*/
  	background-color: lightgrey;
- 	font-size:30px;
+ 	font-size:25px;
  	color: #E11836;
  	margin-top: 10px;
- 	/*float: right;*/
  }
 
  #connectezVous {
@@ -78,13 +95,50 @@
  #logo2 {
  	width: 40%;
  }
+ #jourPreced {
+	background:url("../images/preced.png") no-repeat;
+	cursor:pointer;
+    border:none;
+    width:50px;
+    height:50px;
+}
+#joursuivant {
+	background:url("../images/suiv.png") no-repeat;
+	cursor:pointer;
+    border:none;
+    width:50px;
+    height:50px;
+}
+
+#deconnexion {
+	background:url('../images/deconnect.png') no-repeat;
+	cursor:pointer;
+    border:none;
+    width: 50px;
+    height: 50px;
+ }
+
+#restitution {
+	background:url('../images/resultat_50.png') no-repeat;
+	cursor:pointer;
+    border:none;
+    width: 50px;
+    height: 50px;
+}
+#inputNiko {
+	background:url('../images/vote_50.png') no-repeat;
+	cursor:pointer;
+    border:none;
+    width: 50px;
+    height: 50px;
+}
 .inputText {
 	padding-bottom: 10px;
 }
 #inputMenue {
  	padding-bottom: 70px;
  }
-#consultMenue {
+#restMenue {
  	padding-bottom: 70px;
  }
 #quitMenue {
@@ -111,6 +165,8 @@ div #zone{
 #NikoFooter {
 	margin-bottom: 20px;
 	margin-top: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
 	border-bottom: 5px solid #E11836;
 }
 .Colonne {
@@ -153,17 +209,15 @@ div #zone{
 	font-size: 35px;
  	font-weight: bolder;
  	color: #E11836;
- 	/*text-align: left;*/
- 	/*margin-left: 10px;*/
 }
 
 .dayQuestion {
-	font-size: 35px;
+	font-size: 25px;
 	font-weight: bolder;
  	color: #E11836;
 	text-align: left;
 	margin-left: 10px;
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 }
 
 .butPrecSuiv {
@@ -172,35 +226,4 @@ div #zone{
 	vertical-align: middle;*/
 	padding-top: 10px;
 }
-#jourPreced {
-	background:url("../images/preced.png") no-repeat;
-	cursor:pointer;
-    border:none;
-    width:50px;
-    height:50px;
-}
-#joursuivant {
-	background:url("../images/suiv.png") no-repeat;
-	cursor:pointer;
-    border:none;
-    width:50px;
-    height:50px;
-}
-
-#deconnexion input[type=submit]{
-	background:url('../images/deconnect.png') no-repeat;
-	cursor:pointer;
-    border:none;
-    width:500px;
-    height: 50px;
- }
-
-
-#restitution{
-	background:url('../images/resultat_50.png') no-repeat;
-	cursor:pointer;
-    border:none;
-    width:500px;
-    height: 50px;
- }
 

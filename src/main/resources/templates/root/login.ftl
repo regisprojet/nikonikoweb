@@ -2,20 +2,20 @@
   <body>
 	<div class="container" id="container">
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-lg-12">
 				<div class="row" id="connect">
-					<div class="col-sm-1">
+					<div class="col-lg-1">
 					</div>
-					<div class="col-sm-10" id="NikoTitle">
+					<div class="col-lg-10" id="NikoTitle">
 						<!--img src='images/bandeau.png' alt='' id="logo"-->
 						<span>CGI NikoNiko</span>
 					</div>
-					<div class="col-sm-1">
+					<div class="col-lg-1">
 					</div>
 				</div>
 				<div class="row">
-				<div class="col-sm-1"></div>
-					<div class="col-sm-10">
+				<div class="col-lg-1"></div>
+					<div class="col-lg-10">
 			 			<form  ENCTYPE="multipart/form-data" method="post" action="">
 					  		<div id="connectezVous">
 				  				<span >Connectez-vous :</span>
@@ -33,7 +33,7 @@
 				  				<input type="password" name="password">
 							</div>
 							<div class="formField">
-								<input type="submit" value="valider2"/>
+								<input type="submit" value="valider"/>
 							</div>
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			  			</form>

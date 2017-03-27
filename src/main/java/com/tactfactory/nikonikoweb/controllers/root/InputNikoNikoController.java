@@ -52,9 +52,6 @@ public class InputNikoNikoController {
 	@Autowired
 	private IPoleCrudRepository poleCrud;
 
-	@Autowired
-	private INikoNikoCrudRepository nikoCrud;
-
 	@Secured("ROLE_USER")
 	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
@@ -69,7 +66,13 @@ public class InputNikoNikoController {
 
 		model.addAttribute("page", "inputNikoNiko");
 		model.addAttribute("equipe", "teamName");
-		model.addAttribute("verticale", "verticaleName");
+
+		if(currentUser.getPole()!=null) {
+			model.addAttribute("verticale", currentUser.getPole().getName());
+		}
+		else {
+			model.addAttribute("verticale", "verticaleName");
+		}
 
 		String nikoComment="";
 		int nikoSatisfaction = 0;
@@ -169,7 +172,7 @@ public class InputNikoNikoController {
 
 
 	@Secured("ROLE_USER")
-	@RequestMapping(value = "/calendar" , method = RequestMethod.POST)
+	@RequestMapping(value = "/calendar2" , method = RequestMethod.POST)
 	public String inputNikoRestPost( Model model) {
 
 		return "calendar";
