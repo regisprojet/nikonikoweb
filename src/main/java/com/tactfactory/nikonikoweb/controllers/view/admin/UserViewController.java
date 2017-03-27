@@ -306,7 +306,7 @@ public class UserViewController extends ViewBaseController<User> {
 
 	//@Secured("ROLE_ADMIN")
 	@RequestMapping(path = {"{userId}/polelink"}, method = RequestMethod.GET)
-	public String getSecurityPoleForUser(Model model, @PathVariable Long userId) {
+	public String getPoleForUser(Model model, @PathVariable Long userId) {
 		User user = super.getItem(userId);
 		model.addAttribute("page",
 				user.getLastname() + " " + user.getFirstname() + " security pole");
@@ -317,6 +317,6 @@ public class UserViewController extends ViewBaseController<User> {
 		List<Pole> poles = (List<Pole>) poleCrud.findAll();
 		model.addAttribute("items", DumpFields.<Pole> listFielder(poles));
 		
-		return "base/associationMultiEdit";
+		return "base/associationMonoShow";
 	}
 }
