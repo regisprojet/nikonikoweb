@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -36,7 +37,7 @@ public class NikoNiko extends DatabaseItem {
 	private String comment;
 
 	@Column(name = "isanonymous", nullable = false)
-	private Boolean isAnonymous;
+	private boolean isAnonymous;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id")
@@ -112,9 +113,9 @@ public class NikoNiko extends DatabaseItem {
 	 * @return the isAnonymous
 	 */
 	public Boolean getIsAnonymous() {
-		if (this.isAnonymous == null) {
+		/*if (this.isAnonymous == null) {
 			this.isAnonymous = true;
-		}
+		}*/
 		return isAnonymous;
 	}
 

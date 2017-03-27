@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,16 +56,26 @@ public class InputNikoNikoController {
 	private INikoNikoCrudRepository nikoCrud;
 
 	@Secured("ROLE_USER")
-	@RequestMapping(path = {PATH, ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
+	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
-		model.addAttribute("page", "inputNikoNiko");
-		model.addAttribute("equipe", "teamName");
-		model.addAttribute("verticale", "verticaleName");
 
-		User currentUser =  userCrud.findOne(userId);
+
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User currentUser = userCrud.findByLogin(userDetails.getUsername());
+
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
-
+		
+		model.addAttribute("page", "inputNikoNiko");
+		model.addAttribute("equipe", "teamName");
+		if(currentUser.getPole()!=null) {
+			model.addAttribute("verticale", currentUser.getPole().getName());
+		}
+		else {
+			model.addAttribute("verticale", "verticaleName");
+		}
+		
 		String nikoComment="";
 		int nikoSatisfaction = 0;
 		Long nikoId = 0l; //prend la valeur de l'id du nikoniko existant
@@ -128,7 +140,7 @@ public class InputNikoNikoController {
 			nikoNikoCrud.save(nikoNiko);
 		}
 
-		// initialisation de currentDate à la date courante
+		// initialisation de currentDate ï¿½ la date courante
 		// ------------------------------------------------
 		/*currentDate = new Date();*/
 

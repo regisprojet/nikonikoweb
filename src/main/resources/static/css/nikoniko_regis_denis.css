@@ -187,11 +187,18 @@ div #zone{
     height:50px;
 }
 
-#deconnexion input[type=submit]{
-	background:url('../images/quit2.png') no-repeat;
+#deconnexion {
+	background:url('../images/deconnect.png') no-repeat;
 	cursor:pointer;
     border:none;
     width:500px;
     height: 50px;
  }
 
+#restitution {
+	background:url('../images/resultat_50.png') no-repeat;
+	cursor:pointer;
+    border:none;
+    width:500px;
+    height: 50px;
+}

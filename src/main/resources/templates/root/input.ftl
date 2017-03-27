@@ -79,33 +79,26 @@
 					<div class="col-1"></div>
 				</div>
 				<div class="row">
-					<div class="col-1"></div>
-					<div class="col-11">
-						<form action="quit" method="post" id="deconnexion">
-							<div id="quitMenue">
-								<input type="submit" class="image" id="deconnexion">
+					<div class="col-9"></div>
+					<div class="col-1">
+						<form action="quit" method="post" id="restitution" >
+							<div id="restMenue">
+								<input type="submit" class="menu_button" id="restitution" value="">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							</div>
 						</form>
 					</div>
-				</div>
-			<!--/div>
-			<div class="col-2 rightArea">
-				<div id="inputMenue">
-					<a href="input.html">
-					<img src='./images/vote.png' alt='' class="imgMenue"></a>
-				</div>
-				<div id="consultMenue">
-					<a href="calendrier.html">
-					<img src='./images/resultat.png' alt='' class="imgMenue"></a>
-				</div>
-
-				<form action="" method="post" id="deconnexion">
-					<div id="quitMenue">
-						<input type="submit" class="image" id="deconnexion">
+					<div class="col-1">
+						<form action="quit" method="post" id="deconnexion">
+							<div id="quitMenue">
+								<input type="submit" class="menu_button" id="deconnexion" value="">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							</div>
+						</form>
 					</div>
-				</form>
-			</div-->
+					<div class="col-1"></div>
+				</div>
+			</div>
 		</div>
     </div>
 

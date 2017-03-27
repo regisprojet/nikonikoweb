@@ -18,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
@@ -35,6 +38,7 @@ import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
 import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 
 @Controller
+@SessionAttributes("thought")
 @RequestMapping(RootController.BASE_URL)
 public class RootController {
 
@@ -244,6 +248,35 @@ public class RootController {
 		return "root/multifunction";
 	}
 
+	@RequestMapping(path = { "/", "/redirect" }, method = RequestMethod.GET)
+	public String redirect(Model model) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(userDetails==null) {
+			return "security/login";
+		}
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		model.addAttribute("username", user.getFirstname() + " " + user.getLastname());
+		
+		if(user.getRoles().size()>1) {
+			System.out.println("plusieurs roles");
+			return "root/multifunction";
+	    }
+		for (SecurityRole role : user.getRoles()) {
+			if(role.getRole().equals("ROLE_ADMIN")) {
+				return "redirect:/admin/user/index";
+			}
+			else if(role.getRole().equals("ROLE_USER")) {
+				return "redirect:/inputNiko";
+			}
+			else if(role.getRole().equals("ROLE_VIP")) {
+				return "redirect:/vip";
+			}
+		}
+
+		return "root/redirect";
+	}
+
 	@Secured(value={"ROLE_VIP"})
 	@RequestMapping(value = { "/vip" }, method = RequestMethod.GET)
 	public String vipGet(Model model) {
@@ -260,13 +293,16 @@ public class RootController {
 	
 	@Secured(value={"ROLE_USER"})
 	@RequestMapping(path = { "/home" }, method = RequestMethod.GET)
-	public String homeGet(Model model) {
+	public ModelAndView homeGet(/*@RequestParam String thoughtParam*/) {
+		ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("thought", thoughtParam);
+		modelAndView.setViewName("root/home");
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
 		
-		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
-		return "root/home";
+		modelAndView.addObject("username",user.getFirstname()+" "+user.getLastname());
+		return modelAndView;
 	}
 
 	@Secured(value={"ROLE_USER"})
@@ -304,16 +340,17 @@ public class RootController {
         ) {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user2 = userCrud.findByLogin(userDetails.getUsername());
-		if(user2.getRoles().size()>1) {
-				return "redirect:/multifonction";
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		if(user.getRoles().size()>1) {
+			System.out.println("plusieurs roles");
+			return "redirect:/multifunction";
 		}
-		for (SecurityRole role : user2.getRoles()) {
+		for (SecurityRole role : user.getRoles()) {
 				if(role.getRole().equals("ROLE_ADMIN")) {
 					return "redirect:/admin";
 				}
 				else if(role.getRole().equals("ROLE_USER")) {
-					return "redirect:/home";
+					return "redirect:/inputNiko";
 				}
 				else if(role.getRole().equals("ROLE_VIP")) {
 					return "redirect:/vip";
@@ -322,6 +359,4 @@ public class RootController {
 		return "redirect:/home";
 	}
 
-
-	
 }

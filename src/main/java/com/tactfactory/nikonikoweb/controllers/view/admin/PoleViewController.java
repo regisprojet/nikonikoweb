@@ -11,6 +11,9 @@ public class PoleViewController extends ViewBaseController<Pole>{
 
 	public final static String BASE_URL = "/admin/pole";
 
+	
+	
+	
 	public PoleViewController() {
 		super(Pole.class, BASE_URL);
 	}

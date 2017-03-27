@@ -17,7 +17,7 @@ public interface IUserCrudRepository extends IBaseCrudRepository<User>{
 	public List<User> findAllByLogin(@Param("login") String login);
 
 	public User findByLogin(String login);
-	
+
 	@Query(value = "SELECT f.name FROM user_function uf,function f WHERE uf.User_id=:id AND uf.functions_id=f.id", nativeQuery = true)
 	public String functionById(@Param("id") long id);
 
@@ -31,13 +31,9 @@ public interface IUserCrudRepository extends IBaseCrudRepository<User>{
 	@Query(value = "SELECT pole_id FROM user u WHERE u.id=:id", nativeQuery = true)
 	public BigInteger poleIdById(@Param("id") long id);
 
-	/*@Query(value = "SELECT * from nikoniko INNER JOIN user_nikoniko ON nikoniko.id = user_nikoniko.nikonikos_id INNER JOIN user ON user.id = user_nikoniko.User_id WHERE user.id = :ident",
-			nativeQuery = true)
-	public Set<NikoNiko> getNikoNikoById(@Param("ident") long ident);*/
-
 	@Query(value = "SELECT nikonikos_id from user_nikoniko INNER JOIN user ON user_nikoniko.User_id = user.id WHERE user.id = :ident",
 			nativeQuery = true)
 	public Set<BigInteger> getNikoNikoById(@Param("ident") long ident);
 
-	
+	/*public Set<BigInteger> getUser_NikoNikobyId(@Param("ident") long ident);*/
 }
