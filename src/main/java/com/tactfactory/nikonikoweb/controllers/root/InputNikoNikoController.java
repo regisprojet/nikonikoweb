@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -60,7 +62,10 @@ public class InputNikoNikoController {
 		model.addAttribute("equipe", "teamName");
 		model.addAttribute("verticale", "verticaleName");
 
-		User currentUser =  userCrud.findOne(userId);
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User currentUser = userCrud.findByLogin(userDetails.getUsername());
+		
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 
@@ -128,7 +133,7 @@ public class InputNikoNikoController {
 			nikoNikoCrud.save(nikoNiko);
 		}
 
-		// initialisation de currentDate à la date courante
+		// initialisation de currentDate ï¿½ la date courante
 		// ------------------------------------------------
 		/*currentDate = new Date();*/
 

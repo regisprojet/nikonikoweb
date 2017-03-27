@@ -54,6 +54,25 @@ public class SecurityController {
 		// add by Denis
 		@RequestMapping(path = "/login", method =  RequestMethod.POST)
 		public String loginPost() {
+			UserDetails userDetails =
+					 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			User user = userCrud.findByLogin(userDetails.getUsername());
+
+			if(user.getRoles().size()>1) {
+				return "redirect:/multifonction";
+		    }
+			for (SecurityRole role : user.getRoles()) {
+				if(role.getRole().equals("ROLE_ADMIN")) {
+					return "redirect:/admin";
+				}
+				else if(role.getRole().equals("ROLE_USER")) {
+					return inputNiko.getInputNikoRedirect();
+				}
+				else if(role.getRole().equals("ROLE_VIP")) {
+					return "redirect:/vip";
+				}
+			}
+			
 			return inputNiko.getInputNikoRedirect();
 		}
 

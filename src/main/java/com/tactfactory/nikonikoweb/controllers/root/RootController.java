@@ -18,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
@@ -35,6 +38,7 @@ import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
 import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 
 @Controller
+@SessionAttributes("thought")
 @RequestMapping(RootController.BASE_URL)
 public class RootController {
 
@@ -260,13 +264,16 @@ public class RootController {
 	
 	@Secured(value={"ROLE_USER"})
 	@RequestMapping(path = { "/home" }, method = RequestMethod.GET)
-	public String homeGet(Model model) {
+	public ModelAndView homeGet(/*@RequestParam String thoughtParam*/) {
+		ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("thought", thoughtParam);
+		modelAndView.setViewName("root/home");
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
 		
-		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
-		return "root/home";
+		modelAndView.addObject("username",user.getFirstname()+" "+user.getLastname());
+		return modelAndView;
 	}
 
 	@Secured(value={"ROLE_USER"})
@@ -322,6 +329,4 @@ public class RootController {
 		return "redirect:/home";
 	}
 
-
-	
 }
