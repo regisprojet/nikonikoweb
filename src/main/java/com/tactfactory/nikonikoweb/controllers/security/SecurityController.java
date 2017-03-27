@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.tactfactory.nikonikoweb.controllers.root.InputNikoNikoController;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.User;
@@ -37,16 +36,13 @@ public class SecurityController {
 		InputNikoNikoController inputNiko = new InputNikoNikoController();
 		private final static String ROUTE_INPUT_PAGE = "toInputPage";
 
-	    // add by Régis
 		@Autowired
 		private UserDetailsService userService;
 
-        // add by Régis
 		@Autowired
 		private IUserCrudRepository userCrud;
 
 		@RequestMapping(path ="/login", method =  RequestMethod.GET)
-
 		public String loginGet() {
 			return "root/login";
 		}
@@ -54,60 +50,9 @@ public class SecurityController {
 		// add by Denis
 		@RequestMapping(path = "/login", method =  RequestMethod.POST)
 		public String loginPost() {
-			UserDetails userDetails =
-					 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			User user = userCrud.findByLogin(userDetails.getUsername());
-
-			if(user.getRoles().size()>1) {
-				return "redirect:/multifonction";
-		    }
-			for (SecurityRole role : user.getRoles()) {
-				if(role.getRole().equals("ROLE_ADMIN")) {
-					return "redirect:/admin";
-				}
-				else if(role.getRole().equals("ROLE_USER")) {
-					return inputNiko.getInputNikoRedirect();
-				}
-				else if(role.getRole().equals("ROLE_VIP")) {
-					return "redirect:/vip";
-				}
-			}
-			
+			// pourquoi cette fonction n'est pas appelée?
 			return inputNiko.getInputNikoRedirect();
 		}
-
-		// add by Régis
-
-		/*@Secured(value={"ROLE_ADMIN","ROLE_USER"})
-		@RequestMapping(path ="/login", method =  RequestMethod.POST)
-		public String submit(
-//				HttpServletRequest request, HttpServletResponse response,
-//				@ModelAttribute SecurityLogin securityLogin, 	Model model
-				
-//	    	HttpSession session, @ModelAttribute("SecurityLogin") @Valid SecurityLogin securityLogin,
-//	        BindingResult result, Model model, final RedirectAttributes redirectAttributes
-
-//				HttpSession session,
-//			@RequestParam("username") String username,
-//	        @RequestParam("password")  String password
-	     
-//			@ModelAttribute SecurityLogin securityLogin, Model model,
-//            HttpServletRequest request
-	        
-				HttpServletRequest request, HttpServletResponse response           
-            
-	        ) {
-	
-			System.out.println("coucou");
-			UserDetails userDetails =
-					 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			User user2 = userCrud.findByLogin(userDetails.getUsername());
-
-
-			return "redirect:/home";
-
-		}*/
-
 
 
 		@RequestMapping(path ="/logout", method =  RequestMethod.GET)

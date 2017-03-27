@@ -56,7 +56,7 @@ public class InputNikoNikoController {
 	private INikoNikoCrudRepository nikoCrud;
 
 	@Secured("ROLE_USER")
-	@RequestMapping(path = {PATH, ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
+	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
 		model.addAttribute("page", "inputNikoNiko");
 		model.addAttribute("equipe", "teamName");

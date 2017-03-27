@@ -248,6 +248,35 @@ public class RootController {
 		return "root/multifunction";
 	}
 
+	@RequestMapping(path = { "/", "/redirect" }, method = RequestMethod.GET)
+	public String redirect(Model model) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(userDetails==null) {
+			return "security/login";
+		}
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		model.addAttribute("username", user.getFirstname() + " " + user.getLastname());
+		
+		if(user.getRoles().size()>1) {
+			System.out.println("plusieurs roles");
+			return "root/multifunction";
+	    }
+		for (SecurityRole role : user.getRoles()) {
+			if(role.getRole().equals("ROLE_ADMIN")) {
+				return "redirect:/admin";
+			}
+			else if(role.getRole().equals("ROLE_USER")) {
+				return "redirect:/inputNiko";
+			}
+			else if(role.getRole().equals("ROLE_VIP")) {
+				return "redirect:/vip";
+			}
+		}
+
+		return "root/redirect";
+	}
+
 	@Secured(value={"ROLE_VIP"})
 	@RequestMapping(value = { "/vip" }, method = RequestMethod.GET)
 	public String vipGet(Model model) {
@@ -311,16 +340,17 @@ public class RootController {
         ) {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user2 = userCrud.findByLogin(userDetails.getUsername());
-		if(user2.getRoles().size()>1) {
-				return "redirect:/multifonction";
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		if(user.getRoles().size()>1) {
+			System.out.println("plusieurs roles");
+			return "redirect:/multifunction";
 		}
-		for (SecurityRole role : user2.getRoles()) {
+		for (SecurityRole role : user.getRoles()) {
 				if(role.getRole().equals("ROLE_ADMIN")) {
 					return "redirect:/admin";
 				}
 				else if(role.getRole().equals("ROLE_USER")) {
-					return "redirect:/home";
+					return "redirect:/inputNiko";
 				}
 				else if(role.getRole().equals("ROLE_VIP")) {
 					return "redirect:/vip";
@@ -329,4 +359,13 @@ public class RootController {
 		return "redirect:/home";
 	}
 
+//	@RequestMapping(path = { "/" }, method = RequestMethod.GET)
+//	public String root(Model model) {	
+//		UserDetails userDetails =
+//			 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		if(userDetails==null) {
+//			return "security/login";
+//		}
+//		return "root/home";
+//	}
 }
