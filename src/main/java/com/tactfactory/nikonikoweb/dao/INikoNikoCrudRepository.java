@@ -25,4 +25,8 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 
 	@Query(value = "SELECT * FROM nikoniko WHERE nikoniko.id NOT IN(SELECT nikoNikos_id FROM project_nikoniko)", nativeQuery = true)
 	List<NikoNiko> findWithoutProjectAssociate();
+
+	@Query(value = "SELECT * FROM nikoniko n WHERE n.user_id = :userId", nativeQuery = true)
+	public List<NikoNiko> getNikonikoByUserId(@Param("userId") Long userId);
+
 }

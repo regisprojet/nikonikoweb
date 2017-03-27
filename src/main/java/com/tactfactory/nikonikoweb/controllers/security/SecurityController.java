@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tactfactory.nikonikoweb.controllers.root.RootController;
+
+import com.tactfactory.nikonikoweb.controllers.root.InputNikoNikoController;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
@@ -32,21 +33,32 @@ import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 @RequestMapping("/")
 public class SecurityController {
 
+		//public static String inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
+		InputNikoNikoController inputNiko = new InputNikoNikoController();
+		private final static String ROUTE_INPUT_PAGE = "toInputPage";
+
 	    // add by Régis
 		@Autowired
 		private UserDetailsService userService;
-	
+
         // add by Régis
 		@Autowired
 		private IUserCrudRepository userCrud;
 
 		@RequestMapping(path ="/login", method =  RequestMethod.GET)
-		public String loginGet(HttpSession session) {
-			return "security/login";
+		public String loginGet() {
+			return "root/login";
 		}
-		
+
+		// add by Denis
+		@RequestMapping(path = "/login", method =  RequestMethod.POST)
+		public String loginPost() {
+			return inputNiko.getInputNikoRedirect();
+		}
+
 		// add by Régis
-		//@Secured(value={"ROLE_ADMIN","ROLE_USER", "ROLE_VIP"})
+		/*@Secured(value={"ROLE_ADMIN","ROLE_USER"})
+>>>>>>> denis_prj
 		@RequestMapping(path ="/login", method =  RequestMethod.POST)
 		public String submit(
 //				HttpServletRequest request, HttpServletResponse response,
@@ -70,13 +82,14 @@ public class SecurityController {
 			UserDetails userDetails =
 					 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			User user2 = userCrud.findByLogin(userDetails.getUsername());
-			
-			
-			return "redirect:/home";
-		}
 
-		
-		@RequestMapping(path ="/logout", method =  RequestMethod.GET)
+
+			return "redirect:/home";
+		}*/
+
+
+
+	@RequestMapping(path ="/logout", method =  RequestMethod.GET)
 		public String logout(HttpServletRequest request, HttpServletResponse response) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if(auth!=null) {

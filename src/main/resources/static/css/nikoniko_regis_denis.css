@@ -7,6 +7,7 @@
 	border-top: 10px solid lightgrey;
 	border-bottom: 10px solid lightgrey;
 	border-left: 10px solid lightgrey;
+	border-right: 10px solid lightgrey;
 	margin-bottom: 10px;
 }
 
@@ -55,12 +56,12 @@
  }
 
  .button#valider {
- 	margin-left: 100px;
+ 	/*margin-left: 100px;*/
  	background-color: lightgrey;
  	font-size:30px;
  	color: #E11836;
  	margin-top: 10px;
- 	float: right;
+ 	/*float: right;*/
  }
 
  #connectezVous {
@@ -136,22 +137,24 @@ div #zone{
 	margin-bottom: 10px;
 	background-color: yellow;
 	display:block;
-	float: left;
+	/*float: left;*/
 }
 #nikoComment {
 	width: 100%;
-	height: 100%;
+	height: 90%;
+	font-size: 20px;
 }
 #nikoImg {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 .divDateDuJour {
+	margin-top: 20px;
 	font-size: 35px;
  	font-weight: bolder;
  	color: #E11836;
  	text-align: left;
- 	margin-left: 10px;
+ 	/*margin-left: 10px;*/
 }
 
 .dayQuestion {
@@ -160,6 +163,7 @@ div #zone{
  	color: #E11836;
 	text-align: left;
 	margin-left: 10px;
+	margin-bottom: 50px;
 }
 
 .butPrecSuiv {
@@ -168,13 +172,26 @@ div #zone{
 	vertical-align: middle;*/
 	padding-top: 10px;
 }
+#jourPreced {
+	background:url("../images/preced.png") no-repeat;
+	cursor:pointer;
+    border:none;
+    width:50px;
+    height:50px;
+}
+#joursuivant {
+	background:url("../images/suiv.png") no-repeat;
+	cursor:pointer;
+    border:none;
+    width:50px;
+    height:50px;
+}
 
-#subLeft {
-   float: left;
-}
-#subRight {
-   float: right;
-}
-.clearBoth {
-   clear: both;
-}
+#deconnexion input[type=submit]{
+	background:url('../images/quit2.png') no-repeat;
+	cursor:pointer;
+    border:none;
+    width:500px;
+    height: 50px;
+ }
+
