@@ -78,7 +78,6 @@ public class ResultController {
 			int dayNiko = (calendar.get(calendar.DAY_OF_WEEK)-2)%7;
 			
 			long diff = (todayDate.getTime() - nikoDate.getTime())/ (1000 * 60 * 60 * 24);
-			System.out.println("diff = " + diff+ ", today = "+today);
 			if(diff<=today) {
 				if(niko.getSatisfaction()==1) {
 					greensWeek.set(dayNiko, greensWeek.get(dayNiko)+1);

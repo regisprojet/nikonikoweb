@@ -10,57 +10,59 @@
   <body>
     <div class="container" id="container">
 		<div class="row">
-			<div class="col-12">
-				<div class="row" id="connect">
-					<div class="col-1">
-					</div>
-					<div class="col-6" id="NikoTitle">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-1"></div>
+					<div class="col-xs-5 NikoInputTitle">
 					   <img src='./images/bandeau.png' alt='' id="logo">
 					</div>
-					<div class="col-4" id="VerticaleEquipe">
-						<p id="verticaleName">Verticale: ${verticale}</p>
-						<p id="teamName">Equipe: ${equipe}</p>
+					<div class="col-xs-2 NikoInputTitle" id="VerticaleEquipeTitre">
+						<p id="verticaleTitle">Verticale:</p>
+						<p id="teamName">Equipe:</p>
 					</div>
-					<div class="col-1">
+					<div class="col-xs-3 NikoInputTitle" id="VerticaleEquipeName">
+						<p id="verticaleTitle">${verticale}</p>
+						<p id="teamTitle">${equipe}</p>
 					</div>
+					<div class="col-xs-1"></div>
 				</div>
 				<div class="row">
-					<div class="col-1"></div>
-					<div class="col-10" id="formulaire1">
+					<div class="col-xs-1"></div>
+					<div class="col-xs-10" id="formulaire1">
 						<form  ENCTYPE="multipart/form-data" method="post" action="inputDateSave">
 							<div class="row divDateDuJour">
-								<div class="col-1"></div>
-								<div class="col-2">
-									<button class="button" id="jourPreced" onclick="setJourPreced(5)"></button>
+								<div class="col-xs-1"></div>
+								<div class="col-xs-2">
+									<button class="button" id="Precedant" onclick="setJourPreced(5)"></button>
 								</div>
-								<div class="col-6">
+								<div class="col-xs-6">
 									<span id = "DateDuJour" >${newDayDate?string("dd MMMM yyyy")}</span>
 								</div>
-								<div class="col-2">
-									<button class="button" id="joursuivant" onclick="setJourSuiv()"></button>
+								<div class="col-xs-2">
+									<button class="button" id="suivant" onclick="setJourSuiv()"></button>
 								</div>
-								<div class="col-1"></div>
+								<div class="col-xs-1"></div>
 								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
 								<input type="hidden" id="newDayDateStr" name="newDayDateStr" value=${newDayDate?string("yyyy-MM-dd-HH-mm-ss")}>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							</div>
 						</form>
 					</div>
-					<div class="col-1"></div>
+					<div class="col-xs-1"></div>
 				</div>
 				<div class="row">
-					<div class="col-1"></div>
-					<div class="col-10">
+					<div class="col-xs-1"></div>
+					<div class="col-xs-10">
 						<form action="" method="post" id="formulaire2">
 							<div class="dayQuestion">
 								<p> Bonjour ${prenomUser} ${nomUser}, <p>
-								<p>Comment s'est passée votre journée ?</p>
+								<p>Comment s'est pass&eacute; votre journ&eacute;e ?</p>
 							</div>
 							<div class="row "nikoNikoDuJour">
-								<div class="col-3" id="nikoImg">
+								<div class="col-xs-3" id="nikoImg">
 									<canvas id="canvas" width="100" height="100"></canvas>
 								</div>
-								<div class="col-9 nikoComment" >
+								<div class="col-xs-9 nikoComment" >
 									<textarea form="formulaire2" name="comment" id="nikoComment" maxlength="160" placeholder="Tapez vos commentaires ici">${nikoComment}</textarea>
 								</div>
 							</div>
@@ -76,19 +78,19 @@
 							</div>
 						 </form>
 					</div>
-					<div class="col-1"></div>
+					<div class="col-xs-1"></div>
 				</div>
-				<div class="row">
-					<div class="col-9"></div>
-					<div class="col-1">
-						<form action="quit" method="post" id="restitution" >
+				<div class="row" id="menu">
+					<div class="col-xs-9"></div>
+					<div class="col-xs-1">
+						<form action="calendar2" method="post" id="restitution" >
 							<div id="restMenue">
 								<input type="submit" class="menu_button" id="restitution" value="">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							</div>
 						</form>
 					</div>
-					<div class="col-1">
+					<div class="col-xs-1">
 						<form action="quit" method="post" id="deconnexion">
 							<div id="quitMenue">
 								<input type="submit" class="menu_button" id="deconnexion" value="">
@@ -96,7 +98,7 @@
 							</div>
 						</form>
 					</div>
-					<div class="col-1"></div>
+					<div class="col-xs-1"></div>
 				</div>
 			</div>
 		</div>
@@ -110,7 +112,7 @@
     </script>
     <script>
        $(document).ready(function() {
-           callCreateNiko("nikoImg",${nikoSatisfaction});
+           callCreateNiko("nikoImg","yes",${nikoSatisfaction});
        })
     </script>
   </body>

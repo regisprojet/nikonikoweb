@@ -339,7 +339,7 @@ public class RootController {
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
 		
-		Iterable<Greeting> greetings = greetingCrud.findAll();
+		List<Greeting> greetings = greetingCrud.findAll();
 		
 		model.addAttribute("greetings",greetings);
 		return "root/greeting";
