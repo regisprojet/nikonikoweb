@@ -1,28 +1,98 @@
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="../../../js/histogram.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<title>Exemples JavaScript</title>
+	<meta name="viewport" content="initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-</head>
-<body>
-<h1> résultat équipe (${teamname}) par semaine </h1>
+	<link href="../../../css/nikoniko_regis_denis.css" rel="stylesheet" >
 
-  <canvas id="canvas0" width="92" height="200"></canvas>
+	<#include "../../../includable/bootstrap.ftl">
+	<#include "../../../includable/jquery.ftl">
+	  <script type="text/javascript" src="../../../js/histogram.js"></script>
+  </head>
 
-  <script type="text/javascript">
+  <body>
+	<canvas id="canvas" width="25" height="25"></canvas>
+	<div class="container" id="container">
+		<div class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10">
+				<div class="row NikoInputTitle">
+					<div class="col-xs-8 ">
+					   <img src='./../../../images/bandeau.png' alt='' id="logo">
+					</div>
+					<div class="col-xs-2 " id="VerticaleEquipeTitre">
+						<p id="verticaleTitle">Verticale:</p>
+						<p id="teamName">Equipe:</p>
+					</div>
+					<div class="col-xs-2 " id="VerticaleEquipeName">
+						<p id="verticaleTitle">${verticale}</p>
+						<p id="teamTitle">${equipe}</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-1"></div>
+		</div>
+		<div class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10">
+           		 <div id="bargraph"></div>				
+  			</div>
+			<div class="col-xs-1"></div>
+		</div>
+		<div class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10"  id="NikoFooter"></div>
+			<div class="col-xs-1"></div>
+		</div>
+		<div class="row" id="menu">
+			<div class="col-xs-8"></div>
+			 <div class="col-xs-1">
+				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
+				         	<div id="bargraph">
+					        	<input type="submit" class="menu_button" id="bargraph_week" value="">
+					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				        	</div>
+				         </form>
+		    </div>
+			<div class="col-xs-1">
+				<form action="../../../inputNiko2" method="post" id="inputNiko" >
+					<div id="voteMenue">
+						<input type="submit" class="menu_button" id="inputNiko" value="">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</div>
+				</form>
+			</div>
+			<div class="col-xs-1">
+				<form action="../../../logout" method="post" id="deconnexion">
+					<div id="quitMenue">
+						<input type="submit" class="menu_button" id="deconnexion" value="">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</div>
+				</form>
+			</div>
+			<div class="col-xs-1"></div>
+		</div>
+	</div>
+
+
+	<!-- Lancement des scripts -->
+	<!--#######################-->
+	<script type="text/javascript">
     var d = new Date();
     var n = d.getDay();
    
     var day_french_name = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
-
-    var body = document.getElementsByTagName('body')[0];
-
+	
+    var bargraph = document.getElementById("bargraph");
 
     var span1 = document.createElement("span");
 
-    body.appendChild(span1);
+    bargraph.appendChild(span1);
     
 
     for(var i=0;i<7;i++) {
@@ -33,10 +103,9 @@
       
       var canvas = document.createElement("canvas");
       canvas.setAttribute("id","canvas"+(i+1));
-      canvas.setAttribute("width","92");
+      canvas.setAttribute("width","77");
       canvas.setAttribute("height","200");
       span.appendChild(canvas);
-      console.log("canvas"+(i+1));
       span1.appendChild(span);
     }
 
@@ -48,7 +117,6 @@
     draw_histogram_week(${greens[5]},${yellows[5]},${reds[5]}, "canvas6" , day_french_name[5],5);
     draw_histogram_week(${greens[6]},${yellows[6]},${reds[6]}, "canvas7" , day_french_name[6],6);
   </script>
- </body>
-
-
+	
+  </body>
 </html>

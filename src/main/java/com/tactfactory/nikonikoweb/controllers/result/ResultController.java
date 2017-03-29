@@ -78,7 +78,8 @@ public class ResultController {
 			int dayNiko = (calendar.get(calendar.DAY_OF_WEEK)-2)%7;
 			
 			long diff = (todayDate.getTime() - nikoDate.getTime())/ (1000 * 60 * 60 * 24);
-			if(diff<=today) {
+			
+			if((diff<=today-7.0*weekId) /*&& (diff>=today-7.0*(weekId+1)*/) {
 				if(niko.getSatisfaction()==1) {
 					greensWeek.set(dayNiko, greensWeek.get(dayNiko)+1);
 				}
@@ -97,6 +98,9 @@ public class ResultController {
 		model.addAttribute("greens",greens);
 		model.addAttribute("yellows",yellows);
 		model.addAttribute("reds",reds);
+		model.addAttribute("equipe",team.getName());
+		model.addAttribute("verticale","verticale");
+		
 		
 		return "result/by_team_by_week";
 		

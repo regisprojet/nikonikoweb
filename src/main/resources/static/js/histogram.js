@@ -21,16 +21,16 @@ function draw_histogram_week(n1,n2,n3,canvasId,dayName,id)
     
 	ctx.fillRect(0, 0, 100, 200);
 	ctx.fillStyle = "green";
-	ctx.fillRect(0, 200 - scale(n1), 30, scale(n1));
+	ctx.fillRect(0, 200 - scale(n1), 25, scale(n1));
     ctx.fillStyle = "yellow";
-    ctx.fillRect(30, 200 - scale(n2) , 30, scale(n2));
+    ctx.fillRect(25, 200 - scale(n2) , 25, scale(n2));
     ctx.fillStyle = "red";
-    ctx.fillRect(60, 200 - scale(n3), 30, scale(n3));    
+    ctx.fillRect(50, 200 - scale(n3), 25, scale(n3));    
 
 	ctx.fillStyle = "black";
-	ctx.rect(1, 200 - scale(n1), 30, scale(n1));
-    ctx.rect(31, 200 - scale(n2) , 30, scale(n2));
-    ctx.rect(61, 200 - scale(n3), 30, scale(n3));
+	ctx.rect(1, 200 - scale(n1), 25, scale(n1));
+    ctx.rect(26, 200 - scale(n2) , 25, scale(n2));
+    ctx.rect(51, 200 - scale(n3), 25, scale(n3));
 
 
     ctx.fillText(dayName,10,10);
