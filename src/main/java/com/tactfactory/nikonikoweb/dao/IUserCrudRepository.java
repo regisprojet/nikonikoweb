@@ -16,6 +16,9 @@ public interface IUserCrudRepository extends IBaseCrudRepository<User>{
 	@Query(value = "SELECT * FROM user u WHERE u.login = :login", nativeQuery = true)
 	public List<User> findAllByLogin(@Param("login") String login);
 
+	@Query(value = "SELECT * FROM user u INNER JOIN users_securityroles s WHERE u.id = s.user_id AND s.role_id = :RoleId ", nativeQuery = true)
+	public List<User> findAllByRoleId(@Param("RoleId") Long RoleId);
+
 	public User findByLogin(String login);
 
 	@Query(value = "SELECT f.name FROM user_function uf,function f WHERE uf.User_id=:id AND uf.functions_id=f.id", nativeQuery = true)
