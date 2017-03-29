@@ -108,7 +108,9 @@ function callCreateNiko(divId,init,satisfaction) {
 		else if (satisfaction==2)
 			satisfaction=1;
 		else if (satisfaction==1)
-			satisfaction=3;
+			satisfaction=0;
+		else if (satisfaction==0)
+			satisfaction=-1;
 	}
 
 	var canvas = "canvas";
