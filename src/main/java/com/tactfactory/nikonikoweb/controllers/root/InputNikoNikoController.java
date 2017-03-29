@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.tactfactory.nikonikoweb.controllers.security.SecurityController;
 import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
+import com.tactfactory.nikonikoweb.dao.ITeamCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
+import com.tactfactory.nikonikoweb.models.Team;
 import com.tactfactory.nikonikoweb.models.User;
 
 @Controller
@@ -34,6 +37,7 @@ public class InputNikoNikoController {
 	private String inputNikoRedirect;
 	Date currentDate = new Date();
 	private Long userId = null;
+	private Long teamId = null;
 
 
 	public String getInputNikoRedirect() {
@@ -45,7 +49,6 @@ public class InputNikoNikoController {
 	public InputNikoNikoController() {
 		this.inputNikoView = PATH + BASE + PATH + "input";
 		this.inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
-
 	}
 
 	@Autowired
@@ -56,6 +59,9 @@ public class InputNikoNikoController {
 
 	@Autowired
 	private IPoleCrudRepository poleCrud;
+
+	@Autowired
+	private ITeamCrudRepository teamCrud;
 
 	@Secured("ROLE_USER")
 	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
@@ -71,6 +77,21 @@ public class InputNikoNikoController {
 
 		model.addAttribute("page", "inputNikoNiko");
 		model.addAttribute("equipe", "teamName");
+
+		// find the first team if not already found
+		// ----------------------------------------
+		DateTime nDate = new DateTime(currentDate);
+
+		List<Team> teams = (List<Team>) teamCrud.findTeamByUserId(userId);
+		System.err.println(nDate.year().getAsString() + "  " + nDate.monthOfYear().getAsString()+ "  " +  nDate.minusMonths(-1).getMonthOfYear());
+
+		// find all nikoniko from current team
+		// -----------------------------------
+		List<NikoNiko> nikos = (List<NikoNiko>) nikoNikoCrud.findByTeamMonth(teams.get(0).getId(), nDate.getYear(), nDate.getMonthOfYear()) ;
+
+for (NikoNiko nikoNiko : nikos) {
+	System.err.println(nikoNiko.getId() + " "+ nikoNiko.getComment() + " " + nikoNiko.getSatisfaction() + " " + nikoNiko.getLog_date());
+}
 
 		if(currentUser.getPole()!=null) {
 			model.addAttribute("verticale", currentUser.getPole().getName());

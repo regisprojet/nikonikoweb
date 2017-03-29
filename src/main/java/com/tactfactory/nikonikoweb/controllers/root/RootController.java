@@ -72,9 +72,6 @@ public class RootController {
 	private String login;
 	private String password;
 
-
-
-
 	public final static String BASE_URL = "/";
 
 //	@RequestMapping(value = { "" }, method = RequestMethod.GET)

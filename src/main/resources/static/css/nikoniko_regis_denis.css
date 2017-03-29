@@ -128,7 +128,13 @@
     height: 50px;
 }
 
-#bargraph_week {
+#bargraph {
+	border-top: 20px;
+}
+
+/*#bargraphWeek {*/
+
+#bargraphWeek {
 	background:url('../images/bargraph-50.png') no-repeat;
 	cursor:pointer;
     border:none;

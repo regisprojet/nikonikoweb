@@ -21,14 +21,14 @@
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10">
 				<div class="row NikoInputTitle">
-					<div class="col-xs-8 ">
+					<div class="col-xs-7 ">
 					   <img src='./../../../images/bandeau.png' alt='' id="logo">
 					</div>
 					<div class="col-xs-2 " id="VerticaleEquipeTitre">
 						<p id="verticaleTitle">Verticale:</p>
 						<p id="teamName">Equipe:</p>
 					</div>
-					<div class="col-xs-2 " id="VerticaleEquipeName">
+					<div class="col-xs-3 " id="VerticaleEquipeName">
 						<p id="verticaleTitle">${verticale}</p>
 						<p id="teamTitle">${equipe}</p>
 					</div>
@@ -39,7 +39,7 @@
 		<div class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10">
-           		 <div id="bargraph"></div>				
+           		 <div id="bargraph"></div>
   			</div>
 			<div class="col-xs-1"></div>
 		</div>
@@ -53,7 +53,7 @@
 			 <div class="col-xs-1">
 				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
 				         	<div id="bargraph">
-					        	<input type="submit" class="menu_button" id="bargraph_week" value="">
+					        	<input type="submit" class="menu_button" id="bargraphWeek" value="">
 					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				        	</div>
 				         </form>
@@ -84,23 +84,23 @@
 	<script type="text/javascript">
     var d = new Date();
     var n = d.getDay();
-   
+
     var day_french_name = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
-	
+
     var bargraph = document.getElementById("bargraph");
 
     var span1 = document.createElement("span");
 
     bargraph.appendChild(span1);
-    
+
 
     for(var i=0;i<7;i++) {
-      var span = document.createElement("span");  
+      var span = document.createElement("span");
       //var spanText = document.createElement("span");
-      //spanText.innerText=day_french_name[i];  
+      //spanText.innerText=day_french_name[i];
       //span.appendChild(spanText);
-      
+
       var canvas = document.createElement("canvas");
       canvas.setAttribute("id","canvas"+(i+1));
       canvas.setAttribute("width","77");
@@ -117,6 +117,6 @@
     draw_histogram_week(${greens[5]},${yellows[5]},${reds[5]}, "canvas6" , day_french_name[5],5);
     draw_histogram_week(${greens[6]},${yellows[6]},${reds[6]}, "canvas7" , day_french_name[6],6);
   </script>
-	
+
   </body>
 </html>

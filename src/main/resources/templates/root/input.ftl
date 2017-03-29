@@ -85,12 +85,12 @@
 				    <div class="col-xs-1">
 				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
 				         	<div id="bargraph">
-					        	<input type="submit" class="menu_button" id="bargraph_week" value="">
+					        	<input type="submit" class="menu_button" id="bargraphWeek" value="">
 					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				        	</div>
 				         </form>
 				    </div>
-		       
+
 			        <div class="col-xs-1">
 						<form action="calendar2" method="post" id="restitution" >
 							<div id="restMenue">
