@@ -33,13 +33,13 @@
 							<div class="row divDateDuJour">
 								<div class="col-xs-1"></div>
 								<div class="col-xs-2">
-									<button class="button" id="jourPreced" onclick="setJourPreced(5)"></button>
+									<button class="button" id="Precedant" onclick="setJourPreced(5)"></button>
 								</div>
 								<div class="col-xs-6">
 									<span id = "DateDuJour" >${newDayDate?string("dd MMMM yyyy")}</span>
 								</div>
 								<div class="col-xs-2">
-									<button class="button" id="joursuivant" onclick="setJourSuiv()"></button>
+									<button class="button" id="suivant" onclick="setJourSuiv()"></button>
 								</div>
 								<div class="col-xs-1"></div>
 								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
@@ -56,7 +56,7 @@
 						<form action="" method="post" id="formulaire2">
 							<div class="dayQuestion">
 								<p> Bonjour ${prenomUser} ${nomUser}, <p>
-								<p>Comment s'est passée votre journée ?</p>
+								<p>Comment s'est pass&eacute; votre journ&eacute;e ?</p>
 							</div>
 							<div class="row "nikoNikoDuJour">
 								<div class="col-xs-3" id="nikoImg">

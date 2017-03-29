@@ -22,10 +22,12 @@ public class CalendarController {
 	public final static String ROUTE_CALENDAR = "/calendar";
 	private String calendarView;
 	private String calendarRedirect;
+	private String nikonikoRedirect;
 
 	public CalendarController() {
 		this.calendarView = PATH + BASE + PATH + "calendar";
 		this.calendarRedirect = "redirect:" + ROUTE_CALENDAR;
+		this.nikonikoRedirect = "redirect:" + "inputNiko";
 	}
 
 	@Autowired
@@ -71,7 +73,7 @@ public class CalendarController {
 	@RequestMapping(value = "/inputNiko2" , method = RequestMethod.POST)
 	public String calendarInputPost( Model model) {
 
-		return "redirect:inputNiko";
+		return nikonikoRedirect;
 	}
 
 }

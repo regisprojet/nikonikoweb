@@ -94,10 +94,10 @@ function createNiko(satisfaction,divId,canvasId,scale,clic,colHappy,colSad,colSo
 		canvas.setAttribute("onclick","callCreateNiko('"+  divId + "', 'no' ," + satisfaction + ")");
 	}
 
-
     /* renvoie de la valeur du nikoniko dans le input hidden de la page */
     /* ---------------------------------------------------------------- */
-    document.getElementById("satisfaction").value = satisfaction;
+    if(document.getElementById("satisfaction")!=null)
+    	document.getElementById("satisfaction").value = satisfaction;
 }
 
 function callCreateNiko(divId,init,satisfaction) {

@@ -12,7 +12,7 @@ import com.tactfactory.nikonikoweb.models.NikoNiko;
 
 public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	@Query(value = "SELECT * FROM nikoniko n WHERE n.user_id = :id", nativeQuery = true)
-	public Set<NikoNiko> getAllByUserId(@Param("id") long id);
+	public List<NikoNiko> getAllByUserId(@Param("id") long id);
 
 	@Query(value = "SELECT * FROM nikoniko INNER JOIN user_nikoniko ON nikoniko.id = user_nikoniko.nikonikos_id WHERE user_nikoniko.User_id = ?1", nativeQuery = true)
 	List<NikoNiko> findUserAssociate(Long projectId);

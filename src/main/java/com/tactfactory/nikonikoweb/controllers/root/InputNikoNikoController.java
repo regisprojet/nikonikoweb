@@ -2,11 +2,13 @@ package com.tactfactory.nikonikoweb.controllers.root;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.tactfactory.nikonikoweb.controllers.security.SecurityController;
 import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
@@ -29,8 +32,9 @@ public class InputNikoNikoController {
 	public final static String ROUTE_INPUT_NIKO = "/inputNiko";
 	private String inputNikoView;
 	private String inputNikoRedirect;
-	private Long userId = 4l;
 	Date currentDate = new Date();
+	private Long userId = null;
+
 
 	public String getInputNikoRedirect() {
 		return inputNikoRedirect;
@@ -41,6 +45,7 @@ public class InputNikoNikoController {
 	public InputNikoNikoController() {
 		this.inputNikoView = PATH + BASE + PATH + "input";
 		this.inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
+
 	}
 
 	@Autowired
@@ -56,10 +61,10 @@ public class InputNikoNikoController {
 	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
 	public String inputNikoGet(Model model) {
 
-
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User currentUser = userCrud.findByLogin(userDetails.getUsername());
+		userId = currentUser.getId();
 
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
@@ -166,8 +171,8 @@ public class InputNikoNikoController {
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/quit" , method = RequestMethod.POST)
 	public String inputNikoLogoutPost( Model model) {
-
-		return "login";
+		userId = null;
+		return "redirect:login?logout";
 	}
 
 
@@ -175,7 +180,7 @@ public class InputNikoNikoController {
 	@RequestMapping(value = "/calendar2" , method = RequestMethod.POST)
 	public String inputNikoRestPost( Model model) {
 
-		return "calendar";
+		return "redirect:calendar";
 	}
 
 }

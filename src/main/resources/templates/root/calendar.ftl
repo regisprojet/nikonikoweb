@@ -36,14 +36,16 @@
 			<div class="col-xs-1"></div>
 		</div>
 		<div class="row">
-			<div class="col-12">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10">
 				<div id="calendar"></div>
 			</div>
+			<div class="col-xs-1"></div>
 		</div>
 		<div class="row">
-			<div class="col-1"></div>
-			<div class="col-10"  id="NikoFooter"></div>
-			<div class="col-1"></div>
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10"  id="NikoFooter"></div>
+			<div class="col-xs-1"></div>
 		</div>
 		<div class="row" id="menu">
 			<div class="col-xs-9"></div>
