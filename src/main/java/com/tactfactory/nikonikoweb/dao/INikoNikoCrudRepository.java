@@ -14,6 +14,9 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	@Query(value = "SELECT * FROM nikoniko n WHERE n.user_id = :id", nativeQuery = true)
 	public List<NikoNiko> getAllByUserId(@Param("id") long id);
 
+	@Query(value = "SELECT * FROM nikoniko n WHERE n.team_id = :id", nativeQuery = true)
+	public List<NikoNiko> getAllByTeamId(@Param("id") long id);
+
 	@Query(value = "SELECT * FROM nikoniko INNER JOIN user_nikoniko ON nikoniko.id = user_nikoniko.nikonikos_id WHERE user_nikoniko.User_id = ?1", nativeQuery = true)
 	List<NikoNiko> findUserAssociate(Long projectId);
 
@@ -28,7 +31,7 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 
 	@Query(value = "SELECT * FROM nikoniko n WHERE n.user_id = :userId", nativeQuery = true)
 	public List<NikoNiko> getNikonikoByUserId(@Param("userId") Long userId);
-	
+
 	@Query(value = "SELECT * FROM nikoniko n INNER JOIN user u ON n.user_id=u.id INNER JOIN user_team ut ON u.id=ut.User_id where ut.teams_id=:teamId", nativeQuery=true)
 	public Iterable<NikoNiko> findByTeam(@Param("teamId") Long teamId);
 }

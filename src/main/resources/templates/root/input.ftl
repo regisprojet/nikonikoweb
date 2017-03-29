@@ -33,7 +33,7 @@
 							<div class="row divDateDuJour">
 								<div class="col-xs-1"></div>
 								<div class="col-xs-2">
-									<button class="button" id="Precedant" onclick="setJourPreced(5)"></button>
+									<button class="button" id="Precedant" onclick="setJourPreced(25)"></button>
 								</div>
 								<div class="col-xs-6">
 									<span id = "DateDuJour" >${newDayDate?string("dd MMMM yyyy")}</span>

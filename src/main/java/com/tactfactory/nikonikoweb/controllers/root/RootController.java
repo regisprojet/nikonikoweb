@@ -5,14 +5,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -86,12 +89,21 @@ public class RootController {
 		ArrayList<User> users = (ArrayList<User>) userCrud.findAllByRoleId(15l);
 		try {BufferedWriter fichier = new BufferedWriter(new FileWriter("d:/test.sql"));
 
-		for (User user : users) {
-			Date dateJour = new Date();
-			for(int i=0; i<30; i++) {
-				//dateJour = new Date(dateJour.getDate()-1 );
-				fichier.write("INSERT INTO nikoniko (change_date,nikoniko_comment,isanonymous,log_date,satisfaction,user_id)\n");
-				fichier.write("\tVALUE ("+ user.getLogin() + " " + dateJour.getYear() + " " + dateJour.getMonth() + " " + dateJour.getDate()+ ")\n");
+		String satisfaction[] = {"0","1","1","1","2","2","3","3","1","1"};
+		String comment[] = {"", "ca va!"," genial" ,"codage reussi", "pas top", "codage a refaire", "malade", "fatigue", "en pleine forme", "projet valide par l'equipe"};
+
+
+		Random randomGenerator = new Random();
+		DateTime dateJour = new DateTime();
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
+
+		for(int i=0; i<90; i++) {
+			dateJour = dateJour.minusDays(1);
+			for (User user : users) {
+				int rand = randomGenerator.nextInt(10);
+				fichier.write("INSERT INTO nikoniko (nikoniko_comment,isanonymous,log_date,satisfaction,user_id)\n");
+				String value = "\""+comment[rand]+"\","+ true +",\"" + dtf.print(dateJour) + "\"," + satisfaction[rand] + "," + user.getId() ;
+				fichier.write("\tVALUE ( " + value + ");\n");
 
 			}
 		}
