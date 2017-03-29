@@ -15,13 +15,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+//		http.csrf().disable();
 		http
-//	         	.authorizeRequests()
-//                .antMatchers("/home", "/**").authenticated()
-//            .and()
-		
-//		        .antMatcher("/**")
-				.authorizeRequests()
+     			.authorizeRequests()
 				.anyRequest()
 				.authenticated()
 			.and()
@@ -29,10 +25,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			    	.loginPage("/login")
 			    	.usernameParameter("username")
 			    	.passwordParameter("password")
+			    	.defaultSuccessUrl("/redirect",true)
 			    	.permitAll() // sinon il faudrait déjà être authentifié
 			.and()			
 		            .logout()                                    
-                    .permitAll();
+                    .permitAll()
+		
+//		http
+//		.authorizeRequests()
+//		.anyRequest()
+//		.authenticated()
+//	.and()
+//		.formLogin()
+//			.loginPage("/login")
+//			.usernameParameter("username").passwordParameter("password")
+//			.permitAll()
+//	.and()
+//		.httpBasic()
+//	.and()
+//		.authorizeRequests().anyRequest().anonymous()
+//		.antMatchers("/api","/api/**")
+//		.permitAll()
+	;
 			
 	}
 	

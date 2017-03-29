@@ -1,3 +1,4 @@
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,11 +8,11 @@
     <link rel="stylesheet" type="text/css" href="/css/custom.css"/>
 </head>
 <body>
-    <h1> Bienvenue ${username} </h1>
-    
-     <a href="admin/user/index">page d'administration</a><br>
-     <a href="/inputNiko">page utilisateur</a><br>
-     <a href="vip">page vip</a><br>
-
+<h1>Greeting</h1>
+<#list greetings as greeting>
+       
+       ${greeting['name']}
+</#list>
 
 </body>
+</html>

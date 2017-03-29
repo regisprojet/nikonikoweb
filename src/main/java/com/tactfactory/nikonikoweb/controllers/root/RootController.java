@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IGreetingCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.environment.Environment;
@@ -32,6 +33,7 @@ import com.tactfactory.nikonikoweb.generation.InitDatabase;
 import com.tactfactory.nikonikoweb.models.Ability;
 import com.tactfactory.nikonikoweb.models.Agency;
 import com.tactfactory.nikonikoweb.models.Function;
+import com.tactfactory.nikonikoweb.models.Greeting;
 import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
@@ -56,6 +58,9 @@ public class RootController {
 
 	@Autowired
 	private IAgencyCrudRepository agencyCrud;
+
+	@Autowired
+	private IGreetingCrudRepository greetingCrud;
 
 	private String login;
 	private String password;
@@ -325,6 +330,19 @@ public class RootController {
 		
 		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
 		return "root/home2";
+	}
+
+	
+	@RequestMapping(path = { "/greeting" }, method = RequestMethod.GET)
+	public String greeting(Model model) {
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userCrud.findByLogin(userDetails.getUsername());
+		
+		Iterable<Greeting> greetings = greetingCrud.findAll();
+		
+		model.addAttribute("greetings",greetings);
+		return "root/greeting";
 	}
 
 	// add by Régis

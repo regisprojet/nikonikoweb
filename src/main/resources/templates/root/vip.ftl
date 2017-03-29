@@ -8,4 +8,8 @@
 </head>
 <body>
     <h1> Bienvenue vip ${username} </h1>
+    au choix : 
+    
+  	<a href="result/1/0/by_team_by_week">par équipe par semaine</a>
+
 </body>
