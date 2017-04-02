@@ -238,3 +238,11 @@ div #zone{
 	padding-top: 10px;*/
 }
 
+#titleuserlist {
+	font-weight: bolder;
+	color: #000000;	
+}
+
+#userlist {
+	color: #000000;
+}	
