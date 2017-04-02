@@ -80,18 +80,12 @@ public class InputNikoNikoController {
 
 		// find the first team if not already found
 		// ----------------------------------------
-		DateTime nDate = new DateTime(currentDate);
-
 		List<Team> teams = (List<Team>) teamCrud.findTeamByUserId(userId);
-		System.err.println(nDate.year().getAsString() + "  " + nDate.monthOfYear().getAsString()+ "  " +  nDate.minusMonths(-1).getMonthOfYear());
 
 		// find all nikoniko from current team
 		// -----------------------------------
+		DateTime nDate = new DateTime(currentDate);
 		List<NikoNiko> nikos = (List<NikoNiko>) nikoNikoCrud.findByTeamMonth(teams.get(0).getId(), nDate.getYear(), nDate.getMonthOfYear()) ;
-
-for (NikoNiko nikoNiko : nikos) {
-	System.err.println(nikoNiko.getId() + " "+ nikoNiko.getComment() + " " + nikoNiko.getSatisfaction() + " " + nikoNiko.getLog_date());
-}
 
 		if(currentUser.getPole()!=null) {
 			model.addAttribute("verticale", currentUser.getPole().getName());
@@ -135,7 +129,10 @@ for (NikoNiko nikoNiko : nikos) {
 
 		model.addAttribute("nikoId", nikoId);
 
+		model.addAttribute("nikos", nikos);
+
 		model.addAttribute("newDayDate",currentDate);
+
 		return inputNikoView;
 	}
 
@@ -144,13 +141,11 @@ for (NikoNiko nikoNiko : nikos) {
 	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, boolean is_anonymous, Long nikoId, Model model) {
 
 		nikoNiko.setUser(userCrud.findOne(userId));
-
 		// insert new nikoniko
 		// -------------------
 		if((nikoId == 0)&&(nikoNiko.getSatisfaction()>0)) {
 			nikoNiko.setIsAnonymous(true);
 			nikoNiko.setLog_date(currentDate);
-
 			nikoNikoCrud.save(nikoNiko);
 
 		// update nikoniko
@@ -174,8 +169,6 @@ for (NikoNiko nikoNiko : nikos) {
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/inputDateSave" , method = RequestMethod.POST)
 	public String inputNikoPost(String newDayDate, Model model) {
-
-		System.err.println("  envoi newDayDate= " + newDayDate);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 		Date date = new Date();

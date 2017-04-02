@@ -14,6 +14,9 @@
   </head>
 
   <body>
+ 	<div id="curseur" class="infobulle">
+ 		<p onmouseover="montre('Ici je met tout le texte que je veut, <b>meme de l\'html</b> !');" onmouseout="cache();">Un paragraphe avec une info bulle !</p>
+ 	</div>
 	<canvas id="canvas" width="25" height="25"></canvas>
 	<div class="container" id="container">
 		<div class="row">
@@ -31,6 +34,34 @@
 						<p id="verticaleName">${verticale}</p>
 						<p id="teamName">${equipe}</p>
 					</div>
+				</div>
+			</div>
+			<div class="col-xs-1"></div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10" id="formulaire1">
+				<div class="row divDateDuJour">
+					<div class="col-xs-1"></div>
+					<div class="col-xs-2">
+					<form  ENCTYPE="multipart/form-data" method="post" action="calendarDatepreded">
+						<button class="button" id="Precedant"></button>
+						<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</form>
+					</div>
+					<div class="col-xs-6">
+						<span id = "DateDuJour" >${newDayDate?string("MMMM yyyy")}</span>
+					</div>
+					<div class="col-xs-2">
+					<form  ENCTYPE="multipart/form-data" method="post" action="calendarDatesuiv">
+						<button class="button" id="suivant"></button>
+						<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</form>
+					</div>
+					<div class="col-xs-1"></div>
 				</div>
 			</div>
 			<div class="col-xs-1"></div>
@@ -83,9 +114,21 @@
 	<script type="text/javascript" src="js/create_niko.js"></script>
 	<script type="text/javascript" src="js/function.js"> </script>
 	<script>
-	   $(document).ready(function() {
-			createWeek(new Date());
-	   })
+		var nikonikos  = new Array();
+		var i =0;
+		<#list nikos as niko>
+			nikonikos[i] = new Array();
+        	nikonikos[i][0] = "${niko.satisfaction}";
+        	nikonikos[i][1] = "${niko.log_date}";
+        	nikonikos[i][2] = "${niko.comment}";
+        	nikonikos[i][3] = "${niko.user.lastname}";
+        	nikonikos[i][4] = "${niko.user.firstname}";
+        	i++;
+        </#list>
+
+	    $(document).ready(function() {
+			createWeek("${newDayDateStr}", nikonikos);
+	    })
 	</script>
   </body>
 </html>

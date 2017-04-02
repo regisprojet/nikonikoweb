@@ -29,7 +29,6 @@ public interface INikoNikoCrudRepository extends IBaseCrudRepository<NikoNiko> {
 	@Query(value = "SELECT * FROM nikoniko n INNER JOIN user u ON n.user_id=u.id INNER JOIN user_team ut ON u.id=ut.User_id where ut.teams_id=:teamId", nativeQuery=true)
 	public Iterable<NikoNiko> findByTeam(@Param("teamId") Long teamId);
 
-	@Query(value = "SELECT * FROM nikoniko n INNER JOIN user u ON n.user_id=u.id INNER JOIN user_team ut ON u.id=ut.User_id "
-			+ "where ut.teams_id=:teamId AND YEAR(n.log_date) = :currentYear AND (MONTH(n.log_date) = :currentMonth OR  MONTH(n.change_date) = :currentMonth)", nativeQuery=true)
+	@Query(value = "SELECT * FROM nikoniko n INNER JOIN user u ON n.user_id=u.id INNER JOIN user_team ut ON u.id=ut.User_id where ut.teams_id=:teamId AND YEAR(n.log_date) = :currentYear AND MONTH(n.log_date) = :currentMonth ORDER BY u.id", nativeQuery=true)
 	public List<NikoNiko> findByTeamMonth(@Param("teamId") Long teamId, @Param("currentYear") int currentYear, @Param("currentMonth") int currentMonth);
 }

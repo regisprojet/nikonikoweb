@@ -70,7 +70,7 @@
 								<input type="submit" class="button" id="valider" src="./images/validation.png" >
 								<input type="hidden" id="satisfaction" name="satisfaction" value="0">
 								<input type="hidden" id="isanonymous" name="is_anonymous" value=${isanonymous?c}>
-								<input type="hidden" id="nikoId" name="nikoId" value=${nikoId}>
+								<input type="hidden" id="nikoId" name="nikoId" value=${nikoId?c}>
 								<input type="hidden" id="log_date" name="Log_date" value=${log_date?string("yyyy/MM/dd HH:mm:ss")}>
 								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
 								<!--#include "../includable/security/securityToken.ft"-->
@@ -120,8 +120,8 @@
     <script type="text/javascript" src="js/create_niko.js">
     </script>
     <script>
-       $(document).ready(function() {
-           callCreateNiko("nikoImg","yes",${nikoSatisfaction});
+		$(document).ready(function() {
+			callCreateNiko("nikoImg","yes",${nikoSatisfaction});
        })
     </script>
   </body>

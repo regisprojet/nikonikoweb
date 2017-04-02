@@ -7,9 +7,9 @@ monthNames = [
   	];
 
 function createNiko(satisfaction,divId,canvasId,scale,clic,colHappy,colSad,colSoft) {
-	 var container = document.getElementById(divId);
-	 var canvas = document.getElementById(canvasId);
-	 var ctx = canvas.getContext("2d");
+	var container = document.getElementById(divId);
+	var canvas = document.getElementById(canvasId);
+	var ctx = canvas.getContext("2d");
 
 	if(clic==true) {
 		if(satisfaction==-1)
@@ -23,6 +23,9 @@ function createNiko(satisfaction,divId,canvasId,scale,clic,colHappy,colSad,colSo
 		else if (satisfaction==3)
 			satisfaction=1;
 		}
+
+	/*for(var i=0; i<nikonikos.lenght; i++)
+		console.log(nikonikos[i][0] + " " + nikonikos[i][1]);*/
 
 	 if(satisfaction==1) {
 	 	ctx.fillStyle = colHappy;
@@ -114,6 +117,7 @@ function callCreateNiko(divId,init,satisfaction) {
 	}
 
 	var canvas = "canvas";
+	console.log("createNiko(" + satisfaction + "," + divId + "," + canvas + "," + 1 + "," +true+ ",green,red,yellow")
 	createNiko(satisfaction,divId,canvas,1,true,"green","red","yellow");
 
   	var dayNames = [
@@ -134,6 +138,24 @@ function callCreateNiko(divId,init,satisfaction) {
  	var month = dateSplit[1];
  	var year = dateSplit[2];
  	document.getElementById("DateDuJour").innerHTML = day + " " + month + " " + year;*/
+}
+
+function setMoisPreced() {
+
+	var lastDayPrecedMonth = new Date(date.getFullYear(), date.getMonth(), -1).getDate();
+
+ 	var year = lastDayPrecedMonth.getFullYear();
+ 	var month = lastDayPrecedMonth.getMonth()+1;
+ 	var day = lastDayPrecedMonth.getDate();
+ 	var hour = lastDayPrecedMonth.getHours();
+ 	var min = lastDayPrecedMonth.getMinutes();
+ 	var sec = lastDayPrecedMonth.getSeconds();
+
+ 	var dateStr = year + "/" + month + "/" + day + " " + hour + ":" + min + ":" + sec;
+	document.getElementById("newDayDate").value = dateStr;
+
+ 	var dateStr = year + "-" + month + "-" + day + "-" + hour + "-" + min + "-" + sec;
+ 	document.getElementById("newDayDateStr").value = dateStr;
 }
 
 function setJourPreced(n) {
