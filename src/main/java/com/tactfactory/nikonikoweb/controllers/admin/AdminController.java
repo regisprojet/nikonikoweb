@@ -1,11 +1,14 @@
 package com.tactfactory.nikonikoweb.controllers.admin;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,11 +79,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(path = { BASE_URL, "adduser" }, method = RequestMethod.POST)
-	public String adduserPost(@ModelAttribute("userForm") User user,/* @ModelAttribute("functionForm") String[] functions, */ Model model) {
-		System.out.println(user);
-//		for(String functionName : functions)
-//		System.out.println(functionName);
-	
+	public String adduserPost(@ModelAttribute("userForm") User user, Model model) {
 		return "redirect:adduser";
 	}
 
@@ -92,11 +91,81 @@ public class AdminController {
 	}
 	
 	@RequestMapping(path = { "searchuser" }, method = RequestMethod.GET)
-	public String searchUser(
+	public String searchUserGet(
 			) {
 			return "admin/searchuser";
 	}
 	
+	@RequestMapping(path = { "searchuser" }, method = RequestMethod.POST)
+	public String searchUserPost(
+			HttpServletRequest request,
+			Model model
+		) {
+			
+
+			String limitString = request.getParameter("limit");
+			String offsetString = request.getParameter("offset");
+			int limit,offset;
+			if(limitString==null) {
+				limit = 5;
+			}
+			else {
+				limit = Integer.parseInt(limitString);
+			}
+			if(offsetString==null) {
+				offset = 0;
+			}
+			else {
+				offset =  Integer.parseInt(offsetString);
+			}
+			String registration = request.getParameter("registration");	
+			String login = request.getParameter("login");	
+			String firstname = request.getParameter("firstname");	
+			String lastname = request.getParameter("lastname");	
+			
+			int pageId = offset/limit;
+			Pageable pageable = new PageRequest(pageId, limit);
+			
+			List<User> userList = this.userCrud.findByRegLogFirstLast(
+					registration,login,firstname,lastname
+					);
+			
+			int count = userList.size();
+			
+			int pagePrevId;
+			if(pageId==0) {
+				pagePrevId = 0;
+			}
+			else {
+				pagePrevId=pageId-1;
+			}
+			
+			int pageNextId;
+			if(pageId*limit<userList.size()) {
+				pageNextId = pageId + 1;
+			}
+			else {
+				pageNextId=pageId;
+			}
+
+			int prevOffset=offset-limit;
+			if(prevOffset<0) {
+				prevOffset=0;
+			}
+			int nextOffset=offset+limit;
+			if(nextOffset>count) {
+				nextOffset=offset;
+			}
+			model.addAttribute("userlist", userList);
+			model.addAttribute("next",pageNextId);
+			model.addAttribute("prev",pagePrevId);
+			model.addAttribute("nextOffset",nextOffset);
+			model.addAttribute("prevOffset",prevOffset);
+			model.addAttribute("limit",""+limit);
+			
+			return "admin/searchuser";
+	}
+
 	@RequestMapping(path = { "user/list" }, method = RequestMethod.GET)
 	public String users(
 			@RequestParam("limit") int limit,
@@ -141,10 +210,7 @@ public class AdminController {
 			model.addAttribute("nextOffset",nextOffset);
 			model.addAttribute("prevOffset",prevOffset);
 			model.addAttribute("limit",limit);
-			
-			System.out.println("limit = " + limit + ", offset=" + offset + ", get="+userList.size()+ ", prev="+prevOffset+", next"+nextOffset);
-			
-			
+				
 		return "admin/userlist";
 	}
 

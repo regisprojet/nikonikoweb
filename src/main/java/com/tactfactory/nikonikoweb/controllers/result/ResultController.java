@@ -69,14 +69,13 @@ public class ResultController {
 		GregorianCalendar todayCalendar =new GregorianCalendar();
 		Date todayDate = new Date();
 		todayCalendar.setTime(todayDate);
-		int today = (todayCalendar.get(todayCalendar.DAY_OF_WEEK)-2)%7;
-		
+		int today = (todayCalendar.get(todayCalendar.DAY_OF_WEEK)+5)%7;
 		for(NikoNiko niko : nikos) {
 			GregorianCalendar calendar =new GregorianCalendar();
 		    Date nikoDate = niko.getLog_date();
 			calendar.setTime(nikoDate);
-			int dayNiko = (calendar.get(calendar.DAY_OF_WEEK)-2)%7;
-			
+			int dayNiko = (calendar.get(calendar.DAY_OF_WEEK)+5)%7;
+			System.out.println("Dayniko ="+dayNiko);
 			long diff = (todayDate.getTime() - nikoDate.getTime())/ (1000 * 60 * 60 * 24);
 			
 			if((diff<=today-7.0*weekId) /*&& (diff>=today-7.0*(weekId+1)*/) {
