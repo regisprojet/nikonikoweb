@@ -222,7 +222,7 @@ public class RootController {
 						break;
 					}
 					if(functionName.equals("administrateur")) {
-						return "redirect:/admin";
+						return "redirect:/admin2/index";
 					}
 					if(functionName.equals("developpeur") || functionName.equals("chef de projet"))  {
 						return "redirect:/inputNiko";
