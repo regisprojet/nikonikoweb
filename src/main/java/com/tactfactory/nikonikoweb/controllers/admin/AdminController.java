@@ -251,9 +251,18 @@ public class AdminController {
 				 model.addAttribute("fieldList",fieldList);
 				 model.addAttribute("dictFr",dictFr);
 				 model.addAttribute("userItem",user);
-				 model.addAttribute("agencyName",userAgency.getName());
-				 model.addAttribute("poleName",userPole.getName());
-									 
+				 if(userAgency==null) {
+					 model.addAttribute("agencyName","pas d'agence d'attribuée");	 
+				 }
+				 else {
+					 model.addAttribute("agencyName",userAgency.getName());
+				 }
+				 if(userPole==null) {
+					 model.addAttribute("poleName","pas de pole d'attribuée");
+				 }
+				 else {
+					 model.addAttribute("poleName",userPole.getName());
+				 }				 
 				 
 			return "admin/userupdate";
 	}
