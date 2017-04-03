@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
@@ -24,6 +25,13 @@ import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
 import com.tactfactory.nikonikoweb.models.Team;
 import com.tactfactory.nikonikoweb.models.User;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.util.WebUtils;
 
 @Controller
 public class CalendarController {
@@ -35,6 +43,8 @@ public class CalendarController {
 	private String calendarRedirect;
 	private String nikonikoRedirect;
 	private DateTime currentDate = new DateTime();
+	private Team teamSelect = null;
+
 	//DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
 	public CalendarController() {
@@ -57,7 +67,17 @@ public class CalendarController {
 
 	@Secured("ROLE_USER")
 	@RequestMapping(path = ROUTE_CALENDAR , method = RequestMethod.GET)
-	public String calendarGet(Model model) {
+	public String calendarGet(Model model,
+			HttpServletRequest request) {
+
+		// find of cookie team name
+		// ------------------------
+		Cookie cookie = WebUtils.getCookie(request, "userteam");
+		if(cookie.getValue() != null) {
+			List<Team> teamsNames = (List<Team>) teamCrud.findTeamByName(cookie.getValue());
+			if(!teamsNames.isEmpty())
+				teamSelect = teamsNames.get(0);
+		}
 
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -67,12 +87,12 @@ public class CalendarController {
 		// find the first team if not already found
 		// ----------------------------------------
 		List<Team> teams = (List<Team>) teamCrud.findTeamByUserId(userId);
+		if(teamSelect == null)
+			teamSelect = teams.get(0);
 
 		// find all nikoniko from current team
 		// -----------------------------------
-		//DateTime nDate = new DateTime(currentDate);
-		//DateTime nDate = new DateTime();
-		List<NikoNiko> nikos = (List<NikoNiko>) nikoNikoCrud.findByTeamMonth(teams.get(0).getId(), currentDate.getYear(), currentDate.getMonthOfYear()) ;
+		List<NikoNiko> nikos = (List<NikoNiko>) nikoNikoCrud.findByTeamMonth(teamSelect.getId(), currentDate.getYear(), currentDate.getMonthOfYear()) ;
 
 		// replace return character by @@ in comment
 		// -----------------------------------------
@@ -84,28 +104,23 @@ public class CalendarController {
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 
 		model.addAttribute("page", "inputNikoNiko");
-		model.addAttribute("equipe", "teamName");
 
 		model.addAttribute("nikos", nikos);
 
 		model.addAttribute("newDayDate",currentDate.toDate());
-		//model.addAttribute("newDayDateStr",fmt.print(currentDate));
 
-		//String newDayDateStr = currentDate.toDateTimeISO().toString();
 		String newDayDateStr = currentDate.getYear() + "-" + currentDate.getMonthOfYear() + "-" + currentDate.getDayOfMonth() + " " +
 				currentDate.getHourOfDay() + ":" + currentDate.getMinuteOfHour() + ":" + currentDate.getSecondOfMinute();
 		model.addAttribute("newDayDateStr" , newDayDateStr);
-
-/*System.err.println("  --->  " + newDayDateStr);
-for (NikoNiko nikoNiko : nikos) {
-	System.err.println("      --->  " + nikoNiko.getSatisfaction() );
-}*/
 
 		if(currentUser.getPole()!=null) {
 			model.addAttribute("verticale", currentUser.getPole().getName());
 		} else {
 			model.addAttribute("verticale", "verticaleName");
 		}
+		model.addAttribute("equipes", teams);
+		model.addAttribute("equipeSelect", teamSelect.getName());
+
 		return calendarView;
 	}
 
@@ -123,6 +138,18 @@ for (NikoNiko nikoNiko : nikos) {
 	public String calendarDatesuivPost(Date newDayDate, Model model) {
 
 		currentDate = new DateTime(newDayDate).minusMonths(-1);
+		return calendarRedirect;
+	}
+
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/calendarTeamSelect" , method = RequestMethod.POST)
+	public String calendarTeamSelectPost(
+			HttpServletResponse response,
+			@RequestParam ("team") String team, Model model) {
+
+		response.addCookie(new Cookie("userteam", team));
+		if(team != null)
+			teamSelect = teamCrud.findTeamByName(team).get(0);
 		return calendarRedirect;
 	}
 

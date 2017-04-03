@@ -1,6 +1,10 @@
 numButton = 0;
 var calendar = new Date();
 var nbRandNiko = 8;
+if(window.createPopup) {
+   var oPopup   = window.createPopup();
+   var oPopBody = oPopup.document.body;
+}
 
 function createWeek(dateStr, nikonikos) {
 
@@ -276,3 +280,4 @@ function previousNextMonth2(date,inc) {
 	}
 	createWeek(moisPreced);
 }
+
