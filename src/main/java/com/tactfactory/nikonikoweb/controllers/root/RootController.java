@@ -301,7 +301,7 @@ public class RootController {
 	    }
 		for (SecurityRole role : user.getRoles()) {
 			if(role.getRole().equals("ROLE_ADMIN")) {
-				return "redirect:/admin/user/index";
+				return "redirect:/admin2/index";
 			}
 			else if(role.getRole().equals("ROLE_USER")) {
 				return "redirect:/inputNiko";
@@ -397,7 +397,7 @@ public class RootController {
 		}
 		for (SecurityRole role : user.getRoles()) {
 				if(role.getRole().equals("ROLE_ADMIN")) {
-					return "redirect:/admin";
+					return "redirect:/admin2/index";
 				}
 				else if(role.getRole().equals("ROLE_USER")) {
 					return "redirect:/inputNiko";

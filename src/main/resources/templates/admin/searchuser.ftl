@@ -90,6 +90,9 @@
 			<div class="col-xs-10"  id="NikoFooter"></div>
 			<div class="col-xs-1"></div>
 		</div>
+		<#include "ButtonBar.ftl">
     </div>
+    
+  
 </body>
 </html>

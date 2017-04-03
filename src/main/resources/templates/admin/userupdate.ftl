@@ -28,29 +28,29 @@
 					   <img src='./../../../images/bandeau.png' alt='' id="logo">
 					</div>
 					<div class="col-xs-4 ">
-						<p>pages</p>
-						<p>administration</p>
+						<p>modification</p>
+						<p>utilisateur</p>
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-1"></div>
 		</div>
-	    <div class="row">
-			<div class="col-xs-3"></div>
-			<div class="col-xs-6">
-				<a href="user/list?limit=7&off	set=0">liste des utilisateurs</a><br>
-				<a href="searchuser">recherche d'un utilisateur</a><br>
-				
-				<a href="user/list?limit=7&offset=0">liste des roles</a><br>
-				<a href="user/list?limit=7&offset=0">liste des agences</a><br>
-			</div>
-			<div class="col-xs-3"></div>
-		</div>
-
+		
+	
 		<div class="row">
-			<div class="col-xs-1"></div>
-			<div class="col-xs-10"  id="NikoFooter"></div>
-			<div class="col-xs-1"></div>
+			<div class="col-xs-2">
+			<#list fieldList as field>
+			 <label>${dictFr[field]}<br>	
+			</#list>
+			</div>
+			
+			
+			<div class="col-xs-2">
+			<#list fieldList as field>
+			<input type="text" name="${field}" value=""/>
+			</#list>
+			</div>
+			<div class="col-xs-8">
+			
 		</div>
 		<#include "ButtonBar.ftl">
     </div>

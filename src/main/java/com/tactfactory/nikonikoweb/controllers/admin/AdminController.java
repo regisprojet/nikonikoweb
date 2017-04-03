@@ -3,6 +3,7 @@ package com.tactfactory.nikonikoweb.controllers.admin;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -85,7 +86,13 @@ public class AdminController {
 
 	
 	@RequestMapping(path = { "index" }, method = RequestMethod.GET)
-	public String index(
+	public String indexGet(
+			) {
+			return "admin/index";
+	}
+	
+	@RequestMapping(path = { "index" }, method = RequestMethod.POST)
+	public String indexPost(
 			) {
 			return "admin/index";
 	}
@@ -156,6 +163,7 @@ public class AdminController {
 			if(nextOffset>count) {
 				nextOffset=offset;
 			}
+			
 			model.addAttribute("userlist", userList);
 			model.addAttribute("next",pageNextId);
 			model.addAttribute("prev",pagePrevId);
@@ -216,8 +224,28 @@ public class AdminController {
 
 	@RequestMapping(path = { "user/{idUser}/update" }, method = RequestMethod.GET)
 	public String userUpdate(
-			@PathVariable("idUser") long idUser
+			@PathVariable("idUser") long idUser,
+			Model model
 			) {
+		
+				 String[] fields = {"firstname","lastname", "login", "registration_cgi"};
+				 List fieldList = new ArrayList<String>();
+				 for(String field : fields) {
+					 fieldList.add(field);
+				 }
+				
+				 User user = userCrud.findOne(idUser);
+				 
+				 Hashtable dictFr=new Hashtable();
+				 dictFr.put("firstname", "prénom");
+				 dictFr.put("lastname", "nom");
+				 dictFr.put("login", "login");
+				 dictFr.put("registration_cgi", "matricule");
+				 
+				 model.addAttribute("fieldList",fieldList);
+				 model.addAttribute("dictFr",dictFr);
+				 
+				 
 			return "admin/userupdate";
 	}
 	

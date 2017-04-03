@@ -79,7 +79,12 @@
 			<div class="col-xs-10"  id="NikoFooter"></div>
 			<div class="col-xs-1"></div>
 		</div>
-		
+		<div class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-12"  id="NikoFooter"></div>
+			<div class="col-xs-1"></div>
+		</div>
+		<#include "ButtonBar.ftl">
 	</div>
 
     </div>
