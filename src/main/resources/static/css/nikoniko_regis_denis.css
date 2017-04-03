@@ -272,4 +272,8 @@ div #zone{
 	color: #000000;
 }	
 
-
+.userField {
+	width: 80px;
+	color: black;
+	background-color: lightgrey;
+}

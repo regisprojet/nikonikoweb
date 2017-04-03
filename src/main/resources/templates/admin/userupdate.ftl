@@ -1,58 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Exemples JavaScript</title>
-    <meta name="viewport" content="initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <link href="../../../css/nikoniko_regis_denis.css" rel="stylesheet" >
-
-    <link rel="stylesheet" href="../../../bootStrap/bootstrap_3.min.css">
-    <#include "../../../includable/jquery.ftl">
-
-</head>
-
+<#include "Head.ftl">
 <html>
-<body>
+<#include "BodyBegin.ftl">
+		
+	
+	
 
-  <body>
-	<canvas id="canvas" width="25" height="25"></canvas>
-	<div class="container" id="container">
 		<div class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-10">
-				<div class="row NikoInputTitle">
-					<div class="col-xs-8 ">
-					   <img src='./../../../images/bandeau.png' alt='' id="logo">
-					</div>
-					<div class="col-xs-4 ">
-						<p>modification</p>
-						<p>utilisateur</p>
-					</div>
-				</div>
-			</div>
+			<div class="col-xs-5">
+				<#if userItem??>
+				<label class="userField">matricule</label>
+				<input type="text" name="matricule" value="${userItem['registration_cgi']}" /><br>
+				<label class="userField">prénom</label>
+				<input type="text" name="firstname" value="${userItem['firstname']}" /><br>
+				<label class="userField">nom</label>
+				<input type="text" name="lastname" value="${userItem['lastname']}" /><br>
+				<label class="userField">login</label>
+				<input type="text" name="login" value="${userItem['login']}" /><br>
+				<label class="userField">agence</label>
+				<input type="text" name="agency" value="${agencyName}" /><br>
+				<label class="userField">verticale</label>
+				<input type="text" name="pole" value="${poleName}" /><br>
+				</#if>
+			
+			<div class="col-xs-6">
 		</div>
 		
 	
-		<div class="row">
-			<div class="col-xs-2">
-			<#list fieldList as field>
-			 <label>${dictFr[field]}<br>	
-			</#list>
-			</div>
-			
-			
-			<div class="col-xs-2">
-			<#list fieldList as field>
-			<input type="text" name="${field}" value=""/>
-			</#list>
-			</div>
-			<div class="col-xs-8">
-			
-		</div>
-		<#include "ButtonBar.ftl">
+		
     </div>
-</body>
+
+<#include "BodyEnd.ftl">
 </html>

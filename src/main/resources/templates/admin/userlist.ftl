@@ -55,7 +55,7 @@
 			<div class="col-xs-2">${user['login']}</div>
 			<div class="col-xs-2">${user['firstname']}</div>
 			<div class="col-xs-2">${user['lastname']}</div>
-			<div class="col-xs-2"><a href="../../../admin/user/${user['id']}/update">modifier</a></div>
+			<div class="col-xs-2"><a href="../../../admin2/user/${user['id']}/update">modifier</a></div>
             <div class="col-xs-1"></div><br>
             </#if>
             </#list>

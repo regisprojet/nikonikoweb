@@ -24,11 +24,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
-import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
+//import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
+//import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
+import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.Ability;
+import com.tactfactory.nikonikoweb.models.Agency;
 import com.tactfactory.nikonikoweb.models.Function;
+import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
 import com.tactfactory.nikonikoweb.utils.DumpFields;
@@ -43,10 +47,10 @@ public class AdminController {
 	private IUserCrudRepository userCrud;
 
 	@Autowired
-	private IFunctionCrudRepository functionCrud;
+	private IAgencyCrudRepository agencyCrud;
 
 	@Autowired
-	private IAbilityCrudRepository abilityCrud;
+	private IPoleCrudRepository poleCrud;
 	
 	
 	@RequestMapping(path = { BASE_URL, "menu" }, method = RequestMethod.GET)
@@ -68,13 +72,13 @@ public class AdminController {
 				User.class);	
 		model.addAttribute("currentItem", currentItem);
 		
-		Iterable<Function> functions = functionCrud.findAll();
-		Set<String> functionNames = new HashSet<String>();
-		for(Function function : functions) {
-			functionNames.add(function.getName());
-		}
-	    model.addAttribute("functionNames", functionNames);
-	    
+		//Iterable<Function> functions = functionCrud.findAll();
+//		Set<String> functionNames = new HashSet<String>();
+//		for(Function function : functions) {
+//			functionNames.add(function.getName());
+//		}
+//	    model.addAttribute("functionNames", functionNames);
+//	    
 		
 		return "admin/adduser";
 	}
@@ -108,8 +112,6 @@ public class AdminController {
 			HttpServletRequest request,
 			Model model
 		) {
-			
-
 			String limitString = request.getParameter("limit");
 			String offsetString = request.getParameter("offset");
 			int limit,offset;
@@ -235,6 +237,10 @@ public class AdminController {
 				 }
 				
 				 User user = userCrud.findOne(idUser);
+				 List<Agency> agencies = agencyCrud.findAll();
+				 List<Pole> poles =  poleCrud.findAll();
+				 Pole userPole = user.getPole();
+				 Agency userAgency = user.getAgency();
 				 
 				 Hashtable dictFr=new Hashtable();
 				 dictFr.put("firstname", "prénom");
@@ -244,7 +250,10 @@ public class AdminController {
 				 
 				 model.addAttribute("fieldList",fieldList);
 				 model.addAttribute("dictFr",dictFr);
-				 
+				 model.addAttribute("userItem",user);
+				 model.addAttribute("agencyName",userAgency.getName());
+				 model.addAttribute("poleName",userPole.getName());
+									 
 				 
 			return "admin/userupdate";
 	}
