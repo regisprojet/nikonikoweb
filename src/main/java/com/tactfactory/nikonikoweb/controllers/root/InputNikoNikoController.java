@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.tactfactory.nikonikoweb.controllers.security.SecurityController;
 import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
+import com.tactfactory.nikonikoweb.dao.ITeamCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
+import com.tactfactory.nikonikoweb.models.Team;
 import com.tactfactory.nikonikoweb.models.User;
 
 @Controller
@@ -34,6 +37,7 @@ public class InputNikoNikoController {
 	private String inputNikoRedirect;
 	Date currentDate = new Date();
 	private Long userId = null;
+	private Long teamId = null;
 
 
 	public String getInputNikoRedirect() {
@@ -45,7 +49,6 @@ public class InputNikoNikoController {
 	public InputNikoNikoController() {
 		this.inputNikoView = PATH + BASE + PATH + "input";
 		this.inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
-
 	}
 
 	@Autowired
@@ -56,6 +59,9 @@ public class InputNikoNikoController {
 
 	@Autowired
 	private IPoleCrudRepository poleCrud;
+
+	@Autowired
+	private ITeamCrudRepository teamCrud;
 
 	@Secured("ROLE_USER")
 	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
@@ -71,6 +77,15 @@ public class InputNikoNikoController {
 
 		model.addAttribute("page", "inputNikoNiko");
 		model.addAttribute("equipe", "teamName");
+
+		// find the first team if not already found
+		// ----------------------------------------
+		List<Team> teams = (List<Team>) teamCrud.findTeamByUserId(userId);
+
+		// find all nikoniko from current team
+		// -----------------------------------
+		DateTime nDate = new DateTime(currentDate);
+		List<NikoNiko> nikos = (List<NikoNiko>) nikoNikoCrud.findByTeamMonth(teams.get(0).getId(), nDate.getYear(), nDate.getMonthOfYear()) ;
 
 		if(currentUser.getPole()!=null) {
 			model.addAttribute("verticale", currentUser.getPole().getName());
@@ -114,7 +129,10 @@ public class InputNikoNikoController {
 
 		model.addAttribute("nikoId", nikoId);
 
+		model.addAttribute("nikos", nikos);
+
 		model.addAttribute("newDayDate",currentDate);
+
 		return inputNikoView;
 	}
 
@@ -123,13 +141,11 @@ public class InputNikoNikoController {
 	public String inputNikoPost(@ModelAttribute NikoNiko nikoNiko, boolean is_anonymous, Long nikoId, Model model) {
 
 		nikoNiko.setUser(userCrud.findOne(userId));
-
 		// insert new nikoniko
 		// -------------------
 		if((nikoId == 0)&&(nikoNiko.getSatisfaction()>0)) {
 			nikoNiko.setIsAnonymous(true);
 			nikoNiko.setLog_date(currentDate);
-
 			nikoNikoCrud.save(nikoNiko);
 
 		// update nikoniko
@@ -153,8 +169,6 @@ public class InputNikoNikoController {
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/inputDateSave" , method = RequestMethod.POST)
 	public String inputNikoPost(String newDayDate, Model model) {
-
-		System.err.println("  envoi newDayDate= " + newDayDate);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 		Date date = new Date();

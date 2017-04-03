@@ -128,7 +128,13 @@
     height: 50px;
 }
 
-#bargraph_week {
+#bargraph {
+	border-top: 20px;
+}
+
+/*#bargraphWeek {*/
+
+#bargraphWeek {
 	background:url('../images/bargraph-50.png') no-repeat;
 	cursor:pointer;
     border:none;
@@ -246,3 +252,14 @@ div #zone{
 #userlist {
 	color: #000000;
 }	
+
+.infobulle{
+    position: absolute;
+    visibility : hidden;
+    border: 1px solid Black;
+    padding: 10px;
+    font-family: Verdana, Arial;
+    font-size: 10px;
+    background-color: #FFFFCC;
+}
+

@@ -14,23 +14,54 @@
   </head>
 
   <body>
+ 	<div id="curseur" class="infobulle">
+ 		<p onmouseover="montre('Ici je met tout le texte que je veut, <b>meme de l\'html</b> !');" onmouseout="cache();">Un paragraphe avec une info bulle !</p>
+ 	</div>
 	<canvas id="canvas" width="25" height="25"></canvas>
 	<div class="container" id="container">
 		<div class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10">
 				<div class="row NikoInputTitle">
-					<div class="col-xs-8 ">
+					<div class="col-xs-7 ">
 					   <img src='./images/bandeau.png' alt='' id="logo">
 					</div>
 					<div class="col-xs-2 " id="VerticaleEquipeTitre">
 						<p id="verticaleTitle">Verticale:</p>
-						<p id="teamName">Equipe:</p>
+						<p id="teamTitle">Equipe:</p>
 					</div>
-					<div class="col-xs-2 " id="VerticaleEquipeName">
-						<p id="verticaleTitle">${verticale}</p>
-						<p id="teamTitle">${equipe}</p>
+					<div class="col-xs-3 " id="VerticaleEquipeName">
+						<p id="verticaleName">${verticale}</p>
+						<p id="teamName">${equipe}</p>
 					</div>
+				</div>
+			</div>
+			<div class="col-xs-1"></div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10" id="formulaire1">
+				<div class="row divDateDuJour">
+					<div class="col-xs-1"></div>
+					<div class="col-xs-2">
+					<form  ENCTYPE="multipart/form-data" method="post" action="calendarDatepreded">
+						<button class="button" id="Precedant"></button>
+						<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</form>
+					</div>
+					<div class="col-xs-6">
+						<span id = "DateDuJour" >${newDayDate?string("MMMM yyyy")}</span>
+					</div>
+					<div class="col-xs-2">
+					<form  ENCTYPE="multipart/form-data" method="post" action="calendarDatesuiv">
+						<button class="button" id="suivant"></button>
+						<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</form>
+					</div>
+					<div class="col-xs-1"></div>
 				</div>
 			</div>
 			<div class="col-xs-1"></div>
@@ -52,7 +83,7 @@
 			<div class="col-xs-1">
 				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
 				         	<div id="bargraph">
-					        	<input type="submit" class="menu_button" id="bargraph_week" value="">
+					        	<input type="submit" class="menu_button" id="bargraphWeek" value="">
 					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				        	</div>
 				         </form>
@@ -83,9 +114,21 @@
 	<script type="text/javascript" src="js/create_niko.js"></script>
 	<script type="text/javascript" src="js/function.js"> </script>
 	<script>
-	   $(document).ready(function() {
-			createWeek(new Date());
-	   })
+		var nikonikos  = new Array();
+		var i =0;
+		<#list nikos as niko>
+			nikonikos[i] = new Array();
+        	nikonikos[i][0] = "${niko.satisfaction}";
+        	nikonikos[i][1] = "${niko.log_date}";
+        	nikonikos[i][2] = "${niko.comment}";
+        	nikonikos[i][3] = "${niko.user.lastname}";
+        	nikonikos[i][4] = "${niko.user.firstname}";
+        	i++;
+        </#list>
+
+	    $(document).ready(function() {
+			createWeek("${newDayDateStr}", nikonikos);
+	    })
 	</script>
   </body>
 </html>

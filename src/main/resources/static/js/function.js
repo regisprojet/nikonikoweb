@@ -2,15 +2,17 @@ numButton = 0;
 var calendar = new Date();
 var nbRandNiko = 8;
 
+function createWeek(dateStr, nikonikos) {
 
-function createWeek(date) {
 	listMonth =["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 	listDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Sam", "Dim"];
 
+	date = new Date(dateStr);
 	calendar = date;
 	var nDayMonth = new Date(date.getFullYear(), date.getMonth()+1, -1).getDate()+1;
 
 	var container = document.getElementById("calendar");
+
 	var contLastChild = container.LastChild;
 	var dayOfMonth = 0;
 	var currentDay = "";
@@ -52,47 +54,6 @@ function createWeek(date) {
 	var newRow = document.createElement("div");
 	newRow.setAttribute("class","row");
 	var rowLastChild = newRow.LastChild;
-
-	//---------button precedent--------------
-	var newCol = document.createElement("div");
-
-	newCol.setAttribute("class","col-xs-3 butPrecSuiv");
-	var colLastChild = newCol.LastChild;
-
-	var newButton = document.createElement("button");
-	newButton.setAttribute("onclick","previousNextMonth(calendar,-1);");
-	newButton.setAttribute("id","Precedant");
-	newCol.insertBefore(newButton,colLastChild);
-	newRow.insertBefore(newCol,rowLastChild);
-
-	//----------mois et annee-----------------
-	var newCol = document.createElement("div");
-
-	newCol.setAttribute("class","col-xs-6 divDateDuJour");
-	var colLastChild = newCol.LastChild;
-
-	var monthName = document.createElement("div");
-
-	var newContent = document.createTextNode(listMonth[calendar.getMonth()].toUpperCase() + "   " + calendar.getFullYear());
-
-	monthName.appendChild(newContent);
-	newCol.insertBefore(monthName,colLastChild);
-
-	newRow.insertBefore(newCol,rowLastChild);
-
-	//---------button suivant--------------
-	var newCol = document.createElement("div");
-
-	newCol.setAttribute("class","col-xs-3 butPrecSuiv");
-	var colLastChild = newCol.LastChild;
-
-	var newButton = document.createElement("button");
-	newButton.setAttribute("onclick","previousNextMonth(calendar,+1);");
-	newButton.setAttribute("id","suivant");
-	newCol.insertBefore(newButton,colLastChild);
-	newRow.insertBefore(newCol,rowLastChild);
-
-	container.insertBefore(newRow, contLastChild);
 
 	/* Insertion du nom des jours */
 	/* -------------------------- */
@@ -154,6 +115,8 @@ function createWeek(date) {
 			var cellule = document.createElement("div");
 			var celluleLastChild = cellule.LastChild;
 			cellule.setAttribute("class","cellule");
+			var celluleId =  "" +calendar.getDate() + calendar.getMonth()+ calendar.getFullYear();
+			cellule.setAttribute("id",celluleId);
 
 			/* Insertion de la date */
 			/* -------------------- */
@@ -203,8 +166,6 @@ function createWeek(date) {
 			}
 
 			var colId = dayDate + calendar.getMonth() + calendar.getFullYear();
-			//if(cellule.getAttribute("id")=="")
-				//cellule.setAttribute("id",colId);
 
 			/* Insertion des zones de nikoniko entre le 1er et le dernier jour du mois */
 			/* ----------------------------------------------------------------------- */
@@ -217,23 +178,18 @@ function createWeek(date) {
 				dayName.appendChild(newContent);
 				cellule.insertBefore(dayName,colLastChild);
 
-				if((currentDate.getDay()!=0)&&(currentDate.getDay()!=6)) {
-
-					/* Insertion de la zone des nikoNiko (createRandNiko) */
-					/* -------------------------------------------------- */
-					for(var k=0; k<nbRandNiko; k++ ) {
+				/* Insertion de 10 zones des nikoNiko sauf samedi et dimanche */
+				/* ---------------------------------------------------------- */
+				if((j!=5)&&(j!=6)) {
+					for(var k=0; k<10; k++ ) {
 						var ZoneNicos = document.createElement("canvas");
 						ZoneNicos.setAttribute("width","25");
 						ZoneNicos.setAttribute("height","25");
 
 						var todayDate = new Date();
+						var canvasId = "canvas_" + dayDate + calendar.getMonth() + calendar.getFullYear() + k;
+						ZoneNicos.setAttribute("id",canvasId);
 
-						if((currentDate.getDate() < todayDate.getDate()) ||
-						   ((currentDate.getMonth() > todayDate.getMonth()) && (currentDate.getFullYear() < todayDate.getFullYear())) ||
-						   ((currentDate.getMonth() == todayDate.getMonth()) && (currentDate.getDate() <= todayDate.getDate()))) {
-								var canvasId = "canvas_" + dayDate + calendar.getMonth() + calendar.getFullYear() + k;
-								ZoneNicos.setAttribute("id",canvasId);
-						}
 						cellule.insertBefore(ZoneNicos,colLastChild);
 					}
 				}
@@ -257,16 +213,26 @@ function createWeek(date) {
 
 		var todayDate = new Date();
 		var currentDate = new Date(date.getFullYear(), date.getMonth(), i);
-		if((currentDate.getMonth() < todayDate.getMonth()) ||
-		   ((currentDate.getMonth() > todayDate.getMonth()) && (currentDate.getFullYear() < todayDate.getFullYear())) ||
-		   ((currentDate.getMonth() == todayDate.getMonth()) && (currentDate.getDate() <= todayDate.getDate()))) {
 
-			if((currentDate.getDay()!=0)&&(currentDate.getDay()!=6)) {
-				for (var j=0; j<nikos.length; j++) {
-					var colId = "" + i + calendar.getMonth() + calendar.getFullYear();
-					var canvasId = "canvas_" + colId + j;
-					createNiko(nikos[j],colId,canvasId,0.18,false,"green","red","yellow");
-				}
+		var colId = "" + i + calendar.getMonth() + calendar.getFullYear();
+
+		k=0; //increment dans canvasId;
+		for(var j = 0 ; j<nikonikos.length; j++) {
+			var nikoLogDate = nikonikos[j][1].split(" ");
+			if(nikoLogDate[0] == i) {
+
+				var canvasId = "canvas_" + colId + k ;
+				//console.log("" + colId +" " + canvasId + " " + nikonikos[j][4] + " " + nikonikos[j][3] + " " + nikonikos[j][0] + " " + nikoLogDate[0] + " " + nikonikos[j][1] + " " + nikonikos[j][2]);
+
+				//console.log("createNiko("+ nikonikos[j][4] + "," + nikonikos[j][0] + "," + colId +"," + canvasId+ "," + 0.18 + "," + false + ",green","red","yellow);");
+
+				if (document.getElementById(canvasId) !=null) {
+					createNiko(nikonikos[j][0],colId,canvasId,0.18,false,"green","red","yellow");
+
+					document.getElementById(canvasId).setAttribute("onclick","alert('" + nikonikos[j][4] + ": " + nikonikos[j][2] + "')");
+					}
+
+				k++;
 			}
 		}
 	}
@@ -286,7 +252,7 @@ function createRandNiko() {
 	return nikos;
 }
 
-function previousNextMonth(date,inc) {
+function previousNextMonth2(date,inc) {
 
 	var moisCourant = new Date();
 	var moisPreced = date;

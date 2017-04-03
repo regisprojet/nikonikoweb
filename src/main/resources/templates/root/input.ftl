@@ -33,7 +33,7 @@
 							<div class="row divDateDuJour">
 								<div class="col-xs-1"></div>
 								<div class="col-xs-2">
-									<button class="button" id="Precedant" onclick="setJourPreced(5)"></button>
+									<button class="button" id="Precedant" onclick="setJourPreced(25)"></button>
 								</div>
 								<div class="col-xs-6">
 									<span id = "DateDuJour" >${newDayDate?string("dd MMMM yyyy")}</span>
@@ -70,7 +70,7 @@
 								<input type="submit" class="button" id="valider" src="./images/validation.png" >
 								<input type="hidden" id="satisfaction" name="satisfaction" value="0">
 								<input type="hidden" id="isanonymous" name="is_anonymous" value=${isanonymous?c}>
-								<input type="hidden" id="nikoId" name="nikoId" value=${nikoId}>
+								<input type="hidden" id="nikoId" name="nikoId" value=${nikoId?c}>
 								<input type="hidden" id="log_date" name="Log_date" value=${log_date?string("yyyy/MM/dd HH:mm:ss")}>
 								<input type="hidden" id="newDayDate" name="newDayDate" value=${newDayDate?string("yyyy/MM/dd HH:mm:ss")}>
 								<!--#include "../includable/security/securityToken.ft"-->
@@ -85,12 +85,12 @@
 				    <div class="col-xs-1">
 				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
 				         	<div id="bargraph">
-					        	<input type="submit" class="menu_button" id="bargraph_week" value="">
+					        	<input type="submit" class="menu_button" id="bargraphWeek" value="">
 					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				        	</div>
 				         </form>
 				    </div>
-		       
+
 			        <div class="col-xs-1">
 						<form action="calendar2" method="post" id="restitution" >
 							<div id="restMenue">
@@ -120,8 +120,8 @@
     <script type="text/javascript" src="js/create_niko.js">
     </script>
     <script>
-       $(document).ready(function() {
-           callCreateNiko("nikoImg","yes",${nikoSatisfaction});
+		$(document).ready(function() {
+			callCreateNiko("nikoImg","yes",${nikoSatisfaction});
        })
     </script>
   </body>

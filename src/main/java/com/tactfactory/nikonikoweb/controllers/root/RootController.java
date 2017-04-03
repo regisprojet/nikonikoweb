@@ -1,14 +1,21 @@
 package com.tactfactory.nikonikoweb.controllers.root;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,9 +72,6 @@ public class RootController {
 	private String login;
 	private String password;
 
-
-
-
 	public final static String BASE_URL = "/";
 
 //	@RequestMapping(value = { "" }, method = RequestMethod.GET)
@@ -77,6 +81,34 @@ public class RootController {
 //	}
 
 	InitDatabase initDatabase;
+	@RequestMapping(value = { "CreateNiknikoSql" }, method = RequestMethod.GET)
+	public String CreateNiknikoSql(Model model) {
+		ArrayList<User> users = (ArrayList<User>) userCrud.findAllByRoleId(15l);
+		try {BufferedWriter fichier = new BufferedWriter(new FileWriter("d:/test.sql"));
+
+		String satisfaction[] = {"0","1","1","1","2","2","3","3","1","1"};
+		String comment[] = {"", "ca va!"," genial" ,"codage reussi", "pas top", "codage a refaire", "malade", "fatigue", "en pleine forme", "projet valide par l'equipe"};
+
+
+		Random randomGenerator = new Random();
+		DateTime dateJour = new DateTime();
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
+
+		for(int i=0; i<90; i++) {
+			dateJour = dateJour.minusDays(1);
+			for (User user : users) {
+				int rand = randomGenerator.nextInt(10);
+				fichier.write("INSERT INTO nikoniko (nikoniko_comment,isanonymous,log_date,satisfaction,user_id)\n");
+				String value = "\""+comment[rand]+"\","+ true +",\"" + dtf.print(dateJour) + "\"," + satisfaction[rand] + "," + user.getId() ;
+				fichier.write("\tVALUE ( " + value + ");\n");
+
+			}
+		}
+		fichier.close();
+		} catch (IOException e) {e.printStackTrace();}
+
+		return "redirect:/login";
+	}
 
 	@RequestMapping(value = { "init" }, method = RequestMethod.GET)
 	public String initGet(Model model) {
@@ -216,7 +248,7 @@ public class RootController {
 		environment.reset();
 		return "redirect:/login";
 	}
-	
+
 	@RequestMapping(value = { "/admin2" }, method = RequestMethod.GET)
 	public String adminGet(Model model) {
 		Environment environment = Environment.getInstance();
@@ -224,7 +256,7 @@ public class RootController {
 		return "root/admin";
 	}
 
-	
+
 	@Secured(value={"ROLE_ADMIN","ROLE_USER", "ROLE_VIP"})
 	@RequestMapping(value = { "/user2" }, method = RequestMethod.GET)
 	public String userGet(Model model) {
@@ -247,7 +279,7 @@ public class RootController {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
-		
+
 		model.addAttribute("username", user.getFirstname()
 				+ " " + user.getLastname().toUpperCase());
 		return "root/multifunction";
@@ -262,7 +294,7 @@ public class RootController {
 		}
 		User user = userCrud.findByLogin(userDetails.getUsername());
 		model.addAttribute("username", user.getFirstname() + " " + user.getLastname());
-		
+
 		if(user.getRoles().size()>1) {
 			System.out.println("plusieurs roles");
 			return "root/multifunction";
@@ -288,14 +320,14 @@ public class RootController {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
-		
+
 		model.addAttribute("username", user.getFirstname()
 				+ " " + user.getLastname().toUpperCase());
 		//model.addAttribute("abilities", environment.getAbilities());
 
 		return "root/vip";
 	}
-	
+
 	@Secured(value={"ROLE_USER"})
 	@RequestMapping(path = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView homeGet(/*@RequestParam String thoughtParam*/) {
@@ -305,7 +337,7 @@ public class RootController {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
-		
+
 		modelAndView.addObject("username",user.getFirstname()+" "+user.getLastname());
 		return modelAndView;
 	}
@@ -316,7 +348,7 @@ public class RootController {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
-		
+
 		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
 		return "redirect:/home2";
 	}
@@ -327,20 +359,20 @@ public class RootController {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
-		
+
 		model.addAttribute("username",user.getFirstname()+" "+user.getLastname());
 		return "root/home2";
 	}
 
-	
+
 	@RequestMapping(path = { "/greeting" }, method = RequestMethod.GET)
 	public String greeting(Model model) {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userCrud.findByLogin(userDetails.getUsername());
-		
+
 		List<Greeting> greetings = greetingCrud.findAll();
-		
+
 		model.addAttribute("greetings",greetings);
 		return "root/greeting";
 	}
@@ -351,7 +383,7 @@ public class RootController {
 	public String loginBisPost(
 			HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute SecurityLogin securityLogin, 	Model model
-			
+
 //    	HttpSession session, @ModelAttribute("SecurityLogin") @Valid SecurityLogin securityLogin,
 //        BindingResult result, Model model, final RedirectAttributes redirectAttributes
 
