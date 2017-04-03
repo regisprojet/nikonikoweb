@@ -51,6 +51,7 @@ public class AdminController {
 		return "admin/menu";
 	}
 
+	
 	@RequestMapping(path = { BASE_URL, "adduser" }, method = RequestMethod.GET)
 	public String adduserGet(Model model) {
 		model.addAttribute("page", "ajout utilisateur");
@@ -83,6 +84,19 @@ public class AdminController {
 		return "redirect:adduser";
 	}
 
+	
+	@RequestMapping(path = { "index" }, method = RequestMethod.GET)
+	public String index(
+			) {
+			return "admin/index";
+	}
+	
+	@RequestMapping(path = { "searchuser" }, method = RequestMethod.GET)
+	public String searchUser(
+			) {
+			return "admin/searchuser";
+	}
+	
 	@RequestMapping(path = { "user/list" }, method = RequestMethod.GET)
 	public String users(
 			@RequestParam("limit") int limit,
@@ -140,5 +154,7 @@ public class AdminController {
 			) {
 			return "admin/userupdate";
 	}
+	
+	
 	
 }
