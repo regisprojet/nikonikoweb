@@ -244,8 +244,23 @@ div #zone{
 	padding-top: 10px;*/
 }
 
-.hiddenDiv {
-   position: absolute;
-   top:      -1000px;
-   left:     -1000px;
+
+.infobulle{
+    position: absolute;
+    visibility : hidden;
+    border: 1px solid Black;
+    padding: 10px;
+    font-family: Verdana, Arial;
+    font-size: 10px;
+    background-color: #FFFFCC;
 }
+
+#titleuserlist {
+	font-weight: bolder;
+	color: #000000;
+}
+
+#userlist {
+	color: #000000;
+}
+

@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.tactfactory.nikonikoweb.dao.base.IBaseCrudRepository;
+import com.tactfactory.nikonikoweb.models.Greeting;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
 import com.tactfactory.nikonikoweb.models.User;
 
@@ -39,4 +42,26 @@ public interface IUserCrudRepository extends IBaseCrudRepository<User>{
 	public Set<BigInteger> getNikoNikoById(@Param("ident") long ident);
 
 	/*public Set<BigInteger> getUser_NikoNikobyId(@Param("ident") long ident);*/
+	
+	public Page<User> findAll(Pageable pageable);
+
+    //@Query("SELECT u FROM User u WHERE u.registration_cgi LIKE :registration and u.login LIKE :login and u.firstname LIKE :firstname and u.lastname LIKE :lastname")
+	@Query("SELECT u FROM User u WHERE u.lastname LIKE %:lastname% AND u.firstname LIKE %:firstname% AND u.login LIKE %:login% AND u.registration_cgi LIKE %:registration%" )
+	public List<User> findByRegLogFirstLast(
+			@Param("registration") String registration,
+			@Param("login") String login,
+			@Param("firstname") String firstname,
+			@Param("lastname") String lastname
+			);
+	
+	@Query("SELECT u FROM User u WHERE u.registration_cgi LIKE %:registration%")
+	public List<User> findByReg(
+			@Param("registration") String registration
+			);
+				
+	
+	public List<User> findAll();
+	
+
+	
 }
