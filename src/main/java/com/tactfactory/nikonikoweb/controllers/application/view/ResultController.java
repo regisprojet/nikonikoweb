@@ -1,4 +1,4 @@
-package com.tactfactory.nikonikoweb.controllers.result;
+package com.tactfactory.nikonikoweb.controllers.application.view;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.tactfactory.nikonikoweb.controllers.root.RootController;
+import com.tactfactory.nikonikoweb.controllers.application.root.RootController;
 import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
 import com.tactfactory.nikonikoweb.dao.ITeamCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
