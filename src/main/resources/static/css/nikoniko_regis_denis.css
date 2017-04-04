@@ -191,6 +191,7 @@ div #zone{
 }
 .cellule {
 	min-height: 110px;
+	font-size: 25px;
 }
 #currentDate {
 	color: red;
@@ -263,4 +264,20 @@ div #zone{
 #userlist {
 	color: #000000;
 }
-
+.popover2 {
+	width: 400px;
+	height: 100%;
+	font-size:15px;
+	list-style-type: none;
+	padding: 0;
+	color: black;
+}
+.nikoCommentColor1 {
+	color: green;
+}
+.nikoCommentColor2 {
+	color: orange;
+}
+.nikoCommentColor3 {
+	color: red;
+}

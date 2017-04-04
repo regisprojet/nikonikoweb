@@ -51,12 +51,12 @@
 		<div class="row" id="menu">
 			<div class="col-xs-8"></div>
 			 <div class="col-xs-1">
-				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
-				         	<div id="bargraph">
-					        	<input type="submit" class="menu_button" id="bargraphWeek" value="">
-					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				        	</div>
-				         </form>
+				<form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
+				 	<div id="bargraph">
+						<input type="submit" class="menu_button" id="bargraphWeek" value="">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</div>
+				</form>
 		    </div>
 			<div class="col-xs-1">
 				<form action="../../../inputNiko2" method="post" id="inputNiko" >

@@ -9,8 +9,10 @@
 
 	<link href="css/nikoniko_regis_denis.css" rel="stylesheet" >
 
+
 	<#include "../includable/bootstrap.ftl">
 	<#include "../includable/jquery.ftl">
+	<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -123,6 +125,7 @@
 	<script type="text/javascript" src="js/create_niko.js"></script>
 	<script type="text/javascript" src="js/function.js"> </script>
 	<script>
+	$(function () {
 		var nikonikos  = new Array();
 		var i =0;
 		<#list nikos as niko>
@@ -132,10 +135,13 @@
         	nikonikos[i][2] = "${niko.comment}";
         	nikonikos[i][3] = "${niko.user.lastname}";
         	nikonikos[i][4] = "${niko.user.firstname}";
+        	nikonikos[i][5] = "${niko.user.login}";
         	i++;
         </#list>
 
 	    $(document).ready(function() {
+	    	  $('[data-toggle="popover"]').popover()
+		})
 			createWeek("${newDayDateStr}", nikonikos);
 	    })
 	</script>

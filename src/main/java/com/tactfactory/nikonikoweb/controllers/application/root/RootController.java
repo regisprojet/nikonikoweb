@@ -1,4 +1,4 @@
-package com.tactfactory.nikonikoweb.controllers.root;
+package com.tactfactory.nikonikoweb.controllers.application.root;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

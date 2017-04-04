@@ -1,4 +1,4 @@
-package com.tactfactory.nikonikoweb.controllers.root;
+package com.tactfactory.nikonikoweb.controllers.application.view;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
