@@ -8,4 +8,7 @@ import com.tactfactory.nikonikoweb.models.Agency;
 public interface IAgencyCrudRepository extends IBaseCrudRepository<Agency> {
 
 	public List<Agency> findAll();
+
+	public Agency findByName(String name);
+	
 }

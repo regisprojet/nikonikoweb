@@ -24,10 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+
 //import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
 //import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
+import com.tactfactory.nikonikoweb.dao.ISecurityRoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.Ability;
 import com.tactfactory.nikonikoweb.models.Agency;
@@ -35,6 +38,7 @@ import com.tactfactory.nikonikoweb.models.Function;
 import com.tactfactory.nikonikoweb.models.Pole;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityLogin;
+import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 import com.tactfactory.nikonikoweb.utils.DumpFields;
 
 @Controller
@@ -51,6 +55,9 @@ public class AdminController {
 
 	@Autowired
 	private IPoleCrudRepository poleCrud;
+	
+	@Autowired
+	private ISecurityRoleCrudRepository roleCrud;
 	
 	
 	@RequestMapping(path = { BASE_URL, "menu" }, method = RequestMethod.GET)
@@ -239,6 +246,12 @@ public class AdminController {
 				 User user = userCrud.findOne(idUser);
 				 List<Agency> agencies = agencyCrud.findAll();
 				 List<Pole> poles =  poleCrud.findAll();
+				 List<SecurityRole> roles =  roleCrud.findAll();
+				 //List<SecurityRole> userRoles = roleCrud.findAll();
+				 List<SecurityRole> userRoles = roleCrud.findAllByUserId(idUser);
+				 System.out.println("nombre de roles total : "+ roles.size());
+				 System.out.println("nombre de roles pour l'utilisateur : "+ userRoles.size());
+				 
 				 Pole userPole = user.getPole();
 				 Agency userAgency = user.getAgency();
 				 
@@ -251,6 +264,8 @@ public class AdminController {
 				 model.addAttribute("fieldList",fieldList);
 				 model.addAttribute("dictFr",dictFr);
 				 model.addAttribute("userItem",user);
+				 model.addAttribute("userRoles",userRoles);
+				 
 				 if(userAgency==null) {
 					 model.addAttribute("agencyName","pas d'agence d'attribuée");	 
 				 }
@@ -264,9 +279,47 @@ public class AdminController {
 					 model.addAttribute("poleName",userPole.getName());
 				 }				 
 				 
+				 model.addAttribute("poles",poles);
+				 model.addAttribute("agencies",agencies);
+				 model.addAttribute("roles",roles);
+				 
 			return "admin/userupdate";
 	}
 	
-	
-	
+	@RequestMapping(path = { "user/{idUser}/update" }, method = RequestMethod.POST)
+	public String userUpdatePost(
+			@PathVariable("idUser") long idUser,
+			Model model,
+			@RequestParam("login") String login,
+			@RequestParam("firstname") String firstname,
+			@RequestParam("lastname") String lastname,
+			@RequestParam("registration") String registration,
+			@RequestParam("pole") String poleName,
+			@RequestParam("agency") String agencyName,
+			@RequestParam("role") String roleName
+			
+			
+			
+			) {
+			User user = userCrud.findOne(idUser);
+			user.setLogin(login);
+			user.setFirstname(firstname);
+			user.setLastname(lastname);
+			user.setRegistration_cgi(registration);
+			
+			SecurityRole role = roleCrud.findByRole(roleName);
+			Agency agency = agencyCrud.findByName(agencyName);
+			Pole pole = poleCrud.findByName(poleName);
+			
+			
+			user.setAgency(agency);
+			user.setPole(pole);
+			
+			userCrud.save(user);
+			System.out.println(""+user.getLogin()+", "+user.getFirstname()+", "+user.getLastname() 
+					+", pole = " + poleName +", agency = "+  agencyName + ", role="+ roleName);
+			
+			return "redirect:/admin2/index";
+		//return "redirect:/admin2/user/"+idUser+"/update";
+	}	
 }

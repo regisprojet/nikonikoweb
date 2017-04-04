@@ -277,3 +277,13 @@ div #zone{
 	color: black;
 	background-color: lightgrey;
 }
+
+.userInputField {
+	width: 160px;
+}
+
+.roleContainer {
+background-color: lightgrey;
+width:90px;
+height:200px;
+}

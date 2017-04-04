@@ -1,3 +1,2 @@
 
-<#include "ButtonBar.ftl">
 </body>

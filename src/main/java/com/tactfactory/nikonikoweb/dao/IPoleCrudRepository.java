@@ -8,4 +8,5 @@ import com.tactfactory.nikonikoweb.models.User;
 
 public interface IPoleCrudRepository extends IBaseCrudRepository<Pole> {
 	public List<Pole> findAll();
+	public Pole findByName(String name);
 }
