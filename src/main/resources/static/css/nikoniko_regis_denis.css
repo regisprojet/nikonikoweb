@@ -283,7 +283,8 @@ div #zone{
 }
 
 .roleContainer {
-background-color: lightgrey;
-width:90px;
-height:200px;
+	background-color: white;
+	border: 3px solid red;
+	width:90px;
+	height:160px;
 }

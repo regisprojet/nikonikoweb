@@ -83,51 +83,28 @@
 	        <#else>
 	        <div class="col-xs-2">
 				<div class="roleContainer" id="roleTarget">
+					fonctions utilisateur
 					<#if userRoles??>
 					<#list userRoles as role>
-						
-						 <#if "role.role" == "ROLE_ADMIN">
-						 
-<img class="roleDaD" id="iconAdmin" src="/images/admin_40.png">
- <#elseif "role.role" == "ROLE_USER">
- <img class="roleDaD" id="iconUser" src="/images/user_40.png">
- <#elseif "role.role" == "ROLE_VIP">
- <img class="roleDaD" id="iconVip" src="/images/vip_40.png">
- <#elseif "role.role" == "ROLE_PROJECTLEADER">
-  <img class="roleDaD" id="iconProjectLeader" src="/images/project_leader_40.png">
- </#if>
-						
-						
+						<#include "DrawIconRole.ftl">				
 					</#list>
 					</#if>
 				</div>
+				<#if true>
+				<input id="resetRoleButton" type="button" value="reset" onClick="clearTargetArea();" />
+				<#else>
+				<button id="resetRoleButton" action="">reset</button>
+				</#if>
 			</div>
 			<div class="col-xs-1">
 	        <div class="col-xs-2">
 				<div class="roleContainer" id="roleSource">
-				<#if false>
-				
-    				  <img class="roleDaD" id="iconUser" src="/images/user_40.png">
-    				  <img class="roleDaD" id="iconVip" src="/images/vip_40.png">
-    				  <img class="roleDaD" id="iconAdmin" src="/images/admin_40.png">
-				      <img class="roleDaD" id="iconProjectLeader" src="/images/project_leader_40.png">
-				      
-				 <#else>
+				fonctions disponibles
 				<#if roles??>
 					<#list roles as role>
-				   	<#if "${role.role}" == "ROLE_ADMIN">
-						 <img class="roleDaD" id="iconAdmin" src="/images/admin_40.png">
- 					<#elseif "${role.role}"  == "ROLE_USER">
- 						<img class="roleDaD" id="iconUser" src="/images/user_40.png">
- 					<#elseif "${role.role}"  == "ROLE_VIP">
- 						<img class="roleDaD" id="iconVip" src="/images/vip_40.png">
- 					<#elseif "${role['role']}" == "ROLE_PROJECTLEADER">
-  						<img class="roleDaD" id="iconProjectLeader" src="/images/project_leader_40.png">
- 					</#if>
+				   		<#include "DrawIconRole.ftl">				
 					</#list>
 				</#if>
-				
-				 </#if>
 				</div>
 			</div>
 	          								
