@@ -100,7 +100,7 @@
 				         </form>
 				    </div>
 			<div class="col-xs-1">
-				<form action="inputNiko2" method="post" id="inputNiko" >
+				<form action="calendarInputNiko" method="post" id="inputNiko" >
 					<div id="voteMenue">
 						<input type="submit" class="menu_button" id="inputNiko" value="">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -108,7 +108,7 @@
 				</form>
 			</div>
 			<div class="col-xs-1">
-				<form action="quit" method="post" id="deconnexion">
+				<form action="calendarLogout" method="post" id="deconnexion">
 					<div id="quitMenue">
 						<input type="submit" class="menu_button" id="deconnexion" value="">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
