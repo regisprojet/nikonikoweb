@@ -9,14 +9,13 @@
 
 	<link href="css/nikoniko_regis_denis.css" rel="stylesheet" >
 
+
 	<#include "../includable/bootstrap.ftl">
 	<#include "../includable/jquery.ftl">
+	<script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
   </head>
 
   <body>
- 	<div id="curseur" class="infobulle">
- 		<p onmouseover="montre('Ici je met tout le texte que je veut, <b>meme de l\'html</b> !');" onmouseout="cache();">Un paragraphe avec une info bulle !</p>
- 	</div>
 	<canvas id="canvas" width="25" height="25"></canvas>
 	<div class="container" id="container">
 		<div class="row">
@@ -32,7 +31,19 @@
 					</div>
 					<div class="col-xs-3 " id="VerticaleEquipeName">
 						<p id="verticaleName">${verticale}</p>
-						<p id="teamName">${equipe}</p>
+
+						<form id="teamSelect" ENCTYPE="multipart/form-data" method="post" action="calendarTeamSelect">
+							<select onChange="this.form.submit()" name="team" size="1">
+								<#list equipes as equipe>
+									<#if "${equipe.name}"  ==  "${equipeSelect}">
+										<OPTION selected>${equipe.name}
+									<#else>
+										<OPTION>${equipe.name}
+									</#if>
+								</#list>
+							</select>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -114,6 +125,7 @@
 	<script type="text/javascript" src="js/create_niko.js"></script>
 	<script type="text/javascript" src="js/function.js"> </script>
 	<script>
+	$(function () {
 		var nikonikos  = new Array();
 		var i =0;
 		<#list nikos as niko>
@@ -123,10 +135,13 @@
         	nikonikos[i][2] = "${niko.comment}";
         	nikonikos[i][3] = "${niko.user.lastname}";
         	nikonikos[i][4] = "${niko.user.firstname}";
+        	nikonikos[i][5] = "${niko.user.login}";
         	i++;
         </#list>
 
 	    $(document).ready(function() {
+	    	  $('[data-toggle="popover"]').popover()
+		})
 			createWeek("${newDayDateStr}", nikonikos);
 	    })
 	</script>

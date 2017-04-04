@@ -7,16 +7,13 @@ function createWeek(dateStr, nikonikos) {
 	listMonth =["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 	listDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Sam", "Dim"];
 
-	date = new Date();
-	calendar = new Date(dateStr);
+	date = new Date(dateStr);
+	calendar = date;
+	var nDayMonth = new Date(date.getFullYear(), date.getMonth()+1, -1).getDate()+1;
+	var firstDayOfMonth = (new Date(date.getFullYear(), date.getMonth(), 1)).getDate();
+	var currentDayOfMonth = date.getDate();
 
-	var nDayMonth = new Date(calendar.getFullYear(), calendar.getMonth()+1, -1).getDate()+1;
-
-	var firstDay = (new Date(calendar.getFullYear(), calendar.getMonth(), 1)).getDay() -1 ;
-	if(firstDay == (-1)) //passage du dimanche de 0 a 7
-		firstDay=6;
-
-	var currentDayOfMonth = calendar.getDate();
+console.log ("nDayMonth=" + nDayMonth +" firstDayOfMonth =" + firstDayOfMonth + " currentDayOfMonth =" + currentDayOfMonth);
 
 	// Recherche du nombre de user dans la team
 	// ----------------------------------------
@@ -118,8 +115,6 @@ function createWeek(dateStr, nikonikos) {
 			/* Recherche du jour courant */
 			/* ------------------------- */
 			dayOfMonth++;
-			dayDate	= dayOfMonth - firstDay;
-
 			var newCol = document.createElement("div");
 
 			var rowLastChild = newRow.LastChild;
@@ -137,25 +132,6 @@ function createWeek(dateStr, nikonikos) {
 			var celluleId =  "" + calendar.getDate() + calendar.getMonth()+ calendar.getFullYear();
 			cellule.setAttribute("id",celluleId);
 
-			/* Insertion Info bulle bootstrap popover */
-			/* -------------------------------------- */
-			cellule.setAttribute("container","'body'");
-			cellule.setAttribute("data-toggle","popover");
-			cellule.setAttribute("data-html","true");
-			cellule.setAttribute("data-placement","bottom");
-			var nikoComment = "<ul class='popover2'>";
-			for(var k = 0 ; k<nikonikos.length; k++) {
-				var nikoLogDate = nikonikos[k][1].split(" ");
-				if(nikoLogDate[0] ==dayDate) {
-					var nikoCommentColor = "nikoCommentColor" + nikonikos[k][0];
-					nikoComment += "<li>" + " <b class=" + nikoCommentColor + "> " + nikonikos[k][4] + " " + nikonikos[k][3] + "</b> : " + nikonikos[k][2] + "</li>";
-				}
-			}
-			nikoComment += "</ul>";
-			cellule.setAttribute("data-content",nikoComment);
-			$(["#" + celluleId]).popover('toggle');
-
-
 			/* Insertion de la date */
 			/* -------------------- */
 			var dayName = document.createElement("div");
@@ -164,7 +140,74 @@ function createWeek(dateStr, nikonikos) {
 
 			var newContent = document.createTextNode("");
 
-			newContent = document.createTextNode(dayDate);
+				/* Insertion des dates précédentes au jour courant */
+				/* ----------------------------------------------- */
+//console.log("numDay=" + numDay+ " "+ "dayOfMonth=" + dayOfMonth + " " + "calendar.getDate()=" + calendar.getDate() + " " + " firstDay=" + firstDay + " currentDay=" + currentDay + " j=" + j)
+
+			if(dayOfMonth <= firstDay) {
+				newContent = document.createTextNode("_");
+			}
+
+//			if((calendar.getDate() > firstDay) && (dayOfMonth > firstDay) && ((dayOfMonth - firstDay) < calendar.getDate())) {
+//			//if(((dayOfMonth <= 7)  && (dayOfMonth > firstDay)) ||
+//			//   ((calendar.getDay() > firstDay) && (dayOfMonth > firstDay) && ((dayOfMonth - firstDay) < calendar.getDate()))) {
+//				dayDate = dayOfMonth - firstDay;
+////console.log("	   ok date preced");
+//				newContent = document.createTextNode(dayDate);
+//			}
+
+			if((calendar.getDate() > firstDay) && (dayOfMonth > firstDay) && ((dayOfMonth - firstDay) < calendar.getDate())) {
+				dayDate = dayOfMonth - firstDay;
+				newContent = document.createTextNode(dayDate);
+			}
+
+				/* insertion de la date du jour */
+				/* ---------------------------- */
+			//if((calendar.getDay()==(j+1)) && numDay
+			if((numDay==(j+1)) &&
+				(dayOfMonth >= calendar.getDate()) &&
+				(currentDay == "")) {
+//console.log("  ok date du jour");
+						currentDay = "dateStr" + i + j;
+						currentZone = "zone" + i + j;
+						calculatedDay = calendar.getDate();
+
+						if((calendar.getDay() == new Date().getDay())&&
+						   (calendar.getMonth() == new Date().getMonth())&&
+						   (calendar.getFullYear() == new Date().getFullYear())) {
+								dayName.setAttribute("id","currentDate");
+								cellule.setAttribute("id","currentZone");
+								//alert(new Date().getDay())
+						}
+
+						dayDate = calendar.getDate();
+						newContent = document.createTextNode(dayDate);
+
+				/* Insertion des dates des jours suivants la date du jour */
+				/* ------------------------------------------------------ */
+			} else if((currentDay != "") && (dayOfMonth <= nDayMonth+firstDay)) {
+				calculatedDay++;
+				dayDate = calculatedDay;
+				newContent = document.createTextNode(dayDate);
+//console.log("	   ok date suivante");
+			}
+
+			/* Insertion Info bulle bootstrap popover */
+			/* -------------------------------------- */
+			dayName.setAttribute("container","'body'");
+			dayName.setAttribute("data-toggle","popover");
+			dayName.setAttribute("data-html","true");
+			dayName.setAttribute("data-placement","bottom");
+			var nikoComment = "<ul class='popover2'>";
+			for(var k = 0 ; k<nikonikos.length; k++) {
+				var nikoLogDate = nikonikos[k][1].split(" ");
+				if(nikoLogDate[0] ==dayDate) {
+					nikoComment += "<li>" + " <b> " + nikonikos[k][4] + " " + nikonikos[k][3] + "</b> : " + nikonikos[k][2] + "</li>";
+				}
+			}
+			nikoComment += "</ul>";
+			dayName.setAttribute("data-content",nikoComment);
+			$(["#" + dayNameId]).popover('toggle');
 
 			var colId = dayDate + calendar.getMonth() + calendar.getFullYear();
 
@@ -172,19 +215,16 @@ function createWeek(dateStr, nikonikos) {
 			/* ----------------------------------------------------------------------- */
 			if((dayOfMonth <= nDayMonth+firstDay)&&(dayOfMonth > firstDay)) {
 
-				//var currentDate = new Date(date.getFullYear(), date.getMonth(), dayDate);
-				var currentDate = new Date(calendar.getFullYear(), calendar.getMonth(), dayDate);
+				var currentDate = new Date(date.getFullYear(), date.getMonth(), dayDate);
 
 				/* Insertion de la date de la zone nikkoniko */
 				/* ----------------------------------------- */
 				dayName.appendChild(newContent);
 				cellule.insertBefore(dayName,colLastChild);
 
-				/* Insertion de n zones des nikoNiko et Nikonikos sauf samedi et dimanche */
-				/* ---------------------------------------------------------------------- */
+				/* Insertion de n zones des nikoNiko sauf samedi et dimanche */
+				/* ---------------------------------------------------------- */
 				if((j!=5)&&(j!=6)) {
-					/* Insertion des zones des Nikonikos */
-					/* --------------------------------- */
 					for(var k=0; k<nbTeamUser; k++ ) {
 						var ZoneNicos = document.createElement("canvas");
 						ZoneNicos.setAttribute("width","25");
@@ -216,7 +256,7 @@ function createWeek(dateStr, nikonikos) {
 		var nikos = createRandNiko();
 
 		var todayDate = new Date();
-		var currentDate = new Date(calendar.getFullYear(), calendar.getMonth(), i);
+		var currentDate = new Date(date.getFullYear(), date.getMonth(), i);
 
 		var colId = "" + i + calendar.getMonth() + calendar.getFullYear();
 
@@ -228,6 +268,8 @@ function createWeek(dateStr, nikonikos) {
 				var canvasId = "canvas_" + colId + k ;
 				if (document.getElementById(canvasId) !=null) {
 					createNiko(nikonikos[j][0],colId,canvasId,0.18,false,"green","red","yellow");
+
+					//document.getElementById(canvasId).setAttribute("onclick","alert('" + nikonikos[j][4] + ": " + nikonikos[j][2] + "')");
 					}
 				k++;
 			}

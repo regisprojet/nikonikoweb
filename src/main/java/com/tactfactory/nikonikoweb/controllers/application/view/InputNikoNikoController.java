@@ -1,10 +1,14 @@
-package com.tactfactory.nikonikoweb.controllers.root;
+package com.tactfactory.nikonikoweb.controllers.application.view;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.WebUtils;
 
 import com.tactfactory.nikonikoweb.controllers.security.SecurityController;
 import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
@@ -37,8 +43,7 @@ public class InputNikoNikoController {
 	private String inputNikoRedirect;
 	Date currentDate = new Date();
 	private Long userId = null;
-	private Long teamId = null;
-
+	private Team teamSelect = null;
 
 	public String getInputNikoRedirect() {
 		return inputNikoRedirect;
@@ -65,22 +70,34 @@ public class InputNikoNikoController {
 
 	@Secured("ROLE_USER")
 	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
-	public String inputNikoGet(Model model) {
+	public String inputNikoGet(Model model,
+			HttpServletRequest request) {
+
+		// find of cookie team name
+		// ------------------------
+		Cookie cookie = WebUtils.getCookie(request, "userteam");
+		if(cookie.getValue() != null) {
+			List<Team> teamsNames = (List<Team>) teamCrud.findTeamByName(cookie.getValue());
+			if(!teamsNames.isEmpty())
+				teamSelect = teamsNames.get(0);
+		}
 
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User currentUser = userCrud.findByLogin(userDetails.getUsername());
 		userId = currentUser.getId();
 
+		// find the first team if not already found
+		// ----------------------------------------
+		List<Team> teams = (List<Team>) teamCrud.findTeamByUserId(userId);
+		if(teamSelect == null)
+			teamSelect = teams.get(0);
+
 		model.addAttribute("nomUser", currentUser.getLastname());
 		model.addAttribute("prenomUser", currentUser.getFirstname());
 
 		model.addAttribute("page", "inputNikoNiko");
-		model.addAttribute("equipe", "teamName");
-
-		// find the first team if not already found
-		// ----------------------------------------
-		List<Team> teams = (List<Team>) teamCrud.findTeamByUserId(userId);
+		model.addAttribute("equipes", teams);
 
 		// find all nikoniko from current team
 		// -----------------------------------
@@ -133,6 +150,9 @@ public class InputNikoNikoController {
 
 		model.addAttribute("newDayDate",currentDate);
 
+		model.addAttribute("equipes", teams);
+		model.addAttribute("equipeSelect", teamSelect.getName());
+
 		return inputNikoView;
 	}
 
@@ -179,6 +199,19 @@ public class InputNikoNikoController {
 			e.printStackTrace();
 		}
 		currentDate = date;
+		return inputNikoRedirect;
+	}
+
+	@Secured("ROLE_USER")
+	@RequestMapping(value = "/inputTeamSelect" , method = RequestMethod.POST)
+	public String inputTeamSelectPost(
+			HttpServletResponse response,
+			@RequestParam ("team") String team, Model model) {
+
+		response.addCookie(new Cookie("userteam", team));
+		if(team != null) {
+			teamSelect = teamCrud.findTeamByName(team).get(0);
+		}
 		return inputNikoRedirect;
 	}
 

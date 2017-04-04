@@ -22,7 +22,18 @@
 					</div>
 					<div class="col-xs-3 NikoInputTitle" id="VerticaleEquipeName">
 						<p id="verticaleTitle">${verticale}</p>
-						<p id="teamTitle">${equipe}</p>
+						<form id="teamSelect" ENCTYPE="multipart/form-data" method="post" action="inputTeamSelect">
+							<select onChange="this.form.submit()" name="team" size="1">
+								<#list equipes as equipe>
+									<#if "${equipe.name}"  ==  "${equipeSelect}">
+										<OPTION selected>${equipe.name}
+									<#else>
+										<OPTION>${equipe.name}
+									</#if>
+								</#list>
+							</select>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						</form>
 					</div>
 					<div class="col-xs-1"></div>
 				</div>
@@ -33,7 +44,7 @@
 							<div class="row divDateDuJour">
 								<div class="col-xs-1"></div>
 								<div class="col-xs-2">
-									<button class="button" id="Precedant" onclick="setJourPreced(25)"></button>
+									<button class="button" id="Precedant" onclick="setJourPreced(3)"></button>
 								</div>
 								<div class="col-xs-6">
 									<span id = "DateDuJour" >${newDayDate?string("dd MMMM yyyy")}</span>
