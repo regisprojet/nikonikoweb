@@ -1,8 +1,5 @@
 package com.tactfactory.nikonikoweb.controllers.application.view;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,9 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,62 +19,39 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.WebUtils;
 
-import com.tactfactory.nikonikoweb.controllers.security.SecurityController;
-import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
-import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
-import com.tactfactory.nikonikoweb.dao.ITeamCrudRepository;
-import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
+import com.tactfactory.nikonikoweb.controllers.application.ApplicationControleur;
 import com.tactfactory.nikonikoweb.models.NikoNiko;
 import com.tactfactory.nikonikoweb.models.Team;
 import com.tactfactory.nikonikoweb.models.User;
 
 @Controller
-public class InputNikoNikoController {
+public class InputNikoNikoController extends ApplicationControleur {
 
-	public final static String PATH = "/";
-	public static final String BASE = "root";
-	public final static String ROUTE_INPUT_NIKO = "/inputNiko";
-	private String inputNikoView;
-	private String inputNikoRedirect;
-	Date currentDate = new Date();
-	private Long userId = null;
-	private Team teamSelect = null;
+	protected DateTime currentDateTime = new DateTime();
+	protected Team teamSelect = null;
+	protected Long userId = null;
 
 	public String getInputNikoRedirect() {
 		return inputNikoRedirect;
 	}
 
-	SimpleDateFormat sm = new SimpleDateFormat("dd MM YYYY");
-
 	public InputNikoNikoController() {
-		this.inputNikoView = PATH + BASE + PATH + "input";
-		this.inputNikoRedirect = "redirect:" + ROUTE_INPUT_NIKO;
 	}
 
-	@Autowired
-	private INikoNikoCrudRepository nikoNikoCrud;
-
-	@Autowired
-	private IUserCrudRepository userCrud;
-
-	@Autowired
-	private IPoleCrudRepository poleCrud;
-
-	@Autowired
-	private ITeamCrudRepository teamCrud;
-
 	@Secured("ROLE_USER")
-	@RequestMapping(path = {/*PATH,*/ ROUTE_INPUT_NIKO} , method = RequestMethod.GET)
+	@RequestMapping(value = ROUTE_INPUT_NIKO , method = RequestMethod.GET)
 	public String inputNikoGet(Model model,
 			HttpServletRequest request) {
 
 		// find of cookie team name
 		// ------------------------
 		Cookie cookie = WebUtils.getCookie(request, "userteam");
-		if(cookie.getValue() != null) {
-			List<Team> teamsNames = (List<Team>) teamCrud.findTeamByName(cookie.getValue());
-			if(!teamsNames.isEmpty())
-				teamSelect = teamsNames.get(0);
+		if(cookie!=null) {
+			if(cookie.getValue() != null) {
+				List<Team> teamsNames = (List<Team>) teamCrud.findTeamByName(cookie.getValue());
+				if(!teamsNames.isEmpty())
+					teamSelect = teamsNames.get(0);
+			}
 		}
 
 		UserDetails userDetails =
@@ -101,7 +73,7 @@ public class InputNikoNikoController {
 
 		// find all nikoniko from current team
 		// -----------------------------------
-		DateTime nDate = new DateTime(currentDate);
+		DateTime nDate = new DateTime(currentDateTime);
 		List<NikoNiko> nikos = (List<NikoNiko>) nikoNikoCrud.findByTeamMonth(teams.get(0).getId(), nDate.getYear(), nDate.getMonthOfYear()) ;
 
 		if(currentUser.getPole()!=null) {
@@ -123,8 +95,8 @@ public class InputNikoNikoController {
 			System.err.println("PAS DE NIKONIKOS ");
 		else
 			for (NikoNiko nikoNiko : nikoNikos) {
-				String nikoDate = sm.format(nikoNiko.getLog_date());
-				String currentDateStr = sm.format(currentDate);
+				String nikoDate = viewDateTime.print(new DateTime(nikoNiko.getLog_date()));
+				String currentDateStr = viewDateTime.print(currentDateTime);
 				if(nikoDate.equals(currentDateStr)) {
 					nikoSatisfaction = nikoNiko.getSatisfaction();
 					nikoComment = nikoNiko.getComment();
@@ -148,7 +120,7 @@ public class InputNikoNikoController {
 
 		model.addAttribute("nikos", nikos);
 
-		model.addAttribute("newDayDate",currentDate);
+		model.addAttribute("newDayDate",currentDateTime.toDate());
 
 		model.addAttribute("equipes", teams);
 		model.addAttribute("equipeSelect", teamSelect.getName());
@@ -165,7 +137,7 @@ public class InputNikoNikoController {
 		// -------------------
 		if((nikoId == 0)&&(nikoNiko.getSatisfaction()>0)) {
 			nikoNiko.setIsAnonymous(true);
-			nikoNiko.setLog_date(currentDate);
+			nikoNiko.setLog_date(currentDateTime.toDate());
 			nikoNikoCrud.save(nikoNiko);
 
 		// update nikoniko
@@ -174,7 +146,7 @@ public class InputNikoNikoController {
 			System.err.println("  EXIST NIKINIKO");
 			nikoNiko.setIsAnonymous(is_anonymous);
 			nikoNiko.setId(nikoId);
-			nikoNiko.setChange_date(currentDate);
+			nikoNiko.setChange_date(currentDateTime.toDate());
 
 			nikoNikoCrud.save(nikoNiko);
 		}
@@ -187,23 +159,15 @@ public class InputNikoNikoController {
 	}
 
 	@Secured("ROLE_USER")
-	@RequestMapping(value = "/inputDateSave" , method = RequestMethod.POST)
-	public String inputNikoPost(String newDayDate, Model model) {
+	@RequestMapping(value = ROUTE_INPUT_NIKO_DATE_SAVE , method = RequestMethod.POST)
+	public String inputNikoPost(Date newDayDate, Model model) {
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-		Date date = new Date();
-		try {
-			date = formatter.parse(newDayDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		currentDate = date;
+		currentDateTime = new DateTime(newDayDate);
 		return inputNikoRedirect;
 	}
 
 	@Secured("ROLE_USER")
-	@RequestMapping(value = "/inputTeamSelect" , method = RequestMethod.POST)
+	@RequestMapping(value = ROUTE_INPUT_NIKO_TEAM_SELECT , method = RequestMethod.POST)
 	public String inputTeamSelectPost(
 			HttpServletResponse response,
 			@RequestParam ("team") String team, Model model) {
@@ -216,18 +180,18 @@ public class InputNikoNikoController {
 	}
 
 	@Secured("ROLE_USER")
-	@RequestMapping(value = "/quit" , method = RequestMethod.POST)
-	public String inputNikoLogoutPost( Model model) {
-		userId = null;
-		return "redirect:login?logout";
-	}
-
-
-	@Secured("ROLE_USER")
-	@RequestMapping(value = "/calendar2" , method = RequestMethod.POST)
+	@RequestMapping(value = ROUTE_INPUT_NIKO_CALENDAR , method = RequestMethod.POST)
 	public String inputNikoRestPost( Model model) {
 
-		return "redirect:calendar";
+		return calendarRedirect;
 	}
+
+	@Secured("ROLE_USER")
+	@RequestMapping(value = ROUTE_INPUT_NIKO_LOGOUT , method = RequestMethod.POST)
+	public String inputNikoLogoutPost( Model model) {
+		userId = null;
+		return logoutRedirect;
+	}
+
 
 }

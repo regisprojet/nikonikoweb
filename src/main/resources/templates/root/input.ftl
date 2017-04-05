@@ -103,7 +103,7 @@
 				    </div>
 
 			        <div class="col-xs-1">
-						<form action="calendar2" method="post" id="restitution" >
+						<form action="nikoCalendar" method="post" id="restitution" >
 							<div id="restMenue">
 								<input type="submit" class="menu_button" id="restitution" value="">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -111,7 +111,7 @@
 						</form>
 					</div>
 					<div class="col-xs-1">
-						<form action="quit" method="post" id="deconnexion">
+						<form action="nikoLogout" method="post" id="deconnexion">
 							<div id="quitMenue">
 								<input type="submit" class="menu_button" id="deconnexion" value="">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

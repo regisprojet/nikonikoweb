@@ -50,16 +50,8 @@
 		</div>
 		<div class="row" id="menu">
 			<div class="col-xs-8"></div>
-			 <div class="col-xs-1">
-				<form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
-				 	<div id="bargraph">
-						<input type="submit" class="menu_button" id="bargraphWeek" value="">
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-					</div>
-				</form>
-		    </div>
 			<div class="col-xs-1">
-				<form action="../../../inputNiko2" method="post" id="inputNiko" >
+				<form action="graphWeekInputNiko" method="post" id="inputNiko" >
 					<div id="voteMenue">
 						<input type="submit" class="menu_button" id="inputNiko" value="">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -67,7 +59,15 @@
 				</form>
 			</div>
 			<div class="col-xs-1">
-				<form action="../../../logout" method="post" id="deconnexion">
+				<form action="graphWeekCalendar" method="post" id="restitution" >
+					<div id="restMenue">
+						<input type="submit" class="menu_button" id="restitution" value="">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</div>
+				</form>
+			</div>
+			<div class="col-xs-1">
+				<form action="graphWeekLogout" method="post" id="deconnexion">
 					<div id="quitMenue">
 						<input type="submit" class="menu_button" id="deconnexion" value="">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
