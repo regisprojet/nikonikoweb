@@ -319,6 +319,7 @@ public class AdminController {
 			System.out.println(""+user.getLogin()+", "+user.getFirstname()+", "+user.getLastname() 
 					+", pole = " + poleName +", agency = "+  agencyName + ", role="+ roleName);
 			
+			System.out.println("role="+roleName);
 			return "redirect:/admin2/index";
 		//return "redirect:/admin2/user/"+idUser+"/update";
 	}	

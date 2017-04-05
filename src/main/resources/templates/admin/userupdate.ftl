@@ -97,6 +97,10 @@
 				</#if>
 			</div>
 			<div class="col-xs-1">
+				<div dropzone="move" id="trashZone">
+				 	<img dropzone="move" id="iconTrash" src="/images/trash_40.png">
+				 </div>
+			</div>
 	        <div class="col-xs-2">
 				<div class="roleContainer" id="roleSource">
 				fonctions disponibles
@@ -114,7 +118,8 @@
 			</#if>
 			<div class="col-xs-1"></div>
 		</div><!--div row-->
-		<input type="submit" value="submit"/>
+		<input id="hybrid" type="hidden" value="" name="role" />
+		<input type="submit" value="valider"/>
 		<div class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10"  id="NikoFooter"></div>
@@ -124,7 +129,7 @@
 		
 		
     <!-- Lancement des scripts -->
- 	<script src="../../../js/RoleDragAndDrop.js">
+ 	<script src="/js/RoleDragAndDrop.js">
     </script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script>
