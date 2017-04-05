@@ -20,6 +20,8 @@ public class ApplicationControleur {
 	public final static String ROUTE_INPUT_NIKO_TEAM_SELECT = PATH + "inputTeamSelect";
 	public final static String ROUTE_INPUT_NIKO_LOGOUT = PATH + "nikoLogout";
 	public final static String ROUTE_INPUT_NIKO_CALENDAR = PATH + "nikoCalendar";
+	public final static String ROUTE_INPUT_NIKO_ADMIN_APP  = PATH + "nikoAdminApp";
+	public final static String ROUTE_INPUT_NIKO_ADMIN_BDD  = PATH + "nikoAdminBdd";
 
 	public final static String ROUTE_CALENDAR = PATH + "calendar";
 	public final static String ROUTE_CALENDAR_NIKONIKO = PATH + "calendarInputNiko";
@@ -38,6 +40,8 @@ public class ApplicationControleur {
 	protected String inputNikoRedirect = REDIRECT + ROUTE_INPUT_NIKO;
 	protected String calendarRedirect = REDIRECT + ROUTE_CALENDAR;
 	protected String graphWeekRedirect = REDIRECT + PATH + ROUTE_GRAPH_WEEK;
+	protected String adminAppRedirect = REDIRECT + "admin2" + PATH + "index";
+	protected String adminBddRedirect = REDIRECT + "admin" + PATH + "nikoniko" + PATH + "list";
 
 	protected String inputNikoView = PATH + BASE + PATH + "input";
 	protected String calendarView = PATH + BASE + PATH + "calendar";

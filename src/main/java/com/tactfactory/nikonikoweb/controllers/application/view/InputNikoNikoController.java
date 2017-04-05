@@ -126,10 +126,8 @@ public class InputNikoNikoController extends ApplicationControleur {
 
 		model.addAttribute("equipes", teams);
 		model.addAttribute("equipeSelect", teamSelect.getName());
+
 		model.addAttribute("currentUserRoles", currentUser.getRoles());
-		for (SecurityRole role : currentUser.getRoles()) {
-			System.err.println(role.getRole());
-		}
 
 		return inputNikoView;
 	}
@@ -171,6 +169,22 @@ public class InputNikoNikoController extends ApplicationControleur {
 		currentDateTime = new DateTime(newDayDate);
 		return inputNikoRedirect;
 	}
+
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = ROUTE_INPUT_NIKO_ADMIN_APP , method = RequestMethod.POST)
+	public String inputNikoAdminAppPost( Model model) {
+
+		return adminAppRedirect;
+	}
+
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = ROUTE_INPUT_NIKO_ADMIN_BDD , method = RequestMethod.POST)
+	public String inputNikoAdminBddPost( Model model) {
+
+		return adminBddRedirect;
+	}
+
+	//nikoAdminBdd
 
 	@Secured("ROLE_USER")
 	@RequestMapping(value = ROUTE_INPUT_NIKO_TEAM_SELECT , method = RequestMethod.POST)

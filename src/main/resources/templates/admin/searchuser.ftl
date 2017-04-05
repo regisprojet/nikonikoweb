@@ -20,7 +20,7 @@
   <body>
 	<canvas id="canvas" width="25" height="25"></canvas>
 	<div class="container" id="container">
-		<div class="row">
+		<div class="row"  id="titleuserlist">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10">
 				<div class="row NikoInputTitle">
@@ -67,12 +67,12 @@
 			<div class="col-xs-10"  id="NikoFooter"></div>
 			<div class="col-xs-1"></div>
 		</div>
-		
+
 		<div class="row" id="userlist">
-			
+
 	    	<#if userlist??>
             <#list userlist as user>
-            <#if user??> 
+            <#if user??>
             <div class="col-xs-1"></div>
 			<div class="col-xs-2">${user['registration_cgi']}</div>
 			<div class="col-xs-2">${user['login']}</div>
@@ -92,7 +92,7 @@
 		</div>
 		<#include "ButtonBar.ftl">
     </div>
-    
-  
+
+
 </body>
 </html>

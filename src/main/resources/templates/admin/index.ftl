@@ -35,12 +35,12 @@
 			</div>
 			<div class="col-xs-1"></div>
 		</div>
-	    <div class="row">
+	    <div class="row" id="titleuserlist">
 			<div class="col-xs-3"></div>
 			<div class="col-xs-6">
 				<a href="user/list?limit=7&off	set=0">liste des utilisateurs</a><br>
 				<a href="searchuser">recherche d'un utilisateur</a><br>
-				
+
 				<a href="user/list?limit=7&offset=0">liste des roles</a><br>
 				<a href="user/list?limit=7&offset=0">liste des agences</a><br>
 			</div>
@@ -52,7 +52,37 @@
 			<div class="col-xs-10"  id="NikoFooter"></div>
 			<div class="col-xs-1"></div>
 		</div>
-		<#include "ButtonBar.ftl">
+		<div class="row">
+		    <div class="col-xs-8"></div>
+		    <div class="col-xs-1">
+		    	<#list currentUserRoles as role>
+					<#if role.role == "ROLE_USER">
+						<form action="/inputNiko" method="get" id="adminNiko">
+							<div id="adminNikoDiv">
+								<input type="submit" class="menu_button" id="inputNiko" value="">
+					 		</div>
+						</form>
+				    </#if>
+				</#list>
+			</div>
+			<div class="col-xs-1">
+				<form action="/admin2/index" method="post" id="homeButton" >
+			 		<div id="home">
+						<input type="submit" class="menu_button" id="homeButton" value="">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</div>
+				</form>
+			</div>
+			<div class="col-xs-1">
+				<form action="/logout" method="post" id="deconnexion">
+					<div id="quitMenue">
+						<input type="submit" class="menu_button" id="deconnexion" value="">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			 		</div>
+				</form>
+			</div>
+			<div class="col-xs-1"></div>
+		</div>
     </div>
 </body>
 </html>

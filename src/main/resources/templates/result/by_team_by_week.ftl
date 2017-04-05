@@ -17,7 +17,7 @@
   <body>
 	<canvas id="canvas" width="25" height="25"></canvas>
 	<div class="container" id="container">
-		<div class="row">
+		<div class="row" >
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10">
 				<div class="row NikoInputTitle">
@@ -36,7 +36,7 @@
 			</div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div class="row">
+		<div class="row"  id="titleuserlist">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10">
            		 <div id="bargraph"></div>
