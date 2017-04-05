@@ -3,6 +3,7 @@ package com.tactfactory.nikonikoweb.controllers.application.view;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.relation.Role;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import com.tactfactory.nikonikoweb.controllers.application.ApplicationControleur
 import com.tactfactory.nikonikoweb.models.NikoNiko;
 import com.tactfactory.nikonikoweb.models.Team;
 import com.tactfactory.nikonikoweb.models.User;
+import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 
 @Controller
 public class InputNikoNikoController extends ApplicationControleur {
@@ -124,6 +126,10 @@ public class InputNikoNikoController extends ApplicationControleur {
 
 		model.addAttribute("equipes", teams);
 		model.addAttribute("equipeSelect", teamSelect.getName());
+		model.addAttribute("currentUserRoles", currentUser.getRoles());
+		for (SecurityRole role : currentUser.getRoles()) {
+			System.err.println(role.getRole());
+		}
 
 		return inputNikoView;
 	}

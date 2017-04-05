@@ -92,7 +92,20 @@
 					<div class="col-xs-1"></div>
 				</div>
 				<div class="row" id="menu">
-					<div class="col-xs-8"></div>
+					<div class="col-xs-1"></div>
+					<div class="col-xs-1"></div>
+						<#list currentUserRoles as role>
+							<#if role.role == "ROLE_ADMIN">
+								<form action="admin1" method="get" id="admin1" >
+						         	<div id="adminDiv">
+							        	<input type="submit" class="menu_button" id="adminGen" value="">
+							        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						        	</div>
+						         </form>
+						         <#break>
+						    </#if>
+						</#list>
+					<div class="col-xs-5"></div>
 				    <div class="col-xs-1">
 				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
 				         	<div id="bargraph">
