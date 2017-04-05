@@ -3,6 +3,9 @@ package com.tactfactory.nikonikoweb.controllers.view.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,6 +103,7 @@ public class NikoNikoViewController extends ViewBaseController<NikoNiko>{
 		return PATH_INDEX;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_USERLINK, method = RequestMethod.GET)
 	public String setTeamsForProjectGet(Model model,
 			@PathVariable Long nikonikoId) {
@@ -119,6 +123,7 @@ public class NikoNikoViewController extends ViewBaseController<NikoNiko>{
 		return PATH_USERLINK;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_USERLINK, method = RequestMethod.POST)
 	public String setTeamsForProjectPost(Model model,
 			@PathVariable Long nikonikoId,
@@ -132,6 +137,7 @@ public class NikoNikoViewController extends ViewBaseController<NikoNiko>{
 		return PATH_USERLINK_REDIRECT;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_USER, method = RequestMethod.GET)
 	public String getTeamsForProject(Model model, @PathVariable Long nikonikoId) {
 		NikoNiko nikoniko = super.getItem(nikonikoId);
@@ -148,6 +154,7 @@ public class NikoNikoViewController extends ViewBaseController<NikoNiko>{
 		return PATH_USER;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_PROJECTLINK, method = RequestMethod.GET)
 	public String setNikoNikosForProjectGet(Model model,
 			@PathVariable Long nikonikoId) {
@@ -167,6 +174,7 @@ public class NikoNikoViewController extends ViewBaseController<NikoNiko>{
 		return PATH_PROJECTLINK;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_PROJECTLINK, method = RequestMethod.POST)
 	public String setNikoNikosForProjectPost(Model model,
 			@PathVariable Long nikonikoId,
@@ -180,6 +188,7 @@ public class NikoNikoViewController extends ViewBaseController<NikoNiko>{
 		return PATH_PROJECTLINK_REDIRECT;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = ROUTE_PROJECT, method = RequestMethod.GET)
 	public String getNikoNikosForProject(Model model,
 			@PathVariable Long nikonikoId) {

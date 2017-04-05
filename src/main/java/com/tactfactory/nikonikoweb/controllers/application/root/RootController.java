@@ -295,20 +295,35 @@ public class RootController {
 		User user = userCrud.findByLogin(userDetails.getUsername());
 		model.addAttribute("username", user.getFirstname() + " " + user.getLastname());
 
-		if(user.getRoles().size()>1) {
+		/*if(user.getRoles().size()>1) {
 			System.out.println("plusieurs roles");
 			return "root/multifunction";
-	    }
+	    }*/
+		Boolean userRole = false;
+		Boolean vipRole = false;
+		Boolean adminRole = false;
+
 		for (SecurityRole role : user.getRoles()) {
-			if(role.getRole().equals("ROLE_ADMIN")) {
-				return "redirect:/admin2/index";
-			}
-			else if(role.getRole().equals("ROLE_USER")) {
-				return "redirect:/inputNiko";
+			if(role.getRole().equals("ROLE_USER")) {
+				userRole = true;
+				//return "redirect:/inputNiko";
 			}
 			else if(role.getRole().equals("ROLE_VIP")) {
-				return "redirect:/vip";
+				vipRole = true;
+				//return "redirect:/vip";
 			}
+			else if(role.getRole().equals("ROLE_ADMIN")) {
+				adminRole =true;
+				//return "redirect:/admin2/index";
+			}
+		}
+
+		if(userRole == true) {
+			return "redirect:/inputNiko";
+		} else if(vipRole == true) {
+			return "redirect:/vip";
+		} else if(adminRole == true) {
+			return "redirect:/admin2/index";
 		}
 
 		return "root/redirect";

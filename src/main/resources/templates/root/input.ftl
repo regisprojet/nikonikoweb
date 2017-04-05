@@ -92,7 +92,32 @@
 					<div class="col-xs-1"></div>
 				</div>
 				<div class="row" id="menu">
-					<div class="col-xs-8"></div>
+					<div class="col-xs-1"></div>
+				    <div class="col-xs-1">
+						<#list currentUserRoles as role>
+							<#if role.role == "ROLE_ADMIN">
+						        <form action="nikoAdminApp" method="post" id="admin1" >
+						         	<div id="adminAppDiv">
+							        	<input type="submit" class="menu_button" id="adminApp" value="">
+							        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						        	</div>
+						        </form>
+						    </#if>
+						</#list>
+				    </div>
+				    <div class="col-xs-1">
+						<#list currentUserRoles as role>
+							<#if role.role == "ROLE_ADMIN">
+						        <form action="nikoAdminBdd" method="post" id="admin2" >
+						         	<div id="adminBddDiv">
+							        	<input type="submit" class="menu_button" id="adminBdd" value="">
+							        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						        	</div>
+						        </form>
+						    </#if>
+						</#list>
+				    </div>
+					<div class="col-xs-5"></div>
 				    <div class="col-xs-1">
 				        <form action="result/1/0/by_team_by_week" method="get" id="by_team_by_week" >
 				         	<div id="bargraph">
