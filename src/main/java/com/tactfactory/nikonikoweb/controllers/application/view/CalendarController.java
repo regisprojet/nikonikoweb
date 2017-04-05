@@ -42,10 +42,12 @@ public class CalendarController extends ApplicationControleur {
 		// find of cookie team name
 		// ------------------------
 		Cookie cookie = WebUtils.getCookie(request, "userteam");
-		if(cookie.getValue() != null) {
-			List<Team> teamsNames = (List<Team>) teamCrud.findTeamByName(cookie.getValue());
-			if(!teamsNames.isEmpty())
-				teamSelect = teamsNames.get(0);
+		if(cookie!=null) {
+			if(cookie.getValue() != null) {
+				List<Team> teamsNames = (List<Team>) teamCrud.findTeamByName(cookie.getValue());
+				if(!teamsNames.isEmpty())
+					teamSelect = teamsNames.get(0);
+			}
 		}
 
 		UserDetails userDetails =
