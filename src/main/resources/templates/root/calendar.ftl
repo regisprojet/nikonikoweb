@@ -9,7 +9,6 @@
 
 	<link href="css/nikoniko_regis_denis.css" rel="stylesheet" >
 
-
 	<#include "../includable/bootstrap.ftl">
 	<#include "../includable/jquery.ftl">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

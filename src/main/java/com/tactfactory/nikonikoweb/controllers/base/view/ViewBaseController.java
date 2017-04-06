@@ -1,6 +1,9 @@
 package com.tactfactory.nikonikoweb.controllers.base.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tactfactory.nikonikoweb.controllers.base.BaseController;
+import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
+import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.base.DatabaseItem;
 import com.tactfactory.nikonikoweb.utils.DumpFields;
 
@@ -34,6 +39,9 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 	protected String listView;
 	protected String listRedirect;
 	protected String baseView;
+
+	@Autowired
+	protected IUserCrudRepository userCrud;
 
 	protected ViewBaseController(Class<T> clazz, String basePath) {
 		super(clazz);
@@ -63,6 +71,12 @@ public abstract class ViewBaseController<T extends DatabaseItem> extends
 		model.addAttribute("fields",
 				DumpFields.createContentsEmpty(super.getClazz()).fields);
 		model.addAttribute("items", DumpFields.listFielder(super.getItems()));
+
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User currentUser = userCrud.findByLogin(userDetails.getUsername());
+		model.addAttribute("currentUserRoles", currentUser.getRoles());
+
 		return listView;
 	}
 

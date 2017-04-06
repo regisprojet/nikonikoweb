@@ -6,7 +6,15 @@
 </head>
 <body>
     <h1> ${page} </h1>
-    <a href="create">Create new</a>
+    <div><a href="create">Create new</a></div>
+    <div>
+	<#list currentUserRoles as role>
+		<#if role.role == "ROLE_USER">
+			<div><a href="/inputNiko">Go Back NikonikoInput</a></div>
+	    </#if>
+	</#list>
+	</div>
+
     <table class="table table-bordered table-hover">
         <tr>
             <#list items as item>
