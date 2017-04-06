@@ -139,22 +139,29 @@ function createWeek(dateStr, nikonikos) {
 
 			/* Insertion Info bulle bootstrap popover */
 			/* -------------------------------------- */
-			cellule.setAttribute("container","'body'");
-			cellule.setAttribute("data-toggle","popover");
-			cellule.setAttribute("data-html","true");
-			cellule.setAttribute("data-placement","bottom");
-			var nikoComment = "<ul class='popover2'>";
-			for(var k = 0 ; k<nikonikos.length; k++) {
-				var nikoLogDate = nikonikos[k][1].split(" ");
-				if(nikoLogDate[0] ==dayDate) {
-					var nikoCommentColor = "nikoCommentColor" + nikonikos[k][0];
-					nikoComment += "<li>" + " <b class=" + nikoCommentColor + "> " + nikonikos[k][4] + " " + nikonikos[k][3] + "</b> : " + nikonikos[k][2] + "</li>";
+			if((j!=5)&&(j!=6)) {
+
+				cellule.setAttribute("container","'body'");
+				cellule.setAttribute("data-toggle","popover");
+				cellule.setAttribute("data-html","true");
+				cellule.setAttribute("data-placement","bottom");
+				var nikoComment = "<ul class='popover2'>";
+				var nbInsertedNiko = 0;
+				for(var k = 0 ; k<nikonikos.length; k++) {
+					var nikoLogDate = nikonikos[k][1].split(" ");
+					if(nikoLogDate[0] ==dayDate) {
+						var nikoCommentColor = "nikoCommentColor" + nikonikos[k][0];
+						nikoComment += "<li>" + " <b class=" + nikoCommentColor + "> " + nikonikos[k][4] + " " + nikonikos[k][3] + "</b> : " + nikonikos[k][2] + "</li>";
+						nbInsertedNiko ++;
+					}
+				}
+				nikoComment += "</ul>";
+
+				if(nbInsertedNiko>0) {
+					cellule.setAttribute("data-content",nikoComment);
+					$(["#" + celluleId]).popover('toggle');
 				}
 			}
-			nikoComment += "</ul>";
-			cellule.setAttribute("data-content",nikoComment);
-			$(["#" + celluleId]).popover('toggle');
-
 
 			/* Insertion de la date */
 			/* -------------------- */

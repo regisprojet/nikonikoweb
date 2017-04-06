@@ -286,6 +286,12 @@ div #zone{
 	color: #000000;
 }
 
+.titleuser {
+	margin-top: 20px;
+	font-weight: bolder;
+	color: #000000;
+}
+
 #userlist {
 	color: #000000;
 }
@@ -325,8 +331,7 @@ div #zone{
 	color: red;
 }
 
-
-[draggable=true]Â {
+[draggable=true] {
 	-moz-user-select: none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;

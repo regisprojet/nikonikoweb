@@ -44,12 +44,12 @@
 			<div class="col-xs-2"></div>
             <div class="col-xs-1"></div><br>
         </div>
-		    
+
 		<div class="row" id="userlist">
-			
+
 	    	<#if userlist??>
             <#list userlist as user>
-            <#if user??> 
+            <#if user??>
             <div class="col-xs-1"></div>
 			<div class="col-xs-2">${user['registration_cgi']}</div>
 			<div class="col-xs-2">${user['login']}</div>
@@ -77,11 +77,6 @@
 		<div class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10"  id="NikoFooter"></div>
-			<div class="col-xs-1"></div>
-		</div>
-		<div class="row">
-			<div class="col-xs-1"></div>
-			<div class="col-xs-12"  id="NikoFooter"></div>
 			<div class="col-xs-1"></div>
 		</div>
 		<#include "ButtonBar.ftl">

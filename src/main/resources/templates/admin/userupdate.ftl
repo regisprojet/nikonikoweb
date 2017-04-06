@@ -9,17 +9,14 @@
     <link href="../../../css/nikoniko_regis_denis.css" rel="stylesheet" >
 
     <link rel="stylesheet" href="../../../bootStrap/bootstrap_3.min.css">
-    
+
 </head>
 <html>
 <script "../../../jquery/jquery-3.1.1.min.js"></script>
 <#include "BodyBegin.ftl">
-		
-	
-	
-		
+
 		<form id="" action="/admin2/user/${userItem['id']}/update" method="POST" modelAttribute="userForm" >
-		<div class="row">
+		<div class="row titleuser">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-5">
 			<#if userItem??>
@@ -53,9 +50,9 @@
 						</#if>
 					</#list>
 				</select><br>
-				
+
 			</div>
-			<#if false>		
+			<#if false>
 			<div class="col-xs-5>
 				<label class="userField">fonctions</label>
 				<select multiple class="userInputField"  name="role" size="4">
@@ -69,7 +66,7 @@
 				</select><br>
 			</div>
 			<#elseif false>
-			<div class="col-xs-5>		
+			<div class="col-xs-5>
 					<label></label>
 					<label class="userField">fonctions</label><br>
 					<#list roles as role>
@@ -79,14 +76,14 @@
 							<input type="checkbox" name="${role.role}">${role.role}</input><br>
 						</#if>
 					</#list>
-			</div>		
+			</div>
 	        <#else>
 	        <div class="col-xs-2">
 				<div class="roleContainer" id="roleTarget">
 					fonctions utilisateur
 					<#if userRoles??>
 					<#list userRoles as role>
-						<#include "DrawIconRole.ftl">				
+						<#include "DrawIconRole.ftl">
 					</#list>
 					</#if>
 				</div>
@@ -101,28 +98,30 @@
 				fonctions disponibles
 				<#if roles??>
 					<#list roles as role>
-				   		<#include "DrawIconRole.ftl">				
+				   		<#include "DrawIconRole.ftl">
 					</#list>
 				</#if>
 				</div>
 			</div>
-	          								
+
 			</#if>
 			<#else>
-				<div class="col-xs-5"></div>		
+				<div class="col-xs-5"></div>
 			</#if>
 			<div class="col-xs-1"></div>
-		</div><!--div row-->
-		<input id="hybrid" type="hidden" value="" name="role" />
-		<input type="submit" value="valider"/>
+		</div>
+		<div class="titleuser">
+			<input id="hybrid" type="hidden" value="" name="role" />
+			<input type="submit" value="valider"/>
+		</div>
 		<div class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10"  id="NikoFooter"></div>
 			<div class="col-xs-1"></div>
 		</div>
 		<#include "ButtonBar.ftl">
-		
-		
+
+
     <!-- Lancement des scripts -->
  	<script src="/js/RoleDragAndDrop.js">
     </script>
