@@ -33,15 +33,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 
+
+
 import com.tactfactory.nikonikoweb.controllers.application.ApplicationControleur;
 //import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
 //import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.ISecurityRoleCrudRepository;
+import com.tactfactory.nikonikoweb.dao.ITeamCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.models.Agency;
 import com.tactfactory.nikonikoweb.models.Pole;
+import com.tactfactory.nikonikoweb.models.Team;
 import com.tactfactory.nikonikoweb.models.User;
 import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 import com.tactfactory.nikonikoweb.utils.DumpFields;
@@ -63,6 +67,9 @@ public class AdminController extends ApplicationControleur {
 
 	@Autowired
 	private ISecurityRoleCrudRepository roleCrud;
+
+	@Autowired
+	private ITeamCrudRepository teamCrud;
 
 
 	@RequestMapping(path = { BASE_URL, "menu" }, method = RequestMethod.GET)
@@ -247,11 +254,11 @@ public class AdminController extends ApplicationControleur {
 				 List<Agency> agencies = agencyCrud.findAll();
 				 List<Pole> poles =  poleCrud.findAll();
 				 List<SecurityRole> roles =  roleCrud.findAll();
-				 //List<SecurityRole> userRoles = roleCrud.findAll();
 				 List<SecurityRole> userRoles = roleCrud.findAllByUserId(idUser);
-				 System.out.println("nombre de roles total : "+ roles.size());
-				 System.out.println("nombre de roles pour l'utilisateur : "+ userRoles.size());
-
+				 List<Team> userTeams = teamCrud.findTeamByUserId(idUser);
+				 List<Team> teams = teamCrud.findAll();
+				 
+				 
 				 Pole userPole = user.getPole();
 				 Agency userAgency = user.getAgency();
 
@@ -265,7 +272,8 @@ public class AdminController extends ApplicationControleur {
 				 model.addAttribute("dictFr",dictFr);
 				 model.addAttribute("userItem",user);
 				 model.addAttribute("userRoles",userRoles);
-
+				 model.addAttribute("userTeams",userTeams);
+				 
 				 if(userAgency==null) {
 					 model.addAttribute("agencyName","pas d'agence d'attribuée");
 				 }
@@ -282,7 +290,8 @@ public class AdminController extends ApplicationControleur {
 				 model.addAttribute("poles",poles);
 				 model.addAttribute("agencies",agencies);
 				 model.addAttribute("roles",roles);
-
+				 model.addAttribute("teams",teams);
+				 
 			return "admin/userupdate";
 	}
 
@@ -296,9 +305,9 @@ public class AdminController extends ApplicationControleur {
 			@RequestParam("registration") String registration,
 			@RequestParam("pole") String poleName,
 			@RequestParam("agency") String agencyName,
-			@RequestParam("role") String roleName
-
-
+			@RequestParam("role") String roleName,//concatenation de plusieurs string séparées par une virgule
+			@RequestParam("teams") Set<String> teams
+			
 			) {
 			User user = userCrud.findOne(idUser);
 			user.setLogin(login);
@@ -306,7 +315,6 @@ public class AdminController extends ApplicationControleur {
 			user.setLastname(lastname);
 			user.setRegistration_cgi(registration);
 
-			//SecurityRole role = roleCrud.findByRole(roleName);
 			Agency agency = agencyCrud.findByName(agencyName);
 			Pole pole = poleCrud.findByName(poleName);
 
@@ -336,8 +344,14 @@ public class AdminController extends ApplicationControleur {
 				userRoles.add(projectLeaderRole);
 			}
 			
-			user.setRoles(userRoles);
+			Set<Team> userTeams = new HashSet<Team>();
+			for(String stringTeam : teams) {
+				Team team = teamCrud.findByName(stringTeam);
+				userTeams.add(team);
+			}
 			
+			user.setRoles(userRoles);
+			user.setTeams(userTeams);
 			userCrud.save(user);
 			
 			return "redirect:/admin2/index";

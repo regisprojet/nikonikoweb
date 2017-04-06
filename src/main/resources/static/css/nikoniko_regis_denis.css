@@ -309,7 +309,7 @@ div #zone{
 .roleContainer {
 	background-color: white;
 	border: 3px solid red;
-	width:90px;
+	width:120px;
 	height:160px;
 }
 
@@ -331,7 +331,7 @@ div #zone{
 	color: red;
 }
 
-[draggable=true] {
+[draggable=true]ï¿½{
 	-moz-user-select: none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
@@ -340,4 +340,9 @@ div #zone{
 }
 .roleDaD {
 	cursor:move;
+}
+
+#labelPageAdminTeam2 {
+	position:absolute;
+	top:200px;
 }

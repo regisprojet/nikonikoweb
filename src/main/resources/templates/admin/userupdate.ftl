@@ -39,6 +39,7 @@
 						</#if>
 					</#list>
 				</select><br>
+				<div>
 				<label class="userField">agence</label>
 				<select class="userInputField" name="agency" size="1">
 					<option>non défini</option>
@@ -50,37 +51,33 @@
 						</#if>
 					</#list>
 				</select><br>
-
-			</div>
-			<#if false>
-			<div class="col-xs-5>
-				<label class="userField">fonctions</label>
-				<select multiple class="userInputField"  name="role" size="4">
-					<#list roles as role>
-						<#if "${role.role}"  ==  "ROLE_USER">
-							<option selected>${role.role}</option>
-						<#else>
-							<option>${role.role}</option>
-						</#if>
+                </div>
+                <div>
+				<label id="labelPageAdminTeam" class="userField" >équipe</label>
+				<select multiple class="userInputField"  name="teams" size="5">
+					<#list teams as team>
+						<#list userTeams as userTeam>
+							<#assign found=false>
+							<#if "${userTeam.name}"  ==  "${team.name}">
+								<option selected>${team.name}</option>
+								<#assign found=true>
+								<#break>
+							</#if>
+						</#list>
+						<#if found==false>
+							<option>${team.name}</option>
+						</#if>	
 					</#list>
 				</select><br>
+				</div>
+
+
 			</div>
-			<#elseif false>
-			<div class="col-xs-5>
-					<label></label>
-					<label class="userField">fonctions</label><br>
-					<#list roles as role>
-						<#if "${role.role}"  ==  "ROLE_USER">
-							<input checked type="checkbox" name="${role.role}">${role.role}</input><br>
-						<#else>
-							<input type="checkbox" name="${role.role}">${role.role}</input><br>
-						</#if>
-					</#list>
-			</div>
-	        <#else>
+			
 	        <div class="col-xs-2">
+				fonctions utilisateur
 				<div class="roleContainer" id="roleTarget">
-					fonctions utilisateur
+					
 					<#if userRoles??>
 					<#list userRoles as role>
 						<#include "DrawIconRole.ftl">
@@ -94,8 +91,9 @@
 				 </div>
 			</div>
 	        <div class="col-xs-2">
-				<div class="roleContainer" id="roleSource">
 				fonctions disponibles
+				<div class="roleContainer" id="roleSource">
+				
 				<#if roles??>
 					<#list roles as role>
 				   		<#include "DrawIconRole.ftl">
@@ -103,8 +101,6 @@
 				</#if>
 				</div>
 			</div>
-
-			</#if>
 			<#else>
 				<div class="col-xs-5"></div>
 			</#if>

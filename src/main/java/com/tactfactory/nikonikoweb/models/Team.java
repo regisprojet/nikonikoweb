@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -30,6 +32,9 @@ public class Team extends DatabaseItem {
 	private Set<Project> projects;
 
 	@ManyToMany
+	@JoinTable(name = "user_team",//"teams_users"
+	joinColumns = @JoinColumn(name = "teams_id"),
+	inverseJoinColumns = @JoinColumn(name = "User_id"))
 	private Set<User> users;
 
 	/**

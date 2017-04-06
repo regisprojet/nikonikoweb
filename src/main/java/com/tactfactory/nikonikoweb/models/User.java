@@ -49,9 +49,9 @@ public class User extends SecurityUser {
 	private Set<NikoNiko> nikonikos;
 
 	@ManyToMany
-	@JoinTable(name = "teams_users",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "team_id"))
+	@JoinTable(name = "user_team", //teams_users
+		joinColumns = @JoinColumn(name = "User_id"),
+		inverseJoinColumns = @JoinColumn(name = "teams_id"))
 	private Set<Team> teams;
 
 	private Character sex;
