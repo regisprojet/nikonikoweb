@@ -90,11 +90,6 @@
 					</#list>
 					</#if>
 				</div>
-				<#if true>
-				<input id="resetRoleButton" type="button" value="reset" onClick="clearTargetArea();" />
-				<#else>
-				<button id="resetRoleButton" action="">reset</button>
-				</#if>
 			</div>
 			<div class="col-xs-1">
 				<div dropzone="move" id="trashZone">

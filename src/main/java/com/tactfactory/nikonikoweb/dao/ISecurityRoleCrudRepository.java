@@ -16,4 +16,5 @@ public interface ISecurityRoleCrudRepository extends IBaseCrudRepository<Securit
 	@Query(value = "SELECT * FROM security_role sr INNER JOIN users_securityroles usr ON sr.id = usr.role_id WHERE usr.user_id=:userId",
 			nativeQuery = true)
 	List<SecurityRole> findAllByUserId(@Param("userId") long userId);
+	
 }

@@ -315,6 +315,31 @@ public class AdminController {
 			user.setAgency(agency);
 			user.setPole(pole);
 			
+			Set<SecurityRole> userRoles = new HashSet<SecurityRole>();
+
+			 
+			List<SecurityRole> allRoles = roleCrud.findAll();
+			
+			SecurityRole adminRole = roleCrud.findByRole("ROLE_ADMIN");
+			SecurityRole userRole = roleCrud.findByRole("ROLE_USER");
+			SecurityRole VipRole = roleCrud.findByRole("ROLE_VIP");
+			SecurityRole projectLeaderRole = roleCrud.findByRole("ROLE_PROJECTLEADER");
+						
+			if(roleName.contains("iconAdmin")) {
+				userRoles.add(adminRole);
+			}
+			if(roleName.contains("iconUser")) {
+				userRoles.add(userRole);
+			}
+			if(roleName.contains("iconVip")) {
+				userRoles.add(VipRole);
+			}
+			if(roleName.contains("iconProjectLeader")) {
+				userRoles.add(projectLeaderRole);
+			}
+			
+			user.setRoles(userRoles);
+			
 			userCrud.save(user);
 			System.out.println(""+user.getLogin()+", "+user.getFirstname()+", "+user.getLastname() 
 					+", pole = " + poleName +", agency = "+  agencyName + ", role="+ roleName);

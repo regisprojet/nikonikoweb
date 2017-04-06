@@ -1,28 +1,6 @@
-// non utilisé
-function clearTargetArea() {
-	console.log("clearTargetArea()");
-	var targetArea = document.getElementById('roleTarget'); 
-	if(targetArea==null) {
-	 	console.error("targetArea = null, exit");
-		 	return;
-	}
-	var rolesTarget = targetArea.querySelectorAll('.roleDaD');
-	for(var elem in rolesTarget) {
-		console.log(""+elem);
-		elem.remove();
-	}
+//var targetElements  = new Set();
+//var tartetSize = 0;
 
-}
-
-// non utilisé
-function getItemFromTarget() {
-	console.log("getItemFromTarget()");
-	var targetArea = document.getElementById('roleTarget'); 
-	var items = targetArea.querySelectorAll('.roleDaD');
-}
-
-console.log("on passe dans la variable globale du source JS");
-var targetElements  = new Set();
 
 function targetElementsToString() {
 	console.log("targetElementsToString()");
@@ -32,28 +10,31 @@ function targetElementsToString() {
 		console.error("hybrid = null");
 		return;
 	}
-	string = "valeur:"+targetElements.length+":";
-	for(var i =0;i<targetElements.length;i++) {
-		string = string + targetElements[i].value;
-		if(i<targetElements-1) {
-			string = string + "&";
-		}
+	var targetArea = document.getElementById('roleTarget'); 
+	var rolesInTarget = targetArea.querySelectorAll('.roleDaD');
+		
+
+	var targetElems = new Set();
+	for(var i =0;i<rolesInTarget.length;i++) {
+		targetElems.add(rolesInTarget[i].getAttribute("value"));
 	}
-	hybrid.setAttribute("value",string);
-	console.log(string);
+
+	str = "VALUES("+targetElems.size+"):";
+	for(let elem of targetElems.values()) {
+		str += elem;
+		str += ",";
+	}
+	hybrid.setAttribute("value",str);
+	console.log(str);
 
 }
 
 function enableDragAndDrop() {
-	
+		targetElementsToString();
 		console.log("enableDragAndDrop()");
 		
 		var hybrid = document.getElementById('hybrid');
 		
-		var resetRoleButton = document.getElementById('resetRoleButton'); 
-		resetRoleButton.addEventListener('click',
-				function() {clearTargetArea();});
-
 		if(document==null) {
 			console.error("document is null");
 			return;
@@ -77,7 +58,7 @@ function enableDragAndDrop() {
 		{
 			rolesDaD[i].setAttribute('draggable', 'true');  // optional with images
 			rolesDaD[i].addEventListener('dragstart', function(evnt) {
-				this.className = 'itemchoosen';
+				//this.className = 'itemchoosen';
 				evnt.dataTransfer.effectAllowed = 'copy';
 				evnt.dataTransfer.setData('text', this.id);
 				return false;  
@@ -90,11 +71,14 @@ function enableDragAndDrop() {
 				console.log("dragend");
 				evnt.target.parentNode.removeChild(evnt.target);
 				//targetElements.delete(rolesInTarget[i].value);
-				targetElements.delete(rolesInTarget[i]);
+				//targetElements.delete(rolesInTarget[i]);
+				//tartetSize--;
 				targetElementsToString();	
 				return false;
 			}, false);
-			targetElements.add(rolesInTarget[i]);
+			
+			//targetElements.add(rolesInTarget[i]);
+			//tartetSize++;
 			targetElementsToString();
 		}
 		
@@ -117,30 +101,41 @@ function enableDragAndDrop() {
 		  
 		targetArea.addEventListener('drop', function(evnt) {
 			if (evnt.stopPropagation) evnt.stopPropagation();
-			var id = evnt.dataTransfer.getData('text');		
+			var id = evnt.dataTransfer.getData('text');
+			//var html = evnt.dataTransfer.getData("text/html");
+			//var text = evnt.dataTransfer.getData("text/plain");
+			//if(html) {
+			//	evnt.target.innerHTML += html + " ";
+			//}
+			//else {
+			//	evnt.target.innerHTML += text + " ";
+			//}
+			//evnt.target.className = '';
+//
+			//var obj = evnt.target.innerHTML += evnt.dataTransfer.getData("text/plain");	
 			var theitem = document.getElementById(id);	
 			//theitem.parentNode.removeChild(el);	
-			theitem.className='itemblurred';
+			//theitem.className='itemblurred';
+			theitem.className='roleDaD';
 			var y  = document.createElement('img');
-			y.src = theitem.src;
-			//y.addEventListener('dragend', function(event){
-    		//	if(event.dataTransfer.dropEffect !== 'none'){
-        	//	$(this).remove();
-    		//}
-			//});
 
+			y.src = theitem.src;
+            y.className = 'roleDaD';
+            y.setAttribute('value',theitem.getAttribute("id"));
 			y.addEventListener('dragend', function(evnt) {
 				console.log("dragend");
 				evnt.target.parentNode.removeChild(evnt.target);
+				tartetSize--;
 				targetElementsToString();	
 				return false;
 			}, false);
-		
+			//tartetSize++;
 			targetArea.appendChild(y);
 			evnt.preventDefault(); // for Firefox
 			//targetElements.add(rolesInTarget[i].getAttribute("value"));
 			//targetElements.add(rolesInTarget[i].value);
-			targetElements.add(rolesInTarget[i]);
+			//targetElements.add(rolesInTarget[i]);	
+			targetElementsToString();
 			return false;
 		}, false);
 
@@ -173,6 +168,7 @@ function enableDragAndDrop() {
 		trashArea.addEventListener('dragend', function(evnt) {
 				console.log("dragend");
 				evnt.target.parentNode.removeChild(evnt.target);	
+				tartetSize--;
 				return false;
 		}, false);
 		
@@ -194,44 +190,5 @@ function enableDragAndDrop() {
 			return false;
 		}, false);
 
-
-
-		//targetArea.addEventListener('dragend', function(event){
-		//	console.log("dragend");
-    	//	if(event.dataTransfer.dropEffect !== 'none'){
-        //		event.
-        //		$(this).remove();
-    	//	}
-		//});
-
-//		//-----------------------------
-//
-//        sourceArea.addEventListener('dragover', function(evnt) {
-//				if (evnt.preventDefault) evnt.preventDefault();
-//				evnt.dataTransfer.dropEffect = 'copy';
-//				return false;	
-//		}, false);
-//		  
-//		sourceArea.addEventListener('dragenter', function(evnt) {
-//				return false;	
-//		}, false);
-//		  
-//		sourceArea.addEventListener('dragleave', function(evnt) {
-//				return false;
-//		}, false);
-//		  
-//		sourceArea.addEventListener('drop', function(evnt) {
-//			//if (evnt.stopPropagation) evnt.stopPropagation();
-//			//var id = evnt.dataTransfer.getData('text');		
-//			//var theitem = document.getElementById(id);	
-//			////theitem.parentNode.removeChild(el);	
-//			//theitem.className='itemblurred';
-//			//var y  = document.createElement('img');
-//			//y.src = theitem.src;
-//			//sourceArea.appendChild(y);
-//			//evnt.preventDefault(); // for Firefox
-//			return false;
-//		}, false);
-//
 
 }
