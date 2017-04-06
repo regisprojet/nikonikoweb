@@ -121,6 +121,7 @@ function createWeek(dateStr, nikonikos) {
 			dayDate	= dayOfMonth - firstDay;
 
 			var newCol = document.createElement("div");
+			newCol.setAttribute("id","cell" + i + j);
 
 			var rowLastChild = newRow.LastChild;
 
@@ -133,9 +134,20 @@ function createWeek(dateStr, nikonikos) {
 
 			var cellule = document.createElement("div");
 			var celluleLastChild = cellule.LastChild;
-			cellule.setAttribute("class","cellule");
+
+			/* coloration du background du jour courant */
+			/* ---------------------------------------- */
+			var currentDate = new Date(calendar.getFullYear(), calendar.getMonth(), dayDate);
+			if((dateReelle.getDate() == currentDate.getDate()) &&
+			   (dateReelle.getMonth() == currentDate.getMonth()) &&
+			   (dateReelle.getFullYear() == currentDate.getFullYear())) {
+					cellule.setAttribute("class","cellule currentDate");
+			} else {
+				cellule.setAttribute("class","cellule");
+			}
 			var celluleId =  "" + calendar.getDate() + calendar.getMonth()+ calendar.getFullYear();
 			cellule.setAttribute("id",celluleId);
+
 
 			/* Insertion Info bulle bootstrap popover */
 			/* -------------------------------------- */
@@ -240,6 +252,31 @@ function createWeek(dateStr, nikonikos) {
 			}
 		}
 	}
+
+	/* Uniformise la hauteur des cellules du calendrier */
+	/* ------------------------------------------------ */
+	var heightMaxCel =0;
+	for (var i = 0; i < maxWeek; i++) {
+		for(var j=0; j<7;j++) {
+			var colId = "cell" + i + j;
+			if(document.getElementById(colId) != null) {
+				if(document.getElementById(colId).offsetHeight > heightMaxCel) {
+					heightMaxCel = document.getElementById(colId).offsetHeight;
+				}
+			}
+		}
+	}
+	//heightMaxCel+= 2;
+	//heightMaxCel+= 15;
+	for (var i = 0; i < maxWeek; i++) {
+		for(var j=0; j<7;j++) {
+			var colId = "cell" + i + j;
+			document.getElementById(colId).style.minHeight = heightMaxCel + "px";
+			//document.getElementById(colId).style.height = heightMaxCel + "px";
+			//console.log("colId= " + colId + "  heightMaxCel=" + heightMaxCel);
+		}
+	}
+
 }
 
 
