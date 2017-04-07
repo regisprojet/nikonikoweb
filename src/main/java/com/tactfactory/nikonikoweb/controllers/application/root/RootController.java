@@ -33,6 +33,7 @@ import com.tactfactory.nikonikoweb.dao.IAbilityCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IAgencyCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IFunctionCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IGreetingCrudRepository;
+import com.tactfactory.nikonikoweb.dao.INikoNikoCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IPoleCrudRepository;
 import com.tactfactory.nikonikoweb.dao.IUserCrudRepository;
 import com.tactfactory.nikonikoweb.environment.Environment;
@@ -50,6 +51,9 @@ import com.tactfactory.nikonikoweb.models.security.SecurityRole;
 @SessionAttributes("thought")
 @RequestMapping(RootController.BASE_URL)
 public class RootController {
+
+	@Autowired
+	private INikoNikoCrudRepository nikoCrud;
 
 	@Autowired
 	private IUserCrudRepository userCrud;
@@ -89,20 +93,32 @@ public class RootController {
 		String satisfaction[] = {"0","1","1","1","2","2","3","3","1","1"};
 		String comment[] = {"", "ca va!"," genial" ,"codage reussi", "pas top", "codage a refaire", "malade", "fatigue", "en pleine forme", "projet valide par l'equipe"};
 
+		fichier.write("ALTER TABLE nikoniko AUTO_INCREMENT = 1;\n");
+		fichier.write("ALTER TABLE user_nikoniko AUTO_INCREMENT = 1;\n");
 
 		Random randomGenerator = new Random();
 		DateTime dateJour = new DateTime();
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
 
-		for(int i=0; i<90; i++) {
-			dateJour = dateJour.minusDays(1);
+		Long id_niko = 0l;
+		if(nikoCrud.findMaxId() != null)
+			id_niko = nikoCrud.findMaxId();
+
+		for(int i=0; i<120; i++) {
 			for (User user : users) {
 				int rand = randomGenerator.nextInt(10);
 				fichier.write("INSERT INTO nikoniko (nikoniko_comment,isanonymous,log_date,satisfaction,user_id)\n");
 				String value = "\""+comment[rand]+"\","+ true +",\"" + dtf.print(dateJour) + "\"," + satisfaction[rand] + "," + user.getId() ;
 				fichier.write("\tVALUE ( " + value + ");\n");
 
+				id_niko++;
+
+				fichier.write("INSERT INTO user_nikoniko (User_id,nikonikos_id) ");
+				//value = "\"" + user.getId() + "\",\"" + id_niko  + "\"";
+				value = "" + user.getId() + "," + id_niko ;
+				fichier.write("\tVALUE (" + value + ");\n");
 			}
+			dateJour = dateJour.minusDays(1);
 		}
 		fichier.close();
 		} catch (IOException e) {e.printStackTrace();}

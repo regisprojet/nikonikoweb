@@ -40,7 +40,7 @@ public class ResultController extends ApplicationControleur {
 		Team team = teamCrud.findOne(teamId);
 		model.addAttribute("teamname", team.getName());
 		Iterable<NikoNiko> nikos = nikoNikoCrud.findByTeam(teamId);
-		ArrayList<NikoNiko> nikosByWeek = new ArrayList<NikoNiko>();
+		//ArrayList<NikoNiko> nikosByWeek = new ArrayList<NikoNiko>();
 
 		ArrayList<Integer> greensWeek = new ArrayList<Integer> ();
 		ArrayList<Integer> yellowsWeek = new ArrayList<Integer> ();
@@ -52,28 +52,14 @@ public class ResultController extends ApplicationControleur {
 			redsWeek.add(0);
 		}
 
-		//GregorianCalendar todayCalendar =new GregorianCalendar();
-		//DateTime todayCalendar = new DateTime();
-		//Date todayDate = new Date();
-		//todayCalendar.setTime(todayDate);
-		//DateTime todayDate =
-
 		int today = (currentDateTime.getDayOfWeek() + 5)%7;
-
-		//int today = (todayCalendar.get(todayCalendar.DAY_OF_WEEK)+5)%7;
 		for(NikoNiko niko : nikos) {
-			//GregorianCalendar calendar =new GregorianCalendar();
-			//DateTime calendar = new DateTime();
-		    //Date nikoDate1 = niko.getLog_date();
 		    DateTime nikoDate = new DateTime(niko.getLog_date());
 
-			//calendar.setTime(nikoDate);
 		    DateTime calendar = new DateTime(nikoDate);
 		    int dayNiko = (calendar.getDayOfWeek() + 5)%7;
-			//int dayNiko = (calendar.get(calendar.DAY_OF_WEEK)+5)%7;
 
 		    System.out.println("Dayniko ="+dayNiko);
-			//long diff1 = (todayDate.getTime() - nikoDate1.getTime())/ (1000 * 60 * 60 * 24);
 			long diff = (currentDateTime.getMillis() - nikoDate.getMillis())/ (1000 * 60 * 60 * 24);
 
 

@@ -201,21 +201,30 @@ div #zone{
 	margin-top: 20px;
 	border-bottom: 5px solid #E11836;
 }
-.Colonne {
-	/*border-left: 2px solid #E11836;
-	border-right: 2px solid #E11836;
-	margin: 0px 0px 0px 0px ;
-	padding: 0px 0px 0px 0px ;*/
-	border: 2px solid #E11836;
-}
-.Rangee {
-	border-top: 2px solid #E11836;
-	border-bottom: 2px solid #E11836;
-	border: 2px solid #E11836;
-}
+
 .cellule {
-	min-height: 110px;
+	/*min-height: 110px;
+	font-size: 25px;*/
+}
+div.Rangee {
+	border-bottom: 1px solid;
+}
+div.Rangee:first-child {
+	border-top: 1px solid;
+}
+div.Colonne {
+	margin: 0px;
+	padding: 4px;
+
+	border-right: 1px solid;
 	font-size: 25px;
+}
+div.Colonne:first-child {
+	border-left: 1px solid;
+	font-size: 25px;
+}
+.currentDate {
+	background-color: #e6e9ef;
 }
 #currentDate {
 	color: red;
@@ -237,6 +246,9 @@ div #zone{
 #nikoImg {
 	margin-top: 20px;
 	margin-bottom: 20px;
+	cursor: pointer;
+	cursor: -Moz-Grab;
+	cursor: Hand;
 }
 
 .nikoImg {
