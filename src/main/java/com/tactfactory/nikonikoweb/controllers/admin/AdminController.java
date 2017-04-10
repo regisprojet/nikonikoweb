@@ -137,6 +137,7 @@ public class AdminController extends ApplicationControleur {
 		
 		User user = new User();
 		user.setLogin(login);
+		user.setPassword(login);
 		user.setFirstname(firstname);
 		user.setLastname(lastname);
 		user.setRegistration_cgi(registration);
