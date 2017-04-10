@@ -184,7 +184,31 @@ public class AdminController extends ApplicationControleur {
 
 	}
 
+	@RequestMapping(path = { "user/{idUser}/delete" }, method = RequestMethod.GET)
+	public String userdeleteGet(
+			@PathVariable("idUser") long idUser,
+			Model model
+			) {		
+		User user = userCrud.findOne(idUser);
+		model.addAttribute("user", user);
+		
+		return "admin/userdelete";
+	}
 
+	@RequestMapping(path = { BASE_URL, "user/{idUser}/delete" }, method = RequestMethod.POST)
+	public String userdeletePost(Model model,
+			@PathVariable("idUser") long idUser
+		) {
+		
+		User user = userCrud.findOne(idUser);
+		userCrud.delete(user);
+		
+		return "redirect:/admin2/index";
+
+	}
+
+
+	
 	@RequestMapping(path = { "index" }, method = RequestMethod.GET)
 	public String indexGet(Model model) {
 			UserDetails userDetails =

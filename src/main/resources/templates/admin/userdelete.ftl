@@ -28,7 +28,7 @@
 					   <img src='./../../../images/bandeau.png' alt='' id="logo">
 					</div>
 					<div class="col-xs-4 ">
-						<p>recherche</p>
+						<p>effacer un</p>
 						<p>utilisateur</p>
 					</div>
 				</div>
@@ -43,21 +43,21 @@
 			<div class="col-xs-2">nom</div>
 			<div class="col-xs-2"></div>
 		</div>
-		<form action="searchuser" method="POST">
+		<form action="delete" method="POST">
 		   	<input type="hidden"
            	 	name="${_csrf.parameterName}"
             	value="${_csrf.token}"/>
 	    <div class="row">
 			<div class="col-xs-2"></div>
-			<div class="col-xs-2"><input type='text' name="registration" value=""/></div>
-			<div class="col-xs-2"><input type='text' name="login" value=""/></div>
-			<div class="col-xs-2"><input type='text' name="firstname" value=""/></div>
-			<div class="col-xs-2"><input type='text' name="lastname" value=""/></div>
+			<div class="col-xs-2"><input type='text' name="registration" value="${user['registration_cgi']}"/></div>
+			<div class="col-xs-2"><input type='text' name="login" value="${user['login']}"/></div>
+			<div class="col-xs-2"><input type='text' name="firstname" value="${user['firstname']}"/></div>
+			<div class="col-xs-2"><input type='text' name="lastname" value="${user['lastname']}"/></div>
 			<div class="col-xs-2"></div>
 		</div>
 	    <div class="row">
 			<div class="col-xs-8"></div>
-			<div class="col-xs-2"><input type="submit" value="rechercher"/></div>
+			<div class="col-xs-2"><input type="submit" value="effacer"/></div>
 			<div class="col-xs-2"></div>
 		</div>
 	    </form>
@@ -78,8 +78,7 @@
 			<div class="col-xs-2">${user['login']}</div>
 			<div class="col-xs-2">${user['firstname']}</div>
 			<div class="col-xs-2">${user['lastname']}</div>
-			<div class="col-xs-1"><a href="../../../admin2/user/${user['id']}/update">modifier</a></div>
-			<div class="col-xs-1"><a href="../../..//admin2/user/${user['id']}/delete">effacer</a></div>
+			<div class="col-xs-2"><a href="../../../admin2/user/${user['id']}/update">modifier</a></div>
             <div class="col-xs-1"></div><br>
             </#if>
             </#list>
