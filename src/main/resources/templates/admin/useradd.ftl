@@ -80,6 +80,8 @@
 			<input id="hybrid" type="hidden" value="" name="role" />
 			<input type="submit" value="valider"/>
 		</div>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		</form>
 		<div class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10"  id="NikoFooter"></div>

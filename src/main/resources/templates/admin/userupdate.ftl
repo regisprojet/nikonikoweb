@@ -56,6 +56,7 @@
 				<label id="labelPageAdminTeam" class="userField" >équipe</label>
 				<select multiple class="userInputField"  name="teams" size="5">
 					<#list teams as team>
+						<#assign found=false>
 						<#list userTeams as userTeam>
 							<#assign found=false>
 							<#if "${userTeam.name}"  ==  "${team.name}">
@@ -66,7 +67,7 @@
 						</#list>
 						<#if found==false>
 							<option>${team.name}</option>
-						</#if>	
+						</#if>
 					</#list>
 				</select><br>
 				</div>
@@ -110,6 +111,8 @@
 			<input id="hybrid" type="hidden" value="" name="role" />
 			<input type="submit" value="valider"/>
 		</div>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		</form>
 		<div class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-10"  id="NikoFooter"></div>

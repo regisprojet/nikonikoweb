@@ -72,14 +72,14 @@ public class AdminController extends ApplicationControleur {
 	private ITeamCrudRepository teamCrud;
 
 
-	@RequestMapping(path = { BASE_URL, "menu" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "menu" }, method = RequestMethod.GET)
 	public String menuGet(Model model) {
 
 		return "admin/menu";
 	}
 
 
-	@RequestMapping(path = { BASE_URL, "adduser" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "adduser" }, method = RequestMethod.GET)
 	public String adduserGet(Model model) {
 		model.addAttribute("page", "ajout utilisateur");
 		String[] fieldsManual =  { "login", "lastname", "firstname" };
@@ -93,12 +93,12 @@ public class AdminController extends ApplicationControleur {
 		return "admin/adduser";
 	}
 
-	@RequestMapping(path = { BASE_URL, "adduser" }, method = RequestMethod.POST)
+	@RequestMapping(path = { "adduser" }, method = RequestMethod.POST)
 	public String adduserPost(@ModelAttribute("userForm") User user, Model model) {
 		return "redirect:adduser";
 	}
 
-	@RequestMapping(path = { BASE_URL, "useradd" }, method = RequestMethod.GET)
+	@RequestMapping(path = {"useradd" }, method = RequestMethod.GET)
 	public String useraddGet(Model model) {
 		model.addAttribute("page", "ajout utilisateur");
 		
@@ -123,7 +123,7 @@ public class AdminController extends ApplicationControleur {
 		return "admin/useradd";
 	}
 
-	@RequestMapping(path = { BASE_URL, "useradd" }, method = RequestMethod.POST)
+	@RequestMapping(path = { "useradd" }, method = RequestMethod.POST)
 	public String useraddPost(Model model,
 		@RequestParam("login") String login,
 		@RequestParam("firstname") String firstname,
@@ -132,8 +132,9 @@ public class AdminController extends ApplicationControleur {
 		@RequestParam("pole") String poleName,
 		@RequestParam("agency") String agencyName,
 		@RequestParam("role") String roleName,//concatenation de plusieurs string séparées par une virgule
-		@RequestParam("teams") Set<String> teams
+		@RequestParam(value="teams", required=false) Set<String> teams
 		) {
+		
 		
 		User user = new User();
 		user.setLogin(login);
@@ -172,13 +173,16 @@ public class AdminController extends ApplicationControleur {
 		}
 		
 		Set<Team> userTeams = new HashSet<Team>();
-		for(String stringTeam : teams) {
-			Team team = teamCrud.findByName(stringTeam);
-			userTeams.add(team);
+		if(teams!=null) {
+			for(String stringTeam : teams) {
+				Team team = teamCrud.findByName(stringTeam);
+				userTeams.add(team);
+			}
 		}
-		
 		user.setRoles(userRoles);
 		user.setTeams(userTeams);
+		
+		user.setEnable(true);
 		userCrud.save(user);
 		
 		return "redirect:/admin2/index";
@@ -196,7 +200,7 @@ public class AdminController extends ApplicationControleur {
 		return "admin/userdelete";
 	}
 
-	@RequestMapping(path = { BASE_URL, "user/{idUser}/delete" }, method = RequestMethod.POST)
+	@RequestMapping(path = {"user/{idUser}/delete" }, method = RequestMethod.POST)
 	public String userdeletePost(Model model,
 			@PathVariable("idUser") long idUser
 		) {
@@ -420,8 +424,7 @@ public class AdminController extends ApplicationControleur {
 			@RequestParam("pole") String poleName,
 			@RequestParam("agency") String agencyName,
 			@RequestParam("role") String roleName,//concatenation de plusieurs string séparées par une virgule
-			@RequestParam("teams") Set<String> teams
-			
+			@RequestParam(value="teams", required=false) Set<String> teams
 			) {
 			User user = userCrud.findOne(idUser);
 			user.setLogin(login);
@@ -459,9 +462,11 @@ public class AdminController extends ApplicationControleur {
 			}
 			
 			Set<Team> userTeams = new HashSet<Team>();
-			for(String stringTeam : teams) {
-				Team team = teamCrud.findByName(stringTeam);
-				userTeams.add(team);
+			if(teams!=null) {
+				for(String stringTeam : teams) {
+					Team team = teamCrud.findByName(stringTeam);
+					userTeams.add(team);
+				}
 			}
 			
 			user.setRoles(userRoles);
