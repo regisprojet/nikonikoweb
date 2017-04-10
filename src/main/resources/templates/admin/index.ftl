@@ -40,6 +40,7 @@
 			<div class="col-xs-6">
 				<a href="user/list?limit=7&off	set=0">liste des utilisateurs</a><br>
 				<a href="searchuser">recherche d'un utilisateur</a><br>
+				<a href="useradd">ajout d'un utilisateur</a><br>
 
 				<a href="user/list?limit=7&offset=0">liste des roles</a><br>
 				<a href="user/list?limit=7&offset=0">liste des agences</a><br>

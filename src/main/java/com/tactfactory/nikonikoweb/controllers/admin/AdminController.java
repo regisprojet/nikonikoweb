@@ -98,6 +98,92 @@ public class AdminController extends ApplicationControleur {
 		return "redirect:adduser";
 	}
 
+	@RequestMapping(path = { BASE_URL, "useradd" }, method = RequestMethod.GET)
+	public String useraddGet(Model model) {
+		model.addAttribute("page", "ajout utilisateur");
+		
+		List<Agency> agencies = agencyCrud.findAll();
+		List<Pole> poles =  poleCrud.findAll();
+		List<SecurityRole> roles =  roleCrud.findAll();
+		List<Team> teams = teamCrud.findAll();
+			 
+		
+		
+		Map<String, Map<String,Object>> currentItem = DumpFields.fielderAdvance(
+				DumpFields.createContentsEmpty(User.class),
+				User.class);
+
+		model.addAttribute("currentItem", currentItem);
+		model.addAttribute("poles",poles);
+		model.addAttribute("agencies",agencies);
+		model.addAttribute("roles",roles);
+		model.addAttribute("teams",teams);
+
+		
+		return "admin/useradd";
+	}
+
+	@RequestMapping(path = { BASE_URL, "useradd" }, method = RequestMethod.POST)
+	public String useraddPost(Model model,
+		@RequestParam("login") String login,
+		@RequestParam("firstname") String firstname,
+		@RequestParam("lastname") String lastname,
+		@RequestParam("registration") String registration,
+		@RequestParam("pole") String poleName,
+		@RequestParam("agency") String agencyName,
+		@RequestParam("role") String roleName,//concatenation de plusieurs string séparées par une virgule
+		@RequestParam("teams") Set<String> teams
+		) {
+		
+		User user = new User();
+		user.setLogin(login);
+		user.setFirstname(firstname);
+		user.setLastname(lastname);
+		user.setRegistration_cgi(registration);
+
+		Agency agency = agencyCrud.findByName(agencyName);
+		Pole pole = poleCrud.findByName(poleName);
+
+		user.setAgency(agency);
+		user.setPole(pole);
+		
+		Set<SecurityRole> userRoles = new HashSet<SecurityRole>();
+
+		 
+		List<SecurityRole> allRoles = roleCrud.findAll();
+		
+		SecurityRole adminRole = roleCrud.findByRole("ROLE_ADMIN");
+		SecurityRole userRole = roleCrud.findByRole("ROLE_USER");
+		SecurityRole VipRole = roleCrud.findByRole("ROLE_VIP");
+		SecurityRole projectLeaderRole = roleCrud.findByRole("ROLE_PROJECTLEADER");
+					
+		if(roleName.contains("iconAdmin")) {
+			userRoles.add(adminRole);
+		}
+		if(roleName.contains("iconUser")) {
+			userRoles.add(userRole);
+		}
+		if(roleName.contains("iconVip")) {
+			userRoles.add(VipRole);
+		}
+		if(roleName.contains("iconProjectLeader")) {
+			userRoles.add(projectLeaderRole);
+		}
+		
+		Set<Team> userTeams = new HashSet<Team>();
+		for(String stringTeam : teams) {
+			Team team = teamCrud.findByName(stringTeam);
+			userTeams.add(team);
+		}
+		
+		user.setRoles(userRoles);
+		user.setTeams(userTeams);
+		userCrud.save(user);
+		
+		return "redirect:/admin2/index";
+
+	}
+
 
 	@RequestMapping(path = { "index" }, method = RequestMethod.GET)
 	public String indexGet(Model model) {
@@ -106,6 +192,9 @@ public class AdminController extends ApplicationControleur {
 			User currentUser = userCrud.findByLogin(userDetails.getUsername());
 			model.addAttribute("currentUserRoles", currentUser.getRoles());
 
+			
+			
+			
 			return "admin/index";
 	}
 
